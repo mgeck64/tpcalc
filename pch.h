@@ -19,3 +19,4 @@
 #include <winrt/Windows.UI.ViewManagement.h>
 #include <winrt/Windows.Storage.h>
 #include <winrt/Windows.ApplicationModel.Core.h>
+#include <winrt/Windows.Graphics.Display.h>

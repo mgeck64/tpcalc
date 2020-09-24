@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using namespace winrt;
+using namespace Windows;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::ViewManagement;
@@ -31,17 +32,14 @@ namespace winrt::tcalc::implementation
 bool winrt::tcalc::implementation::MainPage::initializing_app = true;
 
 inline auto winrt::tcalc::implementation::MainPage::make_size(double width, double height) -> Size {
-    assert(static_cast<float>(width) == width);
-    assert(static_cast<float>(height) == height);
     return Size(static_cast<float>(width), static_cast<float>(height));
 }
 
 void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     default_page_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight() + bottomAppBar().ActualHeight());
-    auto local_settings = Windows::Storage::ApplicationData::Current().LocalSettings();
+    auto local_settings = Storage::ApplicationData::Current().LocalSettings();
     assert(varsPanel().Visibility() == Visibility::Collapsed);
-    assert(helpPanel().Visibility() == Visibility::Collapsed);
     ApplicationView::GetForCurrentView().SetPreferredMinSize(default_page_size);
     if (!local_settings.Values().HasKey(L"launchedWithPrefSize")) {
         ApplicationView::PreferredLaunchViewSize(default_page_size);
@@ -52,8 +50,8 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
         run.Text(L"(Help will not be shown automatically the next time this app is invoked.)\n");
         Documents::Paragraph paragraph;
         paragraph.Inlines().Append(run);
-        helpPanelTextBlock().Blocks().InsertAt(0, paragraph);
-        ToggleHelp();
+        help_quick_start_guide_TextBlock().Blocks().InsertAt(0, paragraph);
+        show_help(L"help_quick_start_guide");
     }
 
     initial_calcPanel_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight());
@@ -65,7 +63,6 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
     on_vars_changed();
 
     { // Mode and Inp. Type menu check mark icon (selection indicator)
-        using namespace Windows::UI::Xaml::Controls;
         auto symbol = Symbol::Accept; // check mark icon
 
         input_mode_fpd().Icon(SymbolIcon(symbol));
@@ -127,12 +124,11 @@ inline double winrt::tcalc::implementation::MainPage::space_for_XPanel() {
 }
 
 inline void winrt::tcalc::implementation::MainPage::update_XPanel_button_labels(double space_for_XPanel_) {
+    // space_for_XPanel_ is optimization for update_page_ui to avoid duplicate call to space_for_XPanel()
     assert(space_for_XPanel_ == space_for_XPanel());
     bool show_help = space_for_XPanel_ == 0 || helpPanel().Visibility() == Visibility::Collapsed;
-    auto helpButtonLabel = show_help ? L"Help" : L"Hide Help";
-    if (helpButton().Label() != helpButtonLabel)
-        helpButton().Label(helpButtonLabel);
-
+    help_menu_hide_help().IsEnabled(!show_help);
+    
     bool show_vars = space_for_XPanel_ == 0 || varsPanel().Visibility() == Visibility::Collapsed;
     auto varsButtonLabel = show_vars ? L"Variables" : L"Hide Variables";
     if (varsButton().Label() != varsButtonLabel)
@@ -176,7 +172,7 @@ void winrt::tcalc::implementation::MainPage::update_mode_menu() {
 void winrt::tcalc::implementation::MainPage::update_mode_display() {
     switch (parser.default_radix()) {
     case radices::decimal:
-        inputModeText().Text(L"Input: Floating Point Decimal");
+        inputModeText().Text(L"Input: Floating Pt. (FP) Decimal");
         break;
     case radices::base2:
         inputModeText().Text(L"Input: Integer Binary");
@@ -224,10 +220,6 @@ void winrt::tcalc::implementation::MainPage::mode_menu_Opening(winrt::Windows::F
     update_mode_menu();
 }
 
-void winrt::tcalc::implementation::MainPage::integer_result_type_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
-    update_integer_result_type_menu();
-}
-
 void winrt::tcalc::implementation::MainPage::input_mode_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto tag = unbox_value<hstring>(sender.as<FrameworkElement>().Tag());
@@ -267,6 +259,10 @@ void winrt::tcalc::implementation::MainPage::output_mode_Click(winrt::Windows::F
         on_vars_changed(); // re-output in new radix
     input().Focus(FocusState::Programmatic);
     update_mode_display();
+}
+
+void winrt::tcalc::implementation::MainPage::integer_result_type_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
+    update_integer_result_type_menu();
 }
 
 void winrt::tcalc::implementation::MainPage::integer_result_type_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
@@ -381,39 +377,6 @@ inline void winrt::tcalc::implementation::MainPage::TryResizeView(Size size) {
     ApplicationView::GetForCurrentView().TryResizeView(size);
 }
 
-inline void winrt::tcalc::implementation::MainPage::ToggleX_Click(ScrollViewer togglePanel, ScrollViewer otherPanel, float min_width, float min_height)
-{
-    auto local_settings = Windows::Storage::ApplicationData::Current().LocalSettings();
-    if (ActualHeight() <= default_page_size.Height // should be helpPanel.ActualHeight() == 0 but for unknown reason helpPanel.ActualHeight() is not reliable
-            || togglePanel.Visibility() == Visibility::Collapsed) {
-        togglePanel.Visibility(Visibility::Visible);
-        otherPanel.Visibility(Visibility::Collapsed);
-        TryResizeView(make_size(min_width, min_height));
-    } else if (togglePanel.Visibility() == Visibility::Visible) {
-        togglePanel.Visibility(Visibility::Collapsed);
-        otherPanel.Visibility(Visibility::Collapsed);
-        TryResizeView(default_page_size);
-    } else
-        assert(false); // missed something
-    input().Focus(FocusState::Programmatic);
-    update_XPanel_button_labels();
-}
-
-void winrt::tcalc::implementation::MainPage::ToggleVars_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
-{
-    ToggleX_Click(varsPanel(), helpPanel(), default_page_size.Width, 300);
-}
-
-inline void winrt::tcalc::implementation::MainPage::ToggleHelp()
-{
-    ToggleX_Click(helpPanel(), varsPanel(), 450, 550);
-}
-
-void winrt::tcalc::implementation::MainPage::ToggleHelp_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
-{
-    ToggleHelp();
-}
-
 void winrt::tcalc::implementation::MainPage::output_Copy_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto start = output().SelectionStart();
@@ -442,3 +405,126 @@ void winrt::tcalc::implementation::MainPage::on_vars_changed() {
     }
     varsTextBlock().Text(out_buf.str());
 }
+
+void winrt::tcalc::implementation::MainPage::ToggleVars_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+{
+    if (ActualHeight() <= default_page_size.Height // should be helpPanel.ActualHeight() == 0 but for unknown reason helpPanel.ActualHeight() is not reliable
+            || varsPanel().Visibility() == Visibility::Collapsed) {
+        varsPanel().Visibility(Visibility::Visible);
+        helpPanel().Visibility(Visibility::Collapsed);
+        TryResizeView(make_size(default_page_size.Width, 300));
+    } else if (varsPanel().Visibility() == Visibility::Visible) {
+        varsPanel().Visibility(Visibility::Collapsed);
+        helpPanel().Visibility(Visibility::Collapsed);
+        TryResizeView(default_page_size);
+    } else
+        assert(false); // missed something
+    input().Focus(FocusState::Programmatic);
+    update_XPanel_button_labels();
+}
+
+void winrt::tcalc::implementation::MainPage::help_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
+    update_XPanel_button_labels();
+}
+
+void winrt::tcalc::implementation::MainPage::help_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+{
+    show_help(unbox_value<hstring>(sender.as<FrameworkElement>().Tag()));
+}
+
+void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
+    ScrollViewer visible;
+    bool have_visible = false;
+    if (help_quick_start_guide().Visibility() == Visibility::Visible) {
+        visible = help_quick_start_guide();
+        have_visible = true;
+    } else if (help_variables().Visibility() == Visibility::Visible) {
+        visible = help_variables();
+        have_visible = true;
+    } else if (help_numbers().Visibility() == Visibility::Visible) {
+        visible = help_numbers();
+        have_visible = true;
+    } else if (help_fp_and_integer_arithmetic_operators().Visibility() == Visibility::Visible) {
+        visible = help_fp_and_integer_arithmetic_operators();
+        have_visible = true;
+    } else if (help_fp_arithmetic_operators().Visibility() == Visibility::Visible) {
+        visible = help_fp_arithmetic_operators();
+        have_visible = true;
+    } else if (help_integer_arithmetic_and_bitwise_logic_operators().Visibility() == Visibility::Visible) {
+        visible = help_integer_arithmetic_and_bitwise_logic_operators();
+        have_visible = true;
+    } else if (help_fp_functions().Visibility() == Visibility::Visible) {
+        visible = help_fp_functions();
+        have_visible = true;
+    } else if (help_operator_precedence_and_associativity().Visibility() == Visibility::Visible) {
+        visible = help_operator_precedence_and_associativity();
+        have_visible = true;
+    }
+
+    ScrollViewer make_visible;
+    bool making_visible = false;
+    if (tag == L"help_quick_start_guide") {
+        make_visible = help_quick_start_guide();
+        making_visible = true;
+    } else if (tag == L"help_variables") {
+        make_visible = help_variables();
+        making_visible = true;
+    } else if (tag == L"help_numbers") {
+        make_visible = help_numbers();
+        making_visible = true;
+    } else if (tag == L"help_fp_and_integer_arithmetic_operators") {
+        make_visible = help_fp_and_integer_arithmetic_operators();
+        making_visible = true;
+    } else if (tag == L"help_fp_arithmetic_operators") {
+        make_visible = help_fp_arithmetic_operators();
+        making_visible = true;
+    } else if (tag == L"help_integer_arithmetic_and_bitwise_logic_operators") {
+        make_visible = help_integer_arithmetic_and_bitwise_logic_operators();
+        making_visible = true;
+    } else if (tag == L"help_fp_functions") {
+        make_visible = help_fp_functions();
+        making_visible = true;
+    } else if (tag == L"help_operator_precedence_and_associativity") {
+        make_visible = help_operator_precedence_and_associativity();
+        making_visible = true;
+    } else
+        assert(tag == L"help_hide_help");
+
+    if (have_visible)
+        visible.Visibility(Visibility::Collapsed);
+    if (making_visible) {
+        varsPanel().Visibility(Visibility::Collapsed); // incase showing
+
+        helpPanel().Visibility(Visibility::Visible);
+        make_visible.Visibility(Visibility::Visible);
+        const auto& info = Graphics::Display::DisplayInformation::GetForCurrentView();
+        auto height = info.ScreenHeightInRawPixels();
+        auto scale_factor = info.RawPixelsPerViewPixel();
+        TryResizeView(make_size(500, (height / scale_factor) * 0.8));
+    } else if (varsPanel().Visibility() == Visibility::Collapsed)
+        TryResizeView(default_page_size);
+}
+
+void winrt::tcalc::implementation::MainPage::help_link_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_variables");}
+
+void winrt::tcalc::implementation::MainPage::help_link_numbers_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_numbers");}
+
+void winrt::tcalc::implementation::MainPage::help_link_fp_and_integer_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_fp_and_integer_arithmetic_operators");}
+
+void winrt::tcalc::implementation::MainPage::help_link_fp_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_fp_arithmetic_operators");}
+
+void winrt::tcalc::implementation::MainPage::help_link_integer_arithmetic_and_bitwise_logic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_integer_arithmetic_and_bitwise_logic_operators");}
+
+void winrt::tcalc::implementation::MainPage::help_link_fp_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_fp_functions");}
+
+void winrt::tcalc::implementation::MainPage::help_link_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_operator_precedence_and_associativity");}
+
+void winrt::tcalc::implementation::MainPage::help_link_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_quick_start_guide");}

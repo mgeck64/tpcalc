@@ -28,7 +28,8 @@
         </Style>
     </Page.Resources>
     <StackPanel>
-        <StackPanel x:Name="calcPanel" Width="332"> <!--explicit width needed by Page_Loaded;
+        <StackPanel x:Name="calcPanel" Width="332">
+            <!--explicit width needed by Page_Loaded;
             without it, calcPanel().ActualWidth() gives wrong result-->
             <StackPanel Margin="16,4,16,10" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
@@ -60,407 +61,526 @@
                 </StackPanel>
             </StackPanel>
         </StackPanel>
-        <ScrollViewer x:Name="varsPanel" Margin="16,0,16,0" Visibility="Collapsed" BorderBrush="DimGray" BorderThickness="1" Padding="8,8,8,8">
-            <TextBlock x:Name="varsTextBlock" />
-        </ScrollViewer>
-        <ScrollViewer x:Name="helpPanel" Margin="16,0,16,0" Visibility="Collapsed" BorderBrush="DimGray" BorderThickness="1" Padding="8,8,8,8">
+        <Grid x:Name="varsPanel" Visibility="Collapsed" Margin="16,0,16,0" BorderBrush="DimGray" BorderThickness="1" Padding="8,8,8,8">
+            <ScrollViewer>
+                <TextBlock x:Name="varsTextBlock" />
+            </ScrollViewer>
+        </Grid>
+        <Grid x:Name="helpPanel" Margin="16,0,16,0" BorderBrush="DimGray" BorderThickness="1" Padding="8,8,8,8">
             <!--don't put top/bottom margins in helpPanel; throws off calculation-->
-            <RichTextBlock x:Name="helpPanelTextBlock">
-                <Paragraph>
-                    <Bold>Quick Start Guide:</Bold>
-                    <LineBreak />
-                    <LineBreak />Enter an arithmetic expression and press Enter to calculate the result.
-                    <Bold>+</Bold>, <Bold>-</Bold>, <Bold>*</Bold>, <Bold>/</Bold>, <Bold>**</Bold>,
-                    <Bold>!</Bold> and <Bold>!!</Bold> are the addition, subtraction (or negation),
-                    multiplication, division, exponentation, factorial and double factorial operators
-                    respectively. Examples:
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak /><Bold>2+3*4</Bold> means multiply 3 by 4 then add the result to 2
-                    <LineBreak />
-                    <LineBreak /><Bold>(2+3)*4</Bold> means add 2 to 3 then multiply the result by 4
-                    <LineBreak />
-                    <LineBreak /><Bold>-2-3/4</Bold> means divide 3 by 4 then subtract the result from the negation of 2
-                    <LineBreak />
-                    <LineBreak /><Bold>pi*5**2</Bold> means square 5 (raise 5 to power of 2) then multiply the result by pi
-                    <LineBreak />
-                    <LineBreak /><Bold>5**2**3</Bold> is equivalent to
-                    <Bold>5**(2**3)</Bold> (exponentation is right-associative)
-                    <LineBreak />
-                    <LineBreak /><Bold>8!</Bold> means the factorial of 8; factorial can be applied generally
-                    to positive real numbers; e.g., <Bold>8.2!</Bold> is valid
-                    <LineBreak />
-                    <LineBreak /><Bold>8!!</Bold> means the double factorial of 8; double factorial can be
-                    applied generally to positive real numbers; e.g., <Bold>8.2!!</Bold> is valid
-                    <LineBreak />
-                    <LineBreak /><Bold>2*sin(1.8)</Bold> means 2 times the sine of 1.8
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />The <Bold>Functions</Bold> menu has all of the available scientific functions.
-                    <LineBreak />
-                    <LineBreak />The <Bold>Values</Bold> menu has all of the available internal values (pi, e).
-                    <LineBreak />
-                    <LineBreak />The <Bold>Operators</Bold> menu has all of the available operators.
-                    <LineBreak />
-                    <LineBreak />F3, when pressed from the expression input box, recalls the last entered
-                    input. The up and down arrow keys, when pressed from the expression input box, recall
-                    up to the last 25 inputs.
-                    <LineBreak />
-                    <LineBreak />By default, the calculator represents numbers internally in floating
-                    point format and performs floating point arithmetic on them. This is the mode
-                    suitable for general and scientific calculations.
-                    The calculator can also represent numbers internally as integers and perform
-                    integer arithmetic and
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                        bitwise logic</Hyperlink> on them; this can be useful to computer programmers.
-                    <LineBreak />
-                    <LineBreak />Generally, "floating point" refers to numbers represented internally
-                    that way, and "integer" refers to numbers represented internally that way.
-                    <LineBreak />
-                    <LineBreak />The calculator can also accept numbers in several numeric bases:
-                    binary, octal and hexadecimal in addition to decimal. The following are examples
-                    of numbers specified in different bases:
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak /><Bold>0b1100100</Bold> specifies binary integer 1100100 (decimal 100)
-                    <LineBreak />
-                    <LineBreak /><Bold>0o144</Bold> specifies octal integer 144 (decimal 100)
-                    <LineBreak />
-                    <LineBreak /><Bold>0d100</Bold> specifies decimal integer 100 (not floating
-                    point 100); 0d100.0 specifies decimal floating point 100.0
-                    <LineBreak />
-                    <LineBreak /><Bold>0x64</Bold> specifies hexadecimal integer 64 (decimal 100);
-                    0x64.0 specifies hexadecimal floating point 1.9p+6 (64.0 normalized)
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />The following are examples of exclusive integer arithmetic and
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                        bitwise logic</Hyperlink> operations (a and b represent integer numbers
-                    in these examples):
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak /><Bold>a/b</Bold>, <Bold>a%b</Bold> yield respectively the integer
-                    quotent and remainder (modulus) of a dividied by b
-                    <LineBreak />
-                    <LineBreak /><Bold>a&lt;&lt;b</Bold> means arithmetically shift left a by b
-                    <LineBreak />
-                    <LineBreak /><Bold>a&lt;&lt;&lt;b</Bold> means logically shift left a by b
-                    <LineBreak />
-                    <LineBreak /><Bold>a&gt;&gt;b</Bold> means arithmetically shift right a by b
-                    <LineBreak />
-                    <LineBreak /><Bold>a&gt;&gt;&gt;b</Bold> means logically shift right a by b
-                    <LineBreak />
-                    <LineBreak /><Bold>a&amp;b</Bold> means bitwise and a with b
-                    <LineBreak />
-                    <LineBreak /><Bold>a|b</Bold> means bitwise or a with b
-                    <LineBreak />
-                    <LineBreak /><Bold>a^b</Bold> means bitwise xor a with b
-                    <LineBreak />
-                    <LineBreak /><Bold>~a</Bold> means bitwise not (bitwise negate) a
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />The <Bold>Mode</Bold> menu also allows an input mode to be selected
-                    that determines how inputted numbers are interpreted and represented (numeric base;
-                    floating point or integer); and allows an output mode to be selected that
-                    determines the numeric base in which the result of calculations are output
-                    (binary, octal, decimal or hexadecimal).
-                    <LineBreak />
-                    <LineBreak />The <Bold>Numbers</Bold> section provides a detailed explanation of
-                    input modes and how inputted numbers are interpreted and represented.
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak /><Bold>Variables:</Bold>
-                    <LineBreak />
-                    <LineBreak />Numbers and the results of expressions can be stored in
-                    variables. For example, <Bold>r=6.8/2</Bold> stores the result of 6.8/2
-                    in the variable "r". A variable can be used in expressions in place of
-                    a number; for example, <Bold>pi*r**2</Bold> multiplies pi by r squared.
-                    <LineBreak />
-                    <LineBreak />A variable name begins with a letter or underscore, which
-                    is followed by 0 or more letters, digits or underscores; examples of
-                    valid variable names are: "x", "max_x" and "x2". Variable names are
-                    case-sensitive; for example, "x" and "X" are different variables.
-                    <LineBreak />
-                    <LineBreak />A variable can hide an internal value or function name; for
-                    example, <Bold>pi=5</Bold> defines a variable named "pi" which hides the
-                    internal value pi. A variable can be erased by specifying nothing after
-                    the = sign; for example, <Bold>pi=</Bold> erases the variable "pi" and
-                    un-hides the internal value pi. (Note: internal values cannot be erased;
-                    repeating <Bold>pi=</Bold> does nothing.)
-                    <LineBreak />
-                    <LineBreak />The result of an assignment operation is the value (i.e., the
-                    result of the expression) being assigned; this allows variable assignments
-                    to be "chained"; for example, a=b=c=5 assigns 5 to a, b and c. Variable
-                    erasure can't be chained; the effect of trying to do so, for example a=b=c=,
-                    will be to erase the rightmost variable and set the others to nan (not-a-number),
-                    which is the result of the erasure operation.
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak /><Bold>Numbers:</Bold>
-                    <LineBreak />
-                    <LineBreak />This section is rather technical and assumes you have a basic
-                    understanding of how computers represent numbers and perform arithmetic.
-                    (If you don't, you can still use the calculator in its default mode,
-                    which is suitable for general and scientific calculations. This section
-                    will be more useful for those who want to perform integer arithmetic and
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                        bitwise logic</Hyperlink> in a variety of numeric bases, or for those
-                    who want to use hexadecimal floating point numbers.)
-                    <LineBreak />
-                    <LineBreak />A number is normally represented internally in
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">
-                        64 bit wide IEEE double precision floating point format</Hyperlink>
-                    but may also be represented internally as an
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Integer_(computer_science)">
-                        unsigned or signed two's compliment integer type, 8, 16, 32 or 64 bit</Hyperlink>.
-                    <LineBreak />
-                    <LineBreak />Generally, "floating point" refers to numbers represented
-                    internally in floating point format, and "integer" refers to numbers represented
-                    internally as integer types.
-                    <LineBreak />
-                    <LineBreak />The default integer type is signed 64 bit. Other types can be
-                    selected from the <Bold>Int. Type</Bold> menu. (Note: changing the integer
-                    type will not affect how any integer variables are represented.)
-                    <LineBreak />
-                    <LineBreak />Technically, an integer is first represented as an unsigned 64 bit
-                    integer type and then converted to the type selected in the
-                    <Bold>Int. Type</Bold> menu, which by default is signed 64 bit integer. This is
-                    to allow for numbers such as 0xffffffffffffffff (decimal -9223372036854775808)
-                    to be specified, but also because negative numbers cannot be directly specified,
-                    as '-' is the negation operator and not the negative sign (this has to do with
-                    the expression parser). Thus -9223372036854775808 (minimum 64 bit signed integer)
-                    is equivalent to -(9223372036854775808). (9223372036854775808 cannot be
-                    represented as a signed 64 bit integer.)
-                    <LineBreak />
-                    <LineBreak />The initial representation of an integer as an unsigned
-                    64 bit integer type is the only situation where integer range checking is
-                    performed.
-                    <LineBreak />
-                    <LineBreak />A number can have a radix prefix to indicate it's numeric base
-                    (radix). The supported radix prefixes are 0b for binary, 0o for octal,
-                    0d for decimal and 0x for hexadecimal. For example, 0b1010, 0o12, 0d10 and
-                    0xa all specify the decimal number 10.
-                    <LineBreak />
-                    <LineBreak />A decimal floating point number may be specified in
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Scientific_notation#E_notation">
-                        scientific E notation</Hyperlink>, for example the number 10000 can be specified
-                    as 1e4, 1e+4, 1.0e4 or 1.0e+4; all are equivalent. The number 0.0001 can be specified
-                    as 1e-4 or 1.0e-4; both are equivalent.
-                    <LineBreak />
-                    <LineBreak />A hexadecimal floating point number may be specified in
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Hexadecimal#Hexadecimal_exponential_notation">
-                        scientific P notation</Hyperlink>, for example, 2.710p12, 2.710p+12,
-                    1.388p13 and 1.388p+13, which are all equivalent to decimal 10000 (the latter
-                    two are normalized).
-                    <LineBreak />
-                    <LineBreak />An unadorned number&#x2014;one without a radix prefix, without a decimal
-                    point and not specified in scientific notation, e.g., 10&#x2014;can be either
-                    floating point (normally) or an integer depending on the input mode (explained below).
-                    <LineBreak />
-                    <LineBreak /><Underline>Floating Point (FP) Decimal Input</Underline>:
-                    <LineBreak />
-                    <LineBreak />Context: A number is specified with no radix prefix and the input mode in
-                    the <Bold>Mode</Bold> menu is <Bold>Floating Point (FP) Decimal Input</Bold>.
-                    <LineBreak />
-                    <LineBreak />This is the default input mode. The number will be interpreted as decimal
-                    and will be represented as floating point. For example, 10, 10.1 and 1e100 will all be
-                    interpreted as decimal numbers and represented as floating point.
-                    <LineBreak />
-                    <LineBreak /><Underline>Integer Binary Input</Underline>:
-                    <LineBreak />
-                    <LineBreak />Context: A number is specified with the 0b (binary) radix prefix, or is
-                    specficied with no radix prefix and the input mode in the <Bold>Mode</Bold> menu is
-                    <Bold>Integer Binary Input</Bold>.
-                    <LineBreak />
-                    <LineBreak />Integers only are valid. The number will be interpreted as binary
-                    and will be represented as an integer. A number with a
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
-                        radix point</Hyperlink> or that is specified in scientific notation is invalid
-                    here. Examples: 0b1010 and 1010, which are equivalent to decimal 10, will be represented
-                    as integers. 0b1010.1, 0b1010e1, 1010.1 and 1010e1 are invalid numbers here.
-                    <LineBreak />
-                    <LineBreak /><Underline>Integer Octal Input</Underline>:
-                    <LineBreak />
-                    <LineBreak />Context: A number is specified with the 0o (octal) radix prefix or is
-                    specified with no radix prefix and the input mode in the <Bold>Mode</Bold> menu is
-                    <Bold>Integer Octal Input</Bold>.
-                    <LineBreak />
-                    <LineBreak />Integers only are valid. The number will be interpreted as octal
-                    and will be represented as an integer. A number with a
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
-                        radix point</Hyperlink> or that is specified in scientific notation is invalid
-                    here. Examples: 0o12 and 12, which are equivalent to decimal 10, will be represented
-                    as integers. 0o12.1, 0o12e1, 12.1 and 12e1 are invalid numbers here.
-                    <LineBreak />
-                    <LineBreak /><Underline>Integer/FP Decimal Input</Underline>:
-                    <LineBreak />
-                    <LineBreak />Context: A number is specified with the 0d (decimal) radix prefix or is specified
-                    with no radix prefix and the input mode in the <Bold>Mode</Bold> menu is
-                    <Bold>Integer/FP Decimal Input</Bold>.
-                    <LineBreak />
-                    <LineBreak />The number will be interpreted as decimal and will be represented
-                    as either an integer or as floating point according to the following:
-                    <LineBreak />
-                    <LineBreak />If the number has no decimal point and is not specified in scientific notation
-                    then it will be represented as an integer. For example, 0d10 and 10 will be represented
-                    as integers.
-                    <LineBreak />
-                    <LineBreak />If the number has a decimal point or is specified in scientific E notation
-                    then it will be represented as floating point. For example, 0d10., 0d10.0, 0d1e100, 10.,
-                    10.0 and 1e100 will all be represented as floating point.
-                    <LineBreak />
-                    <LineBreak /><Underline>Integer/FP Hexecimal Input</Underline>:
-                    <LineBreak />
-                    <LineBreak />Context: A number is specified with the 0x (hexadecimal) radix prefix or is
-                    specified with no radix prefix and the input mode in the <Bold>Mode</Bold> menu is
-                    <Bold>Integer/FP Hexadecimal Input</Bold>.
-                    <LineBreak />
-                    <LineBreak />The number will be interpreted as hexadecimal and will be represented
-                    as either an integer or as floating point according to the following:
-                    <LineBreak />
-                    <LineBreak />If the number has no
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
-                        radix point</Hyperlink> and is not specified in scientific notation then it will
-                    be represented as an integer. For example, 0xa and 0a, which are equivalent to decimal
-                    10, will be represented as integers.
-                    <LineBreak />
-                    <LineBreak />If the number has a
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
-                        radix point</Hyperlink> or is specified in scientific P notation then it will be
-                    represented as floating point. For example, 0x2710., 0x2710.0 and 0x1.388p13,
-                    which are all equivalent to decimal 10000, will all be represented as floating point.
-                    <LineBreak />
-                    <LineBreak />The hexadecimal digits corresponding to decimal numbers 10-15 are a-f
-                    (or A-F) per common convention. Notes: If a hexadecimal number begins with a letter
-                    (a-f) and is specified without the 0x radix prefix, then it must be specified with
-                    a leading 0 to distinguish it from a variable/function/value name; thus "0a" is the
-                    hexadecimal number a (decimal 10) and "a" is the name of the variable a. Note
-                    regarding <Bold>Integer/FP Hexadecimal Input</Bold> mode: Because 0b is a valid
-                    hexadecimal number, it won't be recognized as the binary radix prefix in this mode;
-                    thus binary numbers cannot be specified in this mode.
-                    <LineBreak />
-                    <LineBreak /><Underline>Output Mode</Underline> :
-                    <LineBreak />
-                    <LineBreak />The <Bold>Mode</Bold> menu allows an output mode to be selected that
-                    determines the numeric base in which the result of calculations are output (binary,
-                    octal, decimal or hexadecimal). Floating point numbers ouput in binary, octal or
-                    hexadecimal will be done so in
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Hexadecimal#Hexadecimal_exponential_notation">
-                        normalized scientific P notation</Hyperlink>.
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />
-                    <Bold>Floating Point and Integer Arithmetic Operators:</Bold>
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak /><Bold>+</Bold> Addition
-                    <LineBreak /><Bold>-</Bold> Subtraction or negation
-                    <LineBreak /><Bold>*</Bold> Multiplication
-                    <LineBreak /><Bold>/</Bold> Division
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />If either operand is floating point then the operation will be
-                    performed using floating point arithmetic and the result will be represented
-                    as floating point; the other operand, if an integer, will
-                    be converted to floating point. If both operands are integers then the
-                    operation will be performed using integer arithmetic and the result will be
-                    represented as an integer.
-                    <LineBreak />
-                </Paragraph>
-                <Paragraph>
-                    <Bold>Floating Point Arithmetic Operators:</Bold>
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak /><Bold>**</Bold> Exponentation
-                    <LineBreak /><Bold>!</Bold>
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Factorial">
-                        Factorial (extended to real numbers)</Hyperlink>
-                    <LineBreak /><Bold>!!</Bold>
-                    <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Double_factorial">
-                        Double factorial (extended to real numbers)</Hyperlink>
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />Integer operands will be converted to floating point, the
-                    operation will be performed using floating point arithmetic and the result will
-                    be represented as floating point. These operators always operate in the floating
-                    point domain because of how easily calculations can "blow up" and become larger
-                    than integers can support; also, factorials are implemented using the gamma
-                    function to support factorials of real numbers with fractional components (e.g.,
-                    3.4!). The factorial for real numbers is given by the formula gamma(n+1), and the
-                    double factorial for real numbers is given by the formula
-                    2**((1+2*n-cos(pi*n))/4)*pi**((cos(pi*n)-1)/4)*gamma(1+n/2), the latter which is
-                    the formula for "complex arguments" given at
-                    <Hyperlink NavigateUri="https://mathworld.wolfram.com/DoubleFactorial.html">
-                        Wolfram Mathworld.</Hyperlink>
-                    <LineBreak />
-                </Paragraph>
-                <Paragraph>
-                    <Bold>Integer Arithmetic and
+            <ScrollViewer x:Name="help_quick_start_guide">
+                <RichTextBlock x:Name="help_quick_start_guide_TextBlock">
+                    <Paragraph>
+                        <Bold>Quick Start Guide:</Bold>
+                        <LineBreak />
+                        <LineBreak />Enter an arithmetic expression and press Enter to calculate the result.
+                        <Bold>+</Bold>,
+                        <Bold>-</Bold>,
+                        <Bold>*</Bold>,
+                        <Bold>/</Bold>,
+                        <Bold>**</Bold>,
+                        <Bold>!</Bold>and
+                        <Bold>!!</Bold>are the addition, subtraction (or negation),
+                        multiplication, division, exponentiation, factorial and double factorial operators
+                        respectively. Examples:
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak />
+                        <Bold>2+3*4</Bold> means multiply 3 by 4 then add the result to 2
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>(2+3)*4</Bold> means add 2 to 3 then multiply the result by 4
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>-2-3/4</Bold> means divide 3 by 4 then subtract the result from
+                        -2 (technically, -2 is the negation of 2)
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>pi*5**2</Bold> means square 5 (raise 5 to power of 2) then multiply the result by pi
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>5**2**3</Bold> is equivalent to
+                        <Bold>5**(2**3)</Bold>
+                        <Hyperlink NavigateUri="https://core.tcl-lang.org/tips/doc/trunk/tip/274.md">
+                            (exponentiation is right-associative)</Hyperlink>
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>8!</Bold> means the factorial of 8; factorial can be applied generally
+                        to positive real numbers; e.g.,
+                        <Bold>8.2!</Bold> is valid
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>8!!</Bold> means the double factorial of 8; double factorial can be
+                        applied generally to positive real numbers; e.g.,
+                        <Bold>8.2!!</Bold> is valid
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>2*sin(1.8)</Bold> means 2 times the sine of 1.8
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />The
+                        <Bold>Functions</Bold> menu has all of the available scientific functions.
+                        <LineBreak />
+                        <LineBreak />The
+                        <Bold>Values</Bold> menu has all of the available internal values (pi, e).
+                        <LineBreak />
+                        <LineBreak />The
+                        <Bold>Operators</Bold> menu has all of the available operators.
+                        <LineBreak />
+                        <LineBreak />F3, when pressed from the expression input box, recalls the last entered
+                        input. The up and down arrow keys, when pressed from the expression input box, recall
+                        up to the last 25 inputs.
+                        <LineBreak />
+                        <LineBreak />By default, the calculator represents numbers internally in floating
+                        point format and performs floating point arithmetic on them. This is the mode
+                        suitable for general and scientific calculations.
+                        The calculator can also represent numbers internally as integers and perform
+                        integer arithmetic and
                         <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                            Bitwise Logic</Hyperlink> Operators:</Bold>
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak /><Bold>%</Bold> Modulo (x%y is the remainder of x/y)
-                    <LineBreak /><Bold>&lt;&lt;</Bold> Arithmetic shift left
-                    <LineBreak /><Bold>&lt;&lt;&lt;</Bold> Logical shift left
-                    <LineBreak /><Bold>&gt;&gt;</Bold> Arithmetic shift right
-                    <LineBreak /><Bold>&gt;&gt;&gt;</Bold> Logical shitt right
-                    <LineBreak /><Bold>&amp;</Bold> Bitwise and
-                    <LineBreak /><Bold>|</Bold> Bitwise or
-                    <LineBreak /><Bold>^</Bold> Bitwise xor
-                    <LineBreak /><Bold>~</Bold> Bitwise unary not
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />Floating point operands are invalid for these operators.
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak /><Bold>Floating Point Functions:</Bold>
-                    <LineBreak />
-                    <LineBreak />The calculator provides a variety of scientific functions
-                    such as log, sin, cos, etc., which operate on floating point numbers.
-                    For these functions, an integer parameter will be converted to floating
-                    point. The complete set of functions can be seen in the Functions menu.
-                </Paragraph>
-                <Paragraph>
-                    <LineBreak />
-                    <Bold>Operator Precedence and Associativity:</Bold>
-                    <LineBreak />
-                    <LineBreak />Binary (two-operand) operators associate left to right except for
-                    exponentation and assignment, which associate right to left. Operators are listed
-                    from highest to lowest precedence:
-                </Paragraph>
-                <Paragraph Margin="20,0,0,0">
-                    <LineBreak />1: <Bold>!</Bold>, <Bold>!!</Bold> factorial, double factorial (unary postfix operators)
-                    <LineBreak />
-                    <LineBreak />2: <Bold>**</Bold> exponentation
-                    <LineBreak />
-                    <LineBreak />3: <Bold>+</Bold>, <Bold>-</Bold>, <Bold>~</Bold> unary plus, negation,
-                    bitwise not (bitwise negation) (unary prefix operators)
-                    <LineBreak />
-                    <LineBreak />4: <Bold>*</Bold>, <Bold>/</Bold>, <Bold>%</Bold> multiplication, division, modulo
-                    <LineBreak />
-                    <LineBreak />5: <Bold>+</Bold>, <Bold>-</Bold> addition, subtraction
-                    <LineBreak />
-                    <LineBreak />6: <Bold>&lt;&lt;</Bold>, <Bold>&lt;&lt;&lt;</Bold>, <Bold>&gt;&gt;</Bold>, <Bold>&gt;&gt;&gt;</Bold>
-                    arithmetic shift left, logical shift left, arithmetic shift right, logical shift right
-                    <LineBreak />
-                    <LineBreak />7: <Bold>&amp;</Bold> bitwise and
-                    <LineBreak />
-                    <LineBreak />8: <Bold>^</Bold> bitwise xor
-                    <LineBreak />
-                    <LineBreak />9: <Bold>|</Bold> bitwise or
-                    <LineBreak />
-                    <LineBreak />10: <Bold>=</Bold> assignmemt
-                </Paragraph>
-            </RichTextBlock>
-        </ScrollViewer>
+                            bitwise logic</Hyperlink> on them; this can be useful to computer programmers.
+                        <LineBreak />
+                        <LineBreak />Generally, "floating point" refers to numbers represented internally
+                        that way, and "integer" refers to numbers represented internally that way.
+                        <LineBreak />
+                        <LineBreak />The calculator can also accept numbers in several numeric bases:
+                        binary, octal and hexadecimal in addition to decimal. The following are examples
+                        of numbers specified in different bases:
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak />
+                        <Bold>0b1100100</Bold> specifies binary integer 1100100 (decimal 100)
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>0o144</Bold> specifies octal integer 144 (decimal 100)
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>0d100</Bold> specifies decimal integer 100 (not floating
+                        point 100); 0d100.0 specifies decimal floating point 100.0
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>0x64</Bold> specifies hexadecimal integer 64 (decimal 100);
+                        0x64.0 specifies hexadecimal floating point 1.9p+6 (64.0 normalized)
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />The following are examples of exclusive integer arithmetic and
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
+                            bitwise logic</Hyperlink> operations (a and b represent integer numbers
+                        in these examples):
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak /><Bold>a/b</Bold>,
+                        <Bold>a%b</Bold> yield respectively the integer
+                        quotent and remainder (modulus) of a dividied by b
+                        <LineBreak />
+                        <LineBreak /><Bold>a&lt;&lt;b</Bold> means arithmetically shift left a by b
+                        <LineBreak />
+                        <LineBreak /><Bold>a&lt;&lt;&lt;b</Bold> means logically shift left a by b
+                        <LineBreak />
+                        <LineBreak /><Bold>a&gt;&gt;b</Bold> means arithmetically shift right a by b
+                        <LineBreak />
+                        <LineBreak /><Bold>a&gt;&gt;&gt;b</Bold> means logically shift right a by b
+                        <LineBreak />
+                        <LineBreak /><Bold>a&amp;b</Bold> means bitwise and a with b
+                        <LineBreak />
+                        <LineBreak /><Bold>a|b</Bold> means bitwise or a with b
+                        <LineBreak />
+                        <LineBreak /><Bold>a^b</Bold> means bitwise xor a with b
+                        <LineBreak />
+                        <LineBreak /><Bold>~a</Bold> means bitwise not (bitwise negate) a
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />The
+                        <Bold>Mode</Bold> menu also allows an input mode to be selected
+                        that determines how inputted numbers are interpreted and represented (numeric base;
+                        floating point or integer); and allows an output mode to be selected that
+                        determines the numeric base in which the result of calculations are output
+                        (binary, octal, decimal or hexadecimal).
+                        <LineBreak />
+                        <LineBreak />The
+                        <Bold>Numbers</Bold> section provides a detailed explanation of
+                        input modes and how inputted numbers are interpreted and represented.
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_variables_Click">Next: Variables</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_variables" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Variables:</Bold>
+                        <LineBreak />
+                        <LineBreak />Numbers and the results of expressions can be stored in
+                        variables. For example, <Bold>r=6.8/2</Bold> stores the result of 6.8/2
+                        in the variable "r". A variable can be used in expressions in place of
+                        a number; for example, <Bold>pi*r**2</Bold> multiplies pi by r squared.
+                        <LineBreak />
+                        <LineBreak />A variable name begins with a letter or underscore, which
+                        is followed by 0 or more letters, digits or underscores; examples of
+                        valid variable names are: "x", "max_x" and "x2". Variable names are
+                        case-sensitive; for example, "x" and "X" are different variables.
+                        <LineBreak />
+                        <LineBreak />A variable can hide an internal value or function name; for
+                        example, <Bold>pi=5</Bold> defines a variable named "pi" which hides the
+                        internal value pi. A variable can be erased by specifying nothing after
+                        the = sign; for example, <Bold>pi=</Bold> erases the variable "pi" and
+                        un-hides the internal value pi. (Note: internal values cannot be erased;
+                        repeating <Bold>pi=</Bold> does nothing.)
+                        <LineBreak />
+                        <LineBreak />The result of an assignment operation is the value (i.e., the
+                        result of the expression) being assigned; this allows variable assignments
+                        to be "chained"; for example, a=b=c=5 assigns 5 to a, b and c. Variable
+                        erasure can't be chained; the effect of trying to do so, for example a=b=c=,
+                        will be to erase the rightmost variable and set the others to nan (not-a-number),
+                        which is the result of the erasure operation.
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_numbers_Click">Next: Numbers</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_numbers" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Numbers:</Bold>
+                        <LineBreak />
+                        <LineBreak />This section is rather technical and assumes you have a basic
+                        understanding of how computers represent numbers and perform arithmetic.
+                        (If you don't, you can still use the calculator in its default mode,
+                        which is suitable for general and scientific calculations. This section
+                        will be more useful for those who want to perform integer arithmetic and
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
+                            bitwise logic</Hyperlink> in a variety of numeric bases, or for those
+                        who want to use hexadecimal floating point numbers.)
+                        <LineBreak />
+                        <LineBreak />A number is normally represented internally in
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">
+                            64 bit wide IEEE double precision floating point format</Hyperlink>
+                        but may also be represented internally as an
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Integer_(computer_science)">
+                            unsigned or signed two's compliment integer type, 8, 16, 32 or 64 bit</Hyperlink>.
+                        <LineBreak />
+                        <LineBreak />Generally, "floating point" refers to numbers represented
+                        internally in floating point format, and "integer" refers to numbers represented
+                        internally as integer types.
+                        <LineBreak />
+                        <LineBreak />The default integer type is signed 64 bit. Other types can be
+                        selected from the
+                        <Bold>Int. Type</Bold> menu. (Note: changing the integer
+                        type will not affect how any integer variables are represented.)
+                        <LineBreak />
+                        <LineBreak />Technically, an integer is first represented as an unsigned 64 bit
+                        integer type and then converted to the type selected in the
+                        <Bold>Int. Type</Bold> menu, which by default is signed 64 bit integer. This is
+                        to allow for numbers such as 0xffffffffffffffff (decimal -9223372036854775808)
+                        to be specified, but also because negative numbers cannot be directly specified,
+                        as '-' is the negation operator and not the negative sign (this has to do with
+                        the expression parser). Thus -9223372036854775808 (minimum 64 bit signed integer)
+                        is equivalent to -(9223372036854775808). (9223372036854775808 cannot be
+                        represented as a signed 64 bit integer.)
+                        <LineBreak />
+                        <LineBreak />The initial representation of an integer as an unsigned
+                        64 bit integer type is the only situation where integer range checking is
+                        performed.
+                        <LineBreak />
+                        <LineBreak />A number can have a radix prefix to indicate it's numeric base
+                        (radix). The supported radix prefixes are 0b for binary, 0o for octal,
+                        0d for decimal and 0x for hexadecimal. For example, 0b1010, 0o12, 0d10 and
+                        0xa all specify the decimal number 10.
+                        <LineBreak />
+                        <LineBreak />A decimal floating point number may be specified in
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Scientific_notation#E_notation">
+                            scientific E notation</Hyperlink>, for example the number 10000 can be specified
+                        as 1e4, 1e+4, 1.0e4 or 1.0e+4; all are equivalent. The number 0.0001 can be specified
+                        as 1e-4 or 1.0e-4; both are equivalent.
+                        <LineBreak />
+                        <LineBreak />A hexadecimal floating point number may be specified in
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Hexadecimal#Hexadecimal_exponential_notation">
+                            scientific P notation</Hyperlink>, for example, 2.710p12, 2.710p+12,
+                        1.388p13 and 1.388p+13, which are all equivalent to decimal 10000 (the latter
+                        two are normalized).
+                        <LineBreak />
+                        <LineBreak />An unadorned number&#x2014;one without a radix prefix, without a decimal
+                        point and not specified in scientific notation, e.g., 10&#x2014;can be either
+                        floating point (normally) or an integer depending on the input mode (explained below).
+                        <LineBreak />
+                        <LineBreak />
+                        <Underline>Floating Pt. (FP) Decimal Input</Underline>:
+                        <LineBreak />
+                        <LineBreak />Context: A number is specified with no radix prefix and the input mode in
+                        the
+                        <Bold>Mode</Bold> menu is
+                        <Bold>Floating Pt. (FP) Decimal Input</Bold>.
+                        <LineBreak />
+                        <LineBreak />This is the default input mode. The number will be interpreted as decimal
+                        and will be represented as floating point. For example, 10, 10.1 and 1e100 will all be
+                        interpreted as decimal numbers and represented as floating point.
+                        <LineBreak />
+                        <LineBreak />
+                        <Underline>Integer Binary Input</Underline>:
+                        <LineBreak />
+                        <LineBreak />Context: A number is specified with the 0b (binary) radix prefix, or is
+                        specficied with no radix prefix and the input mode in the
+                        <Bold>Mode</Bold> menu is
+                        <Bold>Integer Binary Input</Bold>.
+                        <LineBreak />
+                        <LineBreak />Integers only are valid. The number will be interpreted as binary
+                        and will be represented as an integer. A number with a
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
+                            radix point</Hyperlink> or that is specified in scientific notation is invalid
+                        here. Examples: 0b1010 and 1010, which are equivalent to decimal 10, will be represented
+                        as integers. 0b1010.1, 0b1010e1, 1010.1 and 1010e1 are invalid numbers here.
+                        <LineBreak />
+                        <LineBreak />
+                        <Underline>Integer Octal Input</Underline>:
+                        <LineBreak />
+                        <LineBreak />Context: A number is specified with the 0o (octal) radix prefix or is
+                        specified with no radix prefix and the input mode in the
+                        <Bold>Mode</Bold> menu is
+                        <Bold>Integer Octal Input</Bold>.
+                        <LineBreak />
+                        <LineBreak />Integers only are valid. The number will be interpreted as octal
+                        and will be represented as an integer. A number with a
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
+                            radix point</Hyperlink> or that is specified in scientific notation is invalid
+                        here. Examples: 0o12 and 12, which are equivalent to decimal 10, will be represented
+                        as integers. 0o12.1, 0o12e1, 12.1 and 12e1 are invalid numbers here.
+                        <LineBreak />
+                        <LineBreak />
+                        <Underline>Integer/FP Decimal Input</Underline>:
+                        <LineBreak />
+                        <LineBreak />Context: A number is specified with the 0d (decimal) radix prefix or is specified
+                        with no radix prefix and the input mode in the
+                        <Bold>Mode</Bold> menu is
+                        <Bold>Integer/FP Decimal Input</Bold>.
+                        <LineBreak />
+                        <LineBreak />The number will be interpreted as decimal and will be represented
+                        as either an integer or as floating point according to the following:
+                        <LineBreak />
+                        <LineBreak />If the number has no decimal point and is not specified in scientific notation
+                        then it will be represented as an integer. For example, 0d10 and 10 will be represented
+                        as integers.
+                        <LineBreak />
+                        <LineBreak />If the number has a decimal point or is specified in scientific E notation
+                        then it will be represented as floating point. For example, 0d10., 0d10.0, 0d1e100, 10.,
+                        10.0 and 1e100 will all be represented as floating point.
+                        <LineBreak />
+                        <LineBreak />
+                        <Underline>Integer/FP Hexecimal Input</Underline>:
+                        <LineBreak />
+                        <LineBreak />Context: A number is specified with the 0x (hexadecimal) radix prefix or is
+                        specified with no radix prefix and the input mode in the
+                        <Bold>Mode</Bold> menu is
+                        <Bold>Integer/FP Hexadecimal Input</Bold>.
+                        <LineBreak />
+                        <LineBreak />The number will be interpreted as hexadecimal and will be represented
+                        as either an integer or as floating point according to the following:
+                        <LineBreak />
+                        <LineBreak />If the number has no
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
+                            radix point</Hyperlink> and is not specified in scientific notation then it will
+                        be represented as an integer. For example, 0xa and 0a, which are equivalent to decimal
+                        10, will be represented as integers.
+                        <LineBreak />
+                        <LineBreak />If the number has a
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
+                            radix point</Hyperlink> or is specified in scientific P notation then it will be
+                        represented as floating point. For example, 0x2710., 0x2710.0 and 0x1.388p13,
+                        which are all equivalent to decimal 10000, will all be represented as floating point.
+                        <LineBreak />
+                        <LineBreak />The hexadecimal digits corresponding to decimal numbers 10-15 are a-f
+                        (or A-F) per common convention. Notes: If a hexadecimal number begins with a letter
+                        (a-f) and is specified without the 0x radix prefix, then it must be specified with
+                        a leading 0 to distinguish it from a variable/function/value name; thus "0a" is the
+                        hexadecimal number a (decimal 10) and "a" is the name of the variable a. Note
+                        regarding
+                        <Bold>Integer/FP Hexadecimal Input</Bold> mode: Because 0b is a valid
+                        hexadecimal number, it won't be recognized as the binary radix prefix in this mode;
+                        thus binary numbers cannot be specified in this mode.
+                        <LineBreak />
+                        <LineBreak />
+                        <Underline>Output Mode</Underline>:
+                        <LineBreak />
+                        <LineBreak />The
+                        <Bold>Mode</Bold> menu allows an output mode to be selected that
+                        determines the numeric base in which the result of calculations are output (binary,
+                        octal, decimal or hexadecimal). Floating point numbers ouput in binary, octal or
+                        hexadecimal will be done so in
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Hexadecimal#Hexadecimal_exponential_notation">
+                            normalized scientific P notation</Hyperlink>.
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_fp_and_integer_arithmetic_operators_Click">Next: Floating Point and Integer Arithmetic Operators</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_fp_and_integer_arithmetic_operators" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Floating Point and Integer Arithmetic Operators:</Bold>
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak />
+                        <Bold>+</Bold> Addition
+                        <LineBreak />
+                        <LineBreak /><Bold>-</Bold> Subtraction or negation
+                        <LineBreak />
+                        <LineBreak /><Bold>*</Bold> Multiplication
+                        <LineBreak />
+                        <LineBreak /><Bold>/</Bold> Division
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />If either operand is floating point then the operation will be
+                        performed using floating point arithmetic and the result will be represented
+                        as floating point; the other operand, if an integer, will
+                        be converted to floating point. If both operands are integers then the
+                        operation will be performed using integer arithmetic and the result will be
+                        represented as an integer.
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_fp_arithmetic_operators_Click">Next: Floating Point Arithmetic Operators</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_fp_arithmetic_operators" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Floating Point Arithmetic Operators:</Bold>
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak /><Bold>**</Bold> Exponentiation
+                        <LineBreak />
+                        <LineBreak /><Bold>!</Bold>
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Factorial">
+                            Factorial (extended to real numbers)</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>!!</Bold>
+                        <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Double_factorial">
+                            Double factorial (extended to real numbers)</Hyperlink>
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />Integer operands will be converted to floating point, the
+                        operation will be performed using floating point arithmetic and the result will
+                        be represented as floating point. These operators always operate in the floating
+                        point domain because of how easily calculations can "blow up" and become larger
+                        than integers can support; also, factorials are implemented using the gamma
+                        function to support factorials of real numbers with fractional components (e.g.,
+                        3.4!). The factorial for real numbers is given by the formula gamma(n+1), and the
+                        double factorial for real numbers is given by the formula
+                        2**((1+2*n-cos(pi*n))/4)*pi**((cos(pi*n)-1)/4)*gamma(1+n/2), the latter which is
+                        the formula for "complex arguments" given at
+                        <Hyperlink NavigateUri="https://mathworld.wolfram.com/DoubleFactorial.html">
+                            Wolfram Mathworld.</Hyperlink>
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_integer_arithmetic_and_bitwise_logic_operators_Click">Next: Integer Arithmetic and Bitwise Logic Operators</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_integer_arithmetic_and_bitwise_logic_operators" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Integer Arithmetic and
+                            <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
+                                Bitwise Logic</Hyperlink> Operators:</Bold>
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak /><Bold>%</Bold> Modulo (x%y is the remainder of x/y)
+                        <LineBreak />
+                        <LineBreak /><Bold>&lt;&lt;</Bold> Arithmetic shift left
+                        <LineBreak />
+                        <LineBreak /><Bold>&lt;&lt;&lt;</Bold> Logical shift left
+                        <LineBreak />
+                        <LineBreak /><Bold>&gt;&gt;</Bold> Arithmetic shift right
+                        <LineBreak />
+                        <LineBreak /><Bold>&gt;&gt;&gt;</Bold> Logical shitt right
+                        <LineBreak />
+                        <LineBreak /><Bold>&amp;</Bold> Bitwise and
+                        <LineBreak />
+                        <LineBreak /><Bold>|</Bold> Bitwise or
+                        <LineBreak />
+                        <LineBreak /><Bold>^</Bold> Bitwise xor
+                        <LineBreak />
+                        <LineBreak /><Bold>~</Bold> Bitwise unary not
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />Floating point operands are invalid for these operators.
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_fp_functions_Click">Next: Floating Point Functions</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_fp_functions" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Floating Point Functions:</Bold>
+                        <LineBreak />
+                        <LineBreak />The calculator provides a variety of scientific functions
+                        such as log, sin, cos, etc., which operate on floating point numbers.
+                        For these functions, an integer parameter will be converted to floating
+                        point. The complete set of functions can be seen in the Functions menu.
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_operator_precedence_and_associativity_Click">Next: Operator Precedence and Associativity</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_operator_precedence_and_associativity" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Operator Precedence and Associativity:</Bold>
+                        <LineBreak />
+                        <LineBreak />Binary (two-operand) operators associate left to right except for
+                        exponentiation and assignment, which associate right to left. Operators are listed
+                        from highest to lowest precedence:
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak />1: <Bold>!</Bold>, <Bold>!!</Bold> factorial, double factorial (unary postfix operators)
+                        <LineBreak />
+                        <LineBreak />2: <Bold>**</Bold> exponentiation
+                        <Hyperlink NavigateUri="https://core.tcl-lang.org/tips/doc/trunk/tip/274.md">
+                            (right associative)</Hyperlink>
+                        <LineBreak />
+                        <LineBreak />3: <Bold>+</Bold>, <Bold>-</Bold>, <Bold>~</Bold> unary plus, negation,
+                        bitwise not (bitwise negation) (unary prefix operators)
+                        <LineBreak />
+                        <LineBreak />4: <Bold>*</Bold>, <Bold>/</Bold>, <Bold>%</Bold> multiplication, division, modulo
+                        <LineBreak />
+                        <LineBreak />5: <Bold>+</Bold>, <Bold>-</Bold> addition, subtraction
+                        <LineBreak />
+                        <LineBreak />6: <Bold>&lt;&lt;</Bold>, <Bold>&lt;&lt;&lt;</Bold>, <Bold>&gt;&gt;</Bold>, <Bold>&gt;&gt;&gt;</Bold>
+                        arithmetic shift left, logical shift left, arithmetic shift right, logical shift right
+                        <LineBreak />
+                        <LineBreak />7: <Bold>&amp;</Bold> bitwise and
+                        <LineBreak />
+                        <LineBreak />8: <Bold>^</Bold> bitwise xor
+                        <LineBreak />
+                        <LineBreak />9: <Bold>|</Bold> bitwise or
+                        <LineBreak />
+                        <LineBreak />10: <Bold>=</Bold> assignmemt
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_quick_start_guide_Click">Top: Quick Start Guide</Hyperlink>
+                    </Paragraph>                    
+                </RichTextBlock>            
+            </ScrollViewer>            
+        </Grid>
     </StackPanel>
     <Page.BottomAppBar>
         <CommandBar x:Name="bottomAppBar" FlowDirection="LeftToRight" DefaultLabelPosition="Right">
             <AppBarButton Label="Mode">
                 <AppBarButton.Flyout>
                     <MenuFlyout Opening="mode_menu_Opening">
-                        <MenuFlyoutItem x:Name="input_mode_fpd" Tag="fpd" Text="Floating Point (FP) Decimal Input" Click="input_mode_Click" />
+                        <MenuFlyoutItem x:Name="input_mode_fpd" Tag="fpd" Text="Floating Pt. (FP) Decimal Input" Click="input_mode_Click" />
                         <MenuFlyoutItem x:Name="input_mode_bin" Tag="bin" Text="Integer Binary Input" Click="input_mode_Click" />
                         <MenuFlyoutItem x:Name="input_mode_oct" Tag="oct" Text="Integer Octal Input" Click="input_mode_Click" />
                         <MenuFlyoutItem x:Name="input_mode_dec" Tag="dec" Text="Integer/FP Decimal Input" Click="input_mode_Click" />
@@ -516,7 +636,7 @@
                         <MenuFlyoutItem Tag="*" Text="*  Multiplication" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="/" Text="/  Division" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="%" Text="%  Modulo" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="**" Text="**  Exponentation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="**" Text="**  Exponentiation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="!" Text="!  Factorial" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="!!" Text="!!  Double Factorial" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="=" Text="=  Assign to Variable" Click="append_tag_to_input_Click" />
@@ -542,7 +662,21 @@
                 </AppBarButton.Flyout>
             </AppBarButton>
             <AppBarButton x:Name="varsButton" Label="Variables" Click="ToggleVars_Click" />
-            <AppBarButton x:Name="helpButton" Label="Help" Click="ToggleHelp_Click" />
+            <AppBarButton Label="Help">
+                <AppBarButton.Flyout>
+                    <MenuFlyout Opening="help_menu_Opening">
+                        <MenuFlyoutItem Tag="help_quick_start_guide" Text="Quick Start Guide" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_variables" Text="Variables" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_numbers" Text="Numbers" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_fp_and_integer_arithmetic_operators" Text="Floating Point and Integer Arithmetic Operators" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_fp_arithmetic_operators" Text="Floating Point Arithmetic Operators" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_integer_arithmetic_and_bitwise_logic_operators" Text="Integer Arithmetic and Bitwise Logic Operators" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_fp_functions" Text="Floating Point Functions" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_operator_precedence_and_associativity" Text="Operator Precedence and Associativity" Click="help_Click" />
+                        <MenuFlyoutItem x:Name="help_menu_hide_help" Tag="help_hide_help" Text="Hide Help" Click="help_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <!--<CommandBar.SecondaryCommands>
                 <AppBarButton Label="Edit" Icon="Edit" />
                 <AppBarButton Label="Remove" Icon="Remove" />
