@@ -32,6 +32,8 @@ namespace winrt::tcalc::implementation
 bool winrt::tcalc::implementation::MainPage::initializing_app = true;
 
 inline auto winrt::tcalc::implementation::MainPage::make_size(double width, double height) -> Size {
+    assert(width - static_cast<float>(width) < 1);
+    assert(height - static_cast<float>(height) < 1);
     return Size(static_cast<float>(width), static_cast<float>(height));
 }
 
@@ -46,6 +48,8 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
         ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
         local_settings.Values().Insert(L"launchedWithPrefSize", box_value(true)); // causes changes to have immediate effect
 
+        // make sure help is visible in PC mode; in tablet mode this should be
+        // redundant as help should be visible by default
         show_help(L"help_quick_start_guide");
     }
 
@@ -496,8 +500,10 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
         auto height = info.ScreenHeightInRawPixels();
         auto scale_factor = info.RawPixelsPerViewPixel();
         TryResizeView(make_size(500, (height / scale_factor) * 0.8));
-    } else if (varsPanel().Visibility() == Visibility::Collapsed)
+    } else if (varsPanel().Visibility() == Visibility::Collapsed) {
+        helpPanel().Visibility(Visibility::Collapsed);
         TryResizeView(default_page_size);
+    }
 }
 
 void winrt::tcalc::implementation::MainPage::help_link_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
