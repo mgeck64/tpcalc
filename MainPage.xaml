@@ -8,7 +8,8 @@
     mc:Ignorable="d"
     KeyDown="page_KeyDown"
     SizeChanged="page_SizeChanged"
-    Loaded="page_Loaded">
+    Loaded="page_Loaded"
+    >
 
     <Page.Resources>
         <Style TargetType="TextBox">
