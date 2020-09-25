@@ -234,9 +234,13 @@
                         erasure can't be chained; the effect of trying to do so, for example a=b=c=,
                         will be to erase the rightmost variable and set the others to nan (not-a-number),
                         which is the result of the erasure operation.
+                        <LineBreak />
+                        <LineBreak />The <Bold>Variables</Bold> menu option shows the currently
+                        defined variables.
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
+                        <Hyperlink Click="help_link_quick_start_guide_Click">Previous: Quick Start Guide</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_numbers_Click">Next: Numbers</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
@@ -413,6 +417,7 @@
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
+                        <Hyperlink Click="help_link_variables_Click">Previous: Variables</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_fp_and_integer_arithmetic_operators_Click">Next: Floating Point and Integer Arithmetic Operators</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
@@ -433,15 +438,16 @@
                         <LineBreak /><Bold>/</Bold> Division
                     </Paragraph>
                     <Paragraph>
-                        <LineBreak />If either operand is floating point then the operation will be
-                        performed using floating point arithmetic and the result will be represented
-                        as floating point; the other operand, if an integer, will
-                        be converted to floating point. If both operands are integers then the
-                        operation will be performed using integer arithmetic and the result will be
-                        represented as an integer.
+                        <LineBreak />These operators accept floating point or integer values. If
+                        either value is floating point then the the other value, if an integer,
+                        will be converted to floating point, the operation will be performed using
+                        floating point arithmetic and the result will be a floating point value.
+                        If both values are integers then the operation will be performed using
+                        integer arithmetic and the result will be an integer value.
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
+                        <Hyperlink Click="help_link_numbers_Click">Previous: Numbers</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_fp_arithmetic_operators_Click">Next: Floating Point Arithmetic Operators</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
@@ -463,21 +469,23 @@
                             Double factorial (extended to real numbers)</Hyperlink>
                     </Paragraph>
                     <Paragraph>
-                        <LineBreak />Integer operands will be converted to floating point, the
-                        operation will be performed using floating point arithmetic and the result will
-                        be represented as floating point. These operators always operate in the floating
-                        point domain because of how easily calculations can "blow up" and become larger
-                        than integers can support; also, factorials are implemented using the gamma
-                        function to support factorials of real numbers with fractional components (e.g.,
-                        3.4!). The factorial for real numbers is given by the formula gamma(n+1), and the
-                        double factorial for real numbers is given by the formula
-                        2**((1+2*n-cos(pi*n))/4)*pi**((cos(pi*n)-1)/4)*gamma(1+n/2), the latter which is
-                        the formula for "complex arguments" given at
+                        <LineBreak />Integer values will be converted to floating point, the 
+                        operation will be performed using floating point arithmetic and the result
+                        will be a floating point value. These operators always operate in the
+                        floating point domain because of how easily calculations can "blow up" and
+                        become larger than integers can support; also, factorials are implemented
+                        using the gamma function to support factorials of real numbers with
+                        fractional components (e.g., 3.4!). The factorial for real numbers is
+                        given by the formula gamma(n+1), and the double factorial for real numbers
+                        is given by the formula
+                        2**((1+2*n-cos(pi*n))/4)*pi**((cos(pi*n)-1)/4)*gamma(1+n/2), the latter
+                        which is the formula for "complex arguments" given at
                         <Hyperlink NavigateUri="https://mathworld.wolfram.com/DoubleFactorial.html">
-                            Wolfram Mathworld.</Hyperlink>
+                            Wolfram Mathworld</Hyperlink>.
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
+                        <Hyperlink Click="help_link_fp_and_integer_arithmetic_operators_Click">Previous: Floating Point and Integer Arithmetic Operators</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_integer_arithmetic_and_bitwise_logic_operators_Click">Next: Integer Arithmetic and Bitwise Logic Operators</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
@@ -509,26 +517,57 @@
                         <LineBreak /><Bold>~</Bold> Bitwise unary not
                     </Paragraph>
                     <Paragraph>
-                        <LineBreak />Floating point operands are invalid for these operators.
+                        <LineBreak />These operators accept integer values only; floating point
+                        values are invalid for these.
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
-                        <Hyperlink Click="help_link_fp_functions_Click">Next: Floating Point Functions</Hyperlink>
+                        <Hyperlink Click="help_link_fp_arithmetic_operators_Click">Previous: Floating Point Arithmetic Operators</Hyperlink><LineBreak />
+                        <Hyperlink Click="help_link_scientific_functions_Click">Next: Scientific Functions</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
             </ScrollViewer>
-            <ScrollViewer x:Name="help_fp_functions" Visibility="Collapsed">
+            <ScrollViewer x:Name="help_scientific_functions" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Floating Point Functions:</Bold>
+                        <Bold>Scientific Functions:</Bold>
                         <LineBreak />
                         <LineBreak />The calculator provides a variety of scientific functions
                         such as log, sin, cos, etc., which operate on floating point numbers.
-                        For these functions, an integer parameter will be converted to floating
-                        point. The complete set of functions can be seen in the Functions menu.
+                        For each function, an integer parameter will be converted to floating
+                        point, and the result will be a floating point value. The syntax for
+                        each function is &lt;name&gt;(&lt;parameter&gt;) where &lt;name&gt; is
+                        the name of the function and &lt;parameter&gt; is a number or expression;
+                        examples: sin(2), log(3/2), sqrt(5**2).
+                        <LineBreak />
+                        <LineBreak />The complete set of scientific functions is available in the
+                        <Bold>Functions</Bold> menu. The scientific functions are:
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak /><Bold>exp</Bold> - e**n
+                        <LineBreak /><Bold>log</Bold> - Natural (base e) logarithm
+                        <LineBreak /><Bold>log10</Bold> - Base 10 logarithm
+                        <LineBreak /><Bold>log2</Bold> - Base 2 logarithm
+                        <LineBreak /><Bold>sqrt</Bold> - Square root
+                        <LineBreak /><Bold>cbrt</Bold> - Cubic root
+                        <LineBreak /><Bold>sin</Bold> - Sine
+                        <LineBreak /><Bold>cos</Bold> - Cosine
+                        <LineBreak /><Bold>tan</Bold> - Tangent
+                        <LineBreak /><Bold>asin</Bold> - Arcsine
+                        <LineBreak /><Bold>acos</Bold> - Arccosine
+                        <LineBreak /><Bold>atan</Bold> - Arctangent
+                        <LineBreak /><Bold>sinh</Bold> - Hyperbolic sine
+                        <LineBreak /><Bold>cosh</Bold> - Hyperbolic cosine
+                        <LineBreak /><Bold>tanh</Bold> - Hyperbolic tangent
+                        <LineBreak /><Bold>asinh</Bold> - Inverse hyperbolic sine
+                        <LineBreak /><Bold>acosh</Bold> - Inverse hyperbolic cosine
+                        <LineBreak /><Bold>atanh</Bold> - Inverse hyperbolic tangent
+                        <LineBreak /><Bold>gamma</Bold> - Gamma
+                        <LineBreak /><Bold>lgamma</Bold> - Log gamma
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
+                        <Hyperlink Click="help_link_integer_arithmetic_and_bitwise_logic_operators_Click">Previous: Integer Arithmetic and Bitwise Logic Operators</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_operator_precedence_and_associativity_Click">Next: Operator Precedence and Associativity</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
@@ -569,6 +608,7 @@
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
+                        <Hyperlink Click="help_link_scientific_functions_Click">Previous: Scientific Functions</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_quick_start_guide_Click">Top: Quick Start Guide</Hyperlink>
                     </Paragraph>                    
                 </RichTextBlock>            
@@ -610,8 +650,8 @@
                         <MenuFlyoutItem Tag="atan(" Text="atan - Arctangent" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="sinh(" Text="sinh - Hyperbolic Sine" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="cosh(" Text="cosh - Hyperbolic Cosine" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="tanh(" Text="tanh - Hyperbolic Tangengent" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="asinh(" Text="asinh - Inverse Hyperbolic Sin" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="tanh(" Text="tanh - Hyperbolic Tangent" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="asinh(" Text="asinh - Inverse Hyperbolic Sine" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="acosh(" Text="acosh - Inverse Hyperbolic Cosine" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="atanh(" Text="atanh - Inverse Hyperbolic Tangent" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="gamma(" Text="gamma - Gamma" Click="append_tag_to_input_Click" />
@@ -671,7 +711,7 @@
                         <MenuFlyoutItem Tag="help_fp_and_integer_arithmetic_operators" Text="Floating Point and Integer Arithmetic Operators" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_fp_arithmetic_operators" Text="Floating Point Arithmetic Operators" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_integer_arithmetic_and_bitwise_logic_operators" Text="Integer Arithmetic and Bitwise Logic Operators" Click="help_Click" />
-                        <MenuFlyoutItem Tag="help_fp_functions" Text="Floating Point Functions" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_scientific_functions" Text="Scientific Functions" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_operator_precedence_and_associativity" Text="Operator Precedence and Associativity" Click="help_Click" />
                         <MenuFlyoutItem x:Name="help_menu_hide_help" Tag="help_hide_help" Text="Hide Help" Click="help_Click" />
                     </MenuFlyout>

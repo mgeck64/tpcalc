@@ -46,11 +46,6 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
         ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
         local_settings.Values().Insert(L"launchedWithPrefSize", box_value(true)); // causes changes to have immediate effect
 
-        Documents::Run run;
-        run.Text(L"(Help will not be shown automatically the next time this app is invoked.)\n");
-        Documents::Paragraph paragraph;
-        paragraph.Inlines().Append(run);
-        help_quick_start_guide_TextBlock().Blocks().InsertAt(0, paragraph);
         show_help(L"help_quick_start_guide");
     }
 
@@ -453,8 +448,8 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     } else if (help_integer_arithmetic_and_bitwise_logic_operators().Visibility() == Visibility::Visible) {
         visible = help_integer_arithmetic_and_bitwise_logic_operators();
         have_visible = true;
-    } else if (help_fp_functions().Visibility() == Visibility::Visible) {
-        visible = help_fp_functions();
+    } else if (help_scientific_functions().Visibility() == Visibility::Visible) {
+        visible = help_scientific_functions();
         have_visible = true;
     } else if (help_operator_precedence_and_associativity().Visibility() == Visibility::Visible) {
         visible = help_operator_precedence_and_associativity();
@@ -481,8 +476,8 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     } else if (tag == L"help_integer_arithmetic_and_bitwise_logic_operators") {
         make_visible = help_integer_arithmetic_and_bitwise_logic_operators();
         making_visible = true;
-    } else if (tag == L"help_fp_functions") {
-        make_visible = help_fp_functions();
+    } else if (tag == L"help_scientific_functions") {
+        make_visible = help_scientific_functions();
         making_visible = true;
     } else if (tag == L"help_operator_precedence_and_associativity") {
         make_visible = help_operator_precedence_and_associativity();
@@ -520,8 +515,8 @@ void winrt::tcalc::implementation::MainPage::help_link_fp_arithmetic_operators_C
 void winrt::tcalc::implementation::MainPage::help_link_integer_arithmetic_and_bitwise_logic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_integer_arithmetic_and_bitwise_logic_operators");}
 
-void winrt::tcalc::implementation::MainPage::help_link_fp_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
-{show_help(L"help_fp_functions");}
+void winrt::tcalc::implementation::MainPage::help_link_scientific_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_scientific_functions");}
 
 void winrt::tcalc::implementation::MainPage::help_link_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_operator_precedence_and_associativity");}
