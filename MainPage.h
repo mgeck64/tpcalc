@@ -18,8 +18,6 @@ namespace winrt::tcalc::implementation
 
         static bool initializing_app;
 
-        static constexpr std::streamsize out_precision = 15;
-
         void eval_input();
 
         bool size_values_valid = false;

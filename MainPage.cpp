@@ -108,7 +108,6 @@ void winrt::tcalc::implementation::MainPage::set_output_to_last_val() {
     outputType().Text(text);
 
     std::wostringstream out_buf;
-    out_buf.precision(out_precision);
     out_buf << outputter(parser.last_val());
     auto out_str = out_buf.str();
     output().Text(out_str);
@@ -393,7 +392,6 @@ void winrt::tcalc::implementation::MainPage::on_vars_changed() {
     }
 
     std::wstringstream out_buf;
-    out_buf.precision(out_precision);
     auto vars_begin = parser.vars().begin();
     auto vars_end = parser.vars().end();
     for (auto var_pos = vars_begin; var_pos != vars_end; ++var_pos) {
