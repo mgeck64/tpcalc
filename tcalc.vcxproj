@@ -129,6 +129,7 @@
     <ClInclude Include="..\rdcalc\ieee_double.h" />
     <ClInclude Include="..\rdcalc\lookahead.h" />
     <ClInclude Include="..\rdcalc\parse_error.h" />
+    <ClInclude Include="..\rdcalc\stream_state_restorer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h">
       <DependentUpon>App.xaml</DependentUpon>
