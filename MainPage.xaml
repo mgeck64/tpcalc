@@ -29,12 +29,12 @@
         </Style>
     </Page.Resources>
     <StackPanel>
-        <StackPanel x:Name="calcPanel" Width="332">
+        <StackPanel x:Name="calcPanel" Width="352">
             <!--explicit width needed by Page_Loaded;
             without it, calcPanel().ActualWidth() gives wrong result-->
             <StackPanel Margin="16,4,16,10" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="input" Width="300" PreviewKeyDown="input_KeyDown" />
+                    <TextBox x:Name="input" Width="320" PreviewKeyDown="input_KeyDown" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
@@ -43,12 +43,12 @@
                             <Setter Property="FontSize" Value="12" />
                         </Style>
                     </StackPanel.Resources>
-                    <TextBlock x:Name="inputModeText" Width="185" />
+                    <TextBlock x:Name="inputModeText" Width="200" />
                     <TextBlock x:Name="outputModeText" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                     <TextBlock x:Name="outputType" FontSize="12" Width="45" Height="38" Padding="0,2,0,0"/>
-                    <TextBlock x:Name="output" IsTextSelectionEnabled="True" Width="255" Height="38">
+                    <TextBlock x:Name="output" IsTextSelectionEnabled="True" Width="275" Height="38">
                         <TextBlock.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Text="Copy" Icon="Copy" Click="output_Copy_Click">
