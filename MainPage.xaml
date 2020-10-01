@@ -29,9 +29,8 @@
         </Style>
     </Page.Resources>
     <StackPanel>
-        <StackPanel x:Name="calcPanel" Width="352">
-            <!--explicit width needed by Page_Loaded;
-            without it, calcPanel().ActualWidth() gives wrong result-->
+        <StackPanel x:Name="calcPanel" Width="352"> <!--explicit width needed by
+        Page_Loaded; without it, calcPanel().ActualWidth() gives wrong result-->
             <StackPanel Margin="16,4,16,10" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:Name="input" Width="320" PreviewKeyDown="input_KeyDown" />
