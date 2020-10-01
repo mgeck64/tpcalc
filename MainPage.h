@@ -38,6 +38,7 @@ namespace winrt::tcalc::implementation
 
         static auto make_size(double width, double height) -> Size;
         void set_output_to_last_val();
+        void set_output_to_text(std::wstring_view text);
         double space_for_XPanel();
         void update_XPanel_button_labels(double space_for_XPanel_);
         void update_XPanel_button_labels() {update_XPanel_button_labels(space_for_XPanel());}

@@ -114,6 +114,17 @@ void winrt::tcalc::implementation::MainPage::set_output_to_last_val() {
     outputted_last_val = true;
 }
 
+void winrt::tcalc::implementation::MainPage::set_output_to_text(std::wstring_view text) {
+    // if outputType is showing, hide it
+    if (outputType().Visibility() == Visibility::Visible) {
+        outputType().Visibility(Visibility::Collapsed);
+        output().Width(output().Width() + outputType().Width());
+    }
+
+    output().Text(text);
+    outputted_last_val = false;
+}
+
 inline double winrt::tcalc::implementation::MainPage::space_for_XPanel() {
     double space_for_XPanel_ = ActualHeight() - calcPanel().ActualHeight() - bottomAppBar().ActualHeight() - 10; // - 10 for margin (can't figure how to do this in AXML)
     if (space_for_XPanel_ < 0)
@@ -295,21 +306,11 @@ void winrt::tcalc::implementation::MainPage::eval_input()
     bool input_is_blank = false;
     try {
         input_is_blank = !parser.eval(input_str.c_str());
-        if (!input_is_blank)
-            set_output_to_last_val();
+        set_output_to_last_val();
         input().Text(L""); // clear for next input (even if input_is_blank is true, input may have whitespace chars)
     } catch (const parser_type::parse_error& e) {
-        // if outputType is showing, hide it
-        if (outputType().Visibility() == Visibility::Visible) {
-            outputType().Visibility(Visibility::Collapsed);
-            output().Width(output().Width() + outputType().Width());
-        }
-
         e.assert_view_is_valid_for(input_str.c_str());
-        auto error_str = e.error_str();
-        output().Text(error_str);
-        outputted_last_val = false;
-
+        set_output_to_text(e.error_str());
         input().Select(e.tok.tok_str.data() - input_str.c_str(), e.tok.tok_str.size());
     }
 
@@ -397,8 +398,9 @@ void winrt::tcalc::implementation::MainPage::on_vars_changed() {
     for (auto var_pos = vars_begin; var_pos != vars_end; ++var_pos) {
         if (var_pos != vars_begin)
             out_buf << '\n';
-        out_buf << var_pos->first << L" = " << outputter(var_pos->second.num_val);
-        out_buf << ' ' << '(' << parser_type::num_type_short_txt.at(var_pos->second.num_val.index()) << ')';
+        out_buf << var_pos->first << L" = "
+            << parser_type::num_type_short_txt.at(var_pos->second.num_val.index())
+            << L": " << outputter(var_pos->second.num_val);
     }
     varsTextBlock().Text(out_buf.str());
 }
