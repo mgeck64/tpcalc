@@ -120,7 +120,7 @@
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />The
-                        <Bold>Functions</Bold> menu has all of the available scientific functions.
+                        <Bold>Scientific</Bold> menu has all of the available scientific functions.
                         <LineBreak />
                         <LineBreak />The
                         <Bold>Values</Bold> menu has all of the available internal values (pi, e).
@@ -233,8 +233,8 @@
                         result of the expression) being assigned; this allows variable assignments
                         to be "chained"; for example, a=b=c=5 assigns 5 to a, b and c. Variable
                         erasure can't be chained; the effect of trying to do so, for example a=b=c=,
-                        will be to erase the rightmost variable and set the others to nan (not-a-number),
-                        which is the result of the erasure operation.
+                        will be to erase the rightmost variable and set the others to the value of
+                        the erased variable (or to nan (not-a-number) if none was actually erased).
                         <LineBreak />
                         <LineBreak />The <Bold>Variables</Bold> menu option shows the currently
                         defined variables.
@@ -542,7 +542,7 @@
                         examples: sin(2), log(3/2), sqrt(5**2).
                         <LineBreak />
                         <LineBreak />The complete set of scientific functions is available in the
-                        <Bold>Functions</Bold> menu. The scientific functions are:
+                        <Bold>Scientific</Bold> menu. The scientific functions are:
                     </Paragraph>
                     <Paragraph Margin="20,0,0,0">
                         <LineBreak /><Bold>exp</Bold> - e**n
@@ -634,7 +634,7 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <AppBarButton Label="Functions">
+            <AppBarButton Label="Scientific">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <MenuFlyoutItem Tag="exp(" Text="exp - e**n" Click="append_tag_to_input_Click" />
@@ -657,6 +657,18 @@
                         <MenuFlyoutItem Tag="atanh(" Text="atanh - Inverse Hyperbolic Tangent" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="gamma(" Text="gamma - Gamma" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="lgamma(" Text="lgamma - Log Gamma" Click="append_tag_to_input_Click" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Label="Statistical">
+                <AppBarButton.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Tag="sum(" Text="sum - Sum" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="prod(" Text="prod - Product" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="avg(" Text="avg - Average" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="variance(" Text="variance - Variance" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="stddev(" Text="stddev - Standard Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="median(" Text="median - Median" Click="append_tag_to_input_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -718,11 +730,6 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            <!--<CommandBar.SecondaryCommands>
-                <AppBarButton Label="Edit" Icon="Edit" />
-                <AppBarButton Label="Remove" Icon="Remove" />
-                <AppBarButton Label="Add" Icon="Add" />
-            </CommandBar.SecondaryCommands>-->
         </CommandBar>
     </Page.BottomAppBar>
 </Page>
