@@ -132,8 +132,8 @@
                         up to the last 25 inputs.
                         <LineBreak />
                         <LineBreak />By default, the calculator represents numbers internally in floating
-                        point format and performs floating point arithmetic on them. This is the mode
-                        suitable for general and scientific calculations.
+                        point (abbreviated Flt. Pt.) format and performs floating point arithmetic on them.
+                        This is the mode suitable for general and scientific calculations.
                         The calculator can also represent numbers internally as integers and perform
                         integer arithmetic and
                         <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
@@ -311,12 +311,12 @@
                         floating point (normally) or an integer depending on the input mode (explained below).
                         <LineBreak />
                         <LineBreak />
-                        <Underline>Floating Pt. (FP) Decimal Input</Underline>:
+                        <Underline>Floating Point Decimal Input</Underline>:
                         <LineBreak />
                         <LineBreak />Context: A number is specified with no radix prefix and the input mode in
                         the
                         <Bold>Mode</Bold> menu is
-                        <Bold>Floating Pt. (FP) Decimal Input</Bold>.
+                        <Bold>Floating Point Decimal Input</Bold>.
                         <LineBreak />
                         <LineBreak />This is the default input mode. The number will be interpreted as decimal
                         and will be represented as floating point. For example, 10, 10.1 and 1e100 will all be
@@ -353,12 +353,12 @@
                         as integers. 0o12.1, 0o12e1, 12.1 and 12e1 are invalid numbers here.
                         <LineBreak />
                         <LineBreak />
-                        <Underline>Integer/FP Decimal Input</Underline>:
+                        <Underline>Integer/Flt. Pt. Decimal Input</Underline>:
                         <LineBreak />
                         <LineBreak />Context: A number is specified with the 0d (decimal) radix prefix or is specified
                         with no radix prefix and the input mode in the
                         <Bold>Mode</Bold> menu is
-                        <Bold>Integer/FP Decimal Input</Bold>.
+                        <Bold>Integer/Flt. Pt. Decimal Input</Bold>.
                         <LineBreak />
                         <LineBreak />The number will be interpreted as decimal and will be represented
                         as either an integer or as floating point according to the following:
@@ -372,12 +372,12 @@
                         10.0 and 1e100 will all be represented as floating point.
                         <LineBreak />
                         <LineBreak />
-                        <Underline>Integer/FP Hexecimal Input</Underline>:
+                        <Underline>Integer/Flt. Pt. Hexecimal Input</Underline>:
                         <LineBreak />
                         <LineBreak />Context: A number is specified with the 0x (hexadecimal) radix prefix or is
                         specified with no radix prefix and the input mode in the
                         <Bold>Mode</Bold> menu is
-                        <Bold>Integer/FP Hexadecimal Input</Bold>.
+                        <Bold>Integer/Flt. Pt. Hexadecimal Input</Bold>.
                         <LineBreak />
                         <LineBreak />The number will be interpreted as hexadecimal and will be represented
                         as either an integer or as floating point according to the following:
@@ -400,7 +400,7 @@
                         a leading 0 to distinguish it from a variable/function/value name; thus "0a" is the
                         hexadecimal number a (decimal 10) and "a" is the name of the variable a. Note
                         regarding
-                        <Bold>Integer/FP Hexadecimal Input</Bold> mode: Because 0b is a valid
+                        <Bold>Integer/Flt. Pt. Hexadecimal Input</Bold> mode: Because 0b is a valid
                         hexadecimal number, it won't be recognized as the binary radix prefix in this mode;
                         thus binary numbers cannot be specified in this mode.
                         <LineBreak />
@@ -620,11 +620,11 @@
             <AppBarButton Label="Mode">
                 <AppBarButton.Flyout>
                     <MenuFlyout Opening="mode_menu_Opening">
-                        <MenuFlyoutItem x:Name="input_mode_fpd" Tag="fpd" Text="Floating Pt. (FP) Decimal Input" Click="input_mode_Click" />
+                        <MenuFlyoutItem x:Name="input_mode_fpd" Tag="fpd" Text="Floating Point Decimal Input" Click="input_mode_Click" />
                         <MenuFlyoutItem x:Name="input_mode_bin" Tag="bin" Text="Integer Binary Input" Click="input_mode_Click" />
                         <MenuFlyoutItem x:Name="input_mode_oct" Tag="oct" Text="Integer Octal Input" Click="input_mode_Click" />
-                        <MenuFlyoutItem x:Name="input_mode_dec" Tag="dec" Text="Integer/FP Decimal Input" Click="input_mode_Click" />
-                        <MenuFlyoutItem x:Name="input_mode_hex" Tag="hex" Text="Integer/FP Hexadecimal Input" Click="input_mode_Click" />
+                        <MenuFlyoutItem x:Name="input_mode_dec" Tag="dec" Text="Integer/Flt. Pt. Decimal Input" Click="input_mode_Click" />
+                        <MenuFlyoutItem x:Name="input_mode_hex" Tag="hex" Text="Integer/Flt. Pt. Hexadecimal Input" Click="input_mode_Click" />
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem x:Name="output_mode_bin" Tag="bin" Text="Binary Output" Click="output_mode_Click" />
                         <MenuFlyoutItem x:Name="output_mode_oct" Tag="oct" Text="Octal Output" Click="output_mode_Click" />

@@ -181,7 +181,7 @@ void winrt::tcalc::implementation::MainPage::update_mode_menu() {
 void winrt::tcalc::implementation::MainPage::update_mode_display() {
     switch (parser.default_radix()) {
     case radices::decimal:
-        inputModeText().Text(L"Input: Floating Pt. (FP) Decimal");
+        inputModeText().Text(L"Input: Floating Point Decimal");
         break;
     case radices::base2:
         inputModeText().Text(L"Input: Integer Binary");
@@ -190,10 +190,10 @@ void winrt::tcalc::implementation::MainPage::update_mode_display() {
         inputModeText().Text(L"Input: Integer Octal");
         break;
     case radices::base10:
-        inputModeText().Text(L"Input: Integer/FP Decimal");
+        inputModeText().Text(L"Input: Integer/Flt. Pt. Decimal");
         break;
     case radices::base16:
-        inputModeText().Text(L"Input: Integer/FP Hexadecimal");
+        inputModeText().Text(L"Input: Integer/Flt. Pt. Hexadecimal");
         break;
     }
 
