@@ -399,8 +399,8 @@ void winrt::tcalc::implementation::MainPage::on_vars_changed() {
         if (var_pos != vars_begin)
             out_buf << '\n';
         out_buf << var_pos->first << L" = "
-            << parser_type::num_type_short_txt.at(var_pos->second.num_val.index())
-            << L": " << outputter(var_pos->second.num_val);
+            << parser_type::num_type_short_txt.at(var_pos->second.val_var.index())
+            << L": " << outputter(var_pos->second.val_var);
     }
     varsTextBlock().Text(out_buf.str());
 }
