@@ -664,10 +664,13 @@
                     <MenuFlyout>
                         <MenuFlyoutItem Tag="sum(" Text="sum - Sum" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="prod(" Text="prod - Product" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="avg(" Text="avg - Average" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="avg(" Text="avg - Average (Arithmetic Mean)" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="geomean(" Text="geomean - Geometric Mean" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="harmmean(" Text="harmmean - Harmonic Mean" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="variance(" Text="variance - Variance" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="stddev(" Text="stddev - Standard Deviation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="median(" Text="median - Median" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="mode(" Text="mode - Mode" Click="append_tag_to_input_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
