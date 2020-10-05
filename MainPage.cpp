@@ -309,9 +309,9 @@ void winrt::tcalc::implementation::MainPage::eval_input()
         set_output_to_last_val();
         input().Text(L""); // clear for next input (even if input_is_blank is true, input may have whitespace chars)
     } catch (const parser_type::parse_error& e) {
-        e.assert_view_is_valid_for(input_str.c_str());
         set_output_to_text(e.error_str());
-        input().Select(e.tok.tok_str.data() - input_str.c_str(), e.tok.tok_str.size());
+        if (e.view_is_valid_for(input_str.c_str()))
+            input().Select(e.tok.tok_str.data() - input_str.c_str(), e.tok.tok_str.size());
     }
 
     if (!input_is_blank) { // save input string so can be recalled later
