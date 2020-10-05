@@ -7,7 +7,7 @@
     <CppWinRTGenerateWindowsMetadata>true</CppWinRTGenerateWindowsMetadata>
     <MinimalCoreWin>true</MinimalCoreWin>
     <ProjectGuid>{cdf06baf-d4ac-41b0-8907-db8ad499d51a}</ProjectGuid>
-    <ProjectName>tcalc</ProjectName>
+    <ProjectName>tpcalc</ProjectName>
     <RootNamespace>tcalc</RootNamespace>
     <DefaultLanguage>en-US</DefaultLanguage>
     <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
