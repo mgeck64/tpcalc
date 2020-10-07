@@ -81,8 +81,8 @@
                         <Bold>*</Bold>,
                         <Bold>/</Bold>,
                         <Bold>**</Bold>,
-                        <Bold>!</Bold>and
-                        <Bold>!!</Bold>are the addition, subtraction (or negation),
+                        <Bold>!</Bold> and
+                        <Bold>!!</Bold> are the addition, subtraction (or negation),
                         multiplication, division, exponentiation, factorial and double factorial operators
                         respectively. Examples:
                     </Paragraph>
@@ -122,10 +122,10 @@
                         <Bold>avg(1,2,3,4,5,6,7,8,9)</Bold> means the average of 1,2,3,4,5,6,7,8,9
                     </Paragraph>
                     <Paragraph>
-                        <LineBreak />For reference, the
+                        <LineBreak />The
                         <Bold>Scientific</Bold> menu has all of the available scientific functions.
                         <LineBreak />
-                        <LineBreak />For reference, the
+                        <LineBreak />The
                         <Bold>Statistics</Bold> menu has all of the available statistical functions.
                         <LineBreak />
                         <LineBreak />The
@@ -140,14 +140,13 @@
                         <LineBreak />
                         <LineBreak />By default, the calculator represents numbers internally in floating
                         point (abbreviated Flt. Pt.) format and performs floating point arithmetic on them.
+                        Such numbers are referred to simply as floating point (abbreviated Flt. Pt.).
                         This is the mode suitable for general and scientific calculations.
                         The calculator can also represent numbers internally as integers and perform
                         integer arithmetic and
                         <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
                             bitwise logic</Hyperlink> on them; this can be useful to computer programmers.
-                        <LineBreak />
-                        <LineBreak />Generally, "floating point" refers to numbers represented internally
-                        that way, and "integer" refers to numbers represented internally that way.
+                        Such numbers are referred to simply as integers.
                         <LineBreak />
                         <LineBreak />The calculator can also accept numbers in several numeric bases:
                         binary, octal and hexadecimal in addition to decimal. The following are examples
