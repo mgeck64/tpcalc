@@ -25,6 +25,9 @@ namespace winrt::tcalc::implementation
         Size initial_calcPanel_size{0, 0};
         Size initial_input_size{0, 0};
         Size initial_output_size{0, 0};
+        Size page_resized_for_variables{0, 0};
+        Size page_resized_for_help{0, 0};
+        Size page_resized_for_general{0, 0};
 
         parser_type::string last_input;
         using last_inputs_type = std::vector<parser_type::string>;
@@ -39,9 +42,7 @@ namespace winrt::tcalc::implementation
         static auto make_size(double width, double height) -> Size;
         void set_output_to_last_val();
         void set_output_to_text(std::wstring_view text);
-        double space_for_XPanel();
-        void update_XPanel_button_labels(double space_for_XPanel_);
-        void update_XPanel_button_labels() {update_XPanel_button_labels(space_for_XPanel());}
+        void update_XPanel_button_labels();
         void update_page_ui();
         void update_mode_menu();
         void update_mode_display();
@@ -66,10 +67,12 @@ namespace winrt::tcalc::implementation
         void input_KeyDown(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& e);
         void append_tag_to_input_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         void output_Copy_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
+        void toggle_vars(bool force_show = false);
         void ToggleVars_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         void help_menu_Opening(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::Foundation::IInspectable const& e);
         void help_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const& e);
         void show_help(std::wstring_view tag);
+        void help_link_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
         void help_link_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
         void help_link_numbers_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
         void help_link_fp_and_integer_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
@@ -78,7 +81,7 @@ namespace winrt::tcalc::implementation
         void help_link_scientific_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
         void help_link_statistical_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
         void help_link_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
-        void help_link_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
+        void help_link_hide_help_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const& sender, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const& args);
     };
 }
 

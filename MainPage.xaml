@@ -66,12 +66,14 @@
                 <TextBlock x:Name="varsTextBlock" />
             </ScrollViewer>
         </Grid>
-        <Grid x:Name="helpPanel" Margin="16,0,16,0" BorderBrush="DimGray" BorderThickness="1" Padding="8,8,8,8">
+        <Grid x:Name="helpPanel" Visibility="Collapsed" Margin="16,0,16,0" BorderBrush="DimGray" BorderThickness="1" Padding="8,8,8,8">
             <!--don't put top/bottom margins in helpPanel; throws off calculation-->
-            <ScrollViewer x:Name="help_quick_start_guide">
+            <ScrollViewer x:Name="help_quick_start_guide" Visibility="Collapsed">
                 <RichTextBlock x:Name="help_quick_start_guide_TextBlock">
                     <Paragraph>
-                        <Bold>Quick Start Guide:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Quick Start Guide:</Bold>
                         <LineBreak />
                         <LineBreak />Enter an arithmetic expression and press Enter to calculate the result.
                         <Bold>+</Bold>,
@@ -92,8 +94,7 @@
                         <Bold>(2+3)*4</Bold> means add 2 to 3 then multiply the result by 4
                         <LineBreak />
                         <LineBreak />
-                        <Bold>-2-3/4</Bold> means divide 3 by 4 then subtract the result from
-                        -2 (technically, -2 is the negation of 2)
+                        <Bold>-2-3/4</Bold> means divide 3 by 4 then subtract the result from -2
                         <LineBreak />
                         <LineBreak />
                         <Bold>pi*5**2</Bold> means square 5 (raise 5 to power of 2) then multiply the result by pi
@@ -106,12 +107,12 @@
                         <LineBreak />
                         <LineBreak />
                         <Bold>8!</Bold> means the factorial of 8; factorial can be applied generally
-                        to positive real numbers; e.g.,
+                        to positive real numbers; for example,
                         <Bold>8.2!</Bold> is valid
                         <LineBreak />
                         <LineBreak />
                         <Bold>8!!</Bold> means the double factorial of 8; double factorial can be
-                        applied generally to positive real numbers; e.g.,
+                        applied generally to positive real numbers; for example,
                         <Bold>8.2!!</Bold> is valid
                         <LineBreak />
                         <LineBreak />
@@ -215,7 +216,9 @@
             <ScrollViewer x:Name="help_variables" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Variables:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Variables:</Bold>
                         <LineBreak />
                         <LineBreak />Numbers and the results of expressions can be stored in
                         variables. For example, <Bold>r=6.8/2</Bold> stores the result of 6.8/2
@@ -254,7 +257,9 @@
             <ScrollViewer x:Name="help_numbers" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Numbers:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Numbers:</Bold>
                         <LineBreak />
                         <LineBreak />This section is rather technical and assumes you have a basic
                         understanding of how computers represent numbers and perform arithmetic.
@@ -313,7 +318,7 @@
                         two are normalized).
                         <LineBreak />
                         <LineBreak />An unadorned number&#x2014;one without a radix prefix, without a decimal
-                        point and not specified in scientific notation, e.g., 10&#x2014;can be either
+                        point and not specified in scientific notation, for example, 10&#x2014;can be either
                         floating point (normally) or an integer depending on the input mode (explained below).
                         <LineBreak />
                         <LineBreak />
@@ -431,7 +436,9 @@
             <ScrollViewer x:Name="help_fp_and_integer_arithmetic_operators" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Floating Point and Integer Arithmetic Operators:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Floating Point and Integer Arithmetic Operators:</Bold>
                     </Paragraph>
                     <Paragraph Margin="20,0,0,0">
                         <LineBreak />
@@ -461,7 +468,9 @@
             <ScrollViewer x:Name="help_fp_arithmetic_operators" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Floating Point Arithmetic Operators:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Floating Point Arithmetic Operators:</Bold>
                     </Paragraph>
                     <Paragraph Margin="20,0,0,0">
                         <LineBreak /><Bold>**</Bold> Exponentiation
@@ -481,7 +490,7 @@
                         floating point domain because of how easily calculations can "blow up" and
                         become larger than integers can support; also, factorials are implemented
                         using the gamma function to support factorials of real numbers with
-                        fractional components (e.g., 3.4!). The factorial for real numbers is
+                        fractional components (for example, 3.4!). The factorial for real numbers is
                         given by the formula gamma(n+1), and the double factorial for real numbers
                         is given by the formula
                         2**((1+2*n-cos(pi*n))/4)*pi**((cos(pi*n)-1)/4)*gamma(1+n/2), the latter
@@ -499,7 +508,9 @@
             <ScrollViewer x:Name="help_integer_arithmetic_and_bitwise_logic_operators" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Integer Arithmetic and
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Integer Arithmetic and
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
                                 Bitwise Logic</Hyperlink> Operators:</Bold>
                     </Paragraph>
@@ -536,7 +547,9 @@
             <ScrollViewer x:Name="help_scientific_functions" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Scientific Functions:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Scientific Functions:</Bold>
                         <LineBreak />
                         <LineBreak />The calculator provides a variety of scientific functions
                         such as log, sin, cos, etc., which operate on floating point parameters.
@@ -583,7 +596,9 @@
             <ScrollViewer x:Name="help_statistical_functions" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Statistical Functions:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Statistical Functions:</Bold>
                         <LineBreak />
                         <LineBreak />The calculator provides a variety of statistical functions
                         such as avg, stddev, etc., which operate on lists of floating point numbers.
@@ -619,7 +634,9 @@
             <ScrollViewer x:Name="help_operator_precedence_and_associativity" Visibility="Collapsed">
                 <RichTextBlock>
                     <Paragraph>
-                        <Bold>Operator Precedence and Associativity:</Bold>
+                        <Hyperlink Click="help_link_hide_help_Click">Dismiss help</Hyperlink>
+                        <LineBreak />
+                        <LineBreak /><Bold>Operator Precedence and Associativity:</Bold>
                         <LineBreak />
                         <LineBreak />Binary (two-operand) operators associate left to right except for
                         exponentiation and assignment, which associate right to left. Operators are listed

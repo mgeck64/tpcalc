@@ -39,8 +39,17 @@ inline auto winrt::tcalc::implementation::MainPage::make_size(double width, doub
 
 void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
-    default_page_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight() + bottomAppBar().ActualHeight());
     auto local_settings = Storage::ApplicationData::Current().LocalSettings();
+
+    default_page_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight() + bottomAppBar().ActualHeight());
+    initial_calcPanel_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight());
+    initial_input_size = make_size(input().ActualWidth(), input().ActualHeight());
+    initial_output_size = make_size(output().Width(), output().ActualHeight()); // output.ActualWidth() is returning 0 for some unknown reason
+    page_resized_for_variables = unbox_value_or(local_settings.Values().Lookup(L"page_resized_for_variables"), default_page_size);
+    page_resized_for_help = unbox_value_or(local_settings.Values().Lookup(L"page_resized_for_help"), default_page_size);
+    page_resized_for_general = unbox_value_or(local_settings.Values().Lookup(L"page_resized_for_general"), default_page_size);
+    size_values_valid = true;
+
     assert(varsPanel().Visibility() == Visibility::Collapsed);
     ApplicationView::GetForCurrentView().SetPreferredMinSize(default_page_size);
     if (!local_settings.Values().HasKey(L"launchedWithPrefSize")) {
@@ -51,12 +60,14 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
         // make sure help is visible in PC mode; in tablet mode this should be
         // redundant as help should be visible by default
         show_help(L"help_quick_start_guide");
+    } else {
+        auto XPanel = unbox_value_or(local_settings.Values().Lookup(L"XPanel"), L"none");
+        if (XPanel == L"variables")
+            toggle_vars(true);
+        else if (XPanel != L"none")
+            show_help(XPanel);
     }
-
-    initial_calcPanel_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight());
-    initial_input_size = make_size(input().ActualWidth(), input().ActualHeight());
-    initial_output_size = make_size(output().Width(), output().ActualHeight()); // output.ActualWidth() is returning 0 for some unknown reason
-    size_values_valid = true;
+    ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::Auto); // takes effect next launch
 
     update_page_ui();
     on_vars_changed();
@@ -93,6 +104,21 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
 void winrt::tcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Foundation:: IInspectable const&, winrt::Windows::UI::Xaml::SizeChangedEventArgs const&)
 {
     update_page_ui();
+    if (varsPanel().Visibility() == Visibility::Visible) {
+        assert(helpPanel().Visibility() == Visibility::Collapsed);
+        page_resized_for_variables = make_size(ActualWidth(), ActualHeight());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"page_resized_for_variables", box_value(page_resized_for_variables));
+    } else if (helpPanel().Visibility() == Visibility::Visible) {
+        assert(varsPanel().Visibility() == Visibility::Collapsed);
+        page_resized_for_help = make_size(ActualWidth(), ActualHeight());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"page_resized_for_help", box_value(page_resized_for_help));
+    } else {
+        page_resized_for_general = make_size(ActualWidth(), ActualHeight());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"page_resized_for_general", box_value(page_resized_for_general));
+    }
 }
 
 void winrt::tcalc::implementation::MainPage::set_output_to_last_val() {
@@ -125,20 +151,11 @@ void winrt::tcalc::implementation::MainPage::set_output_to_text(std::wstring_vie
     outputted_last_val = false;
 }
 
-inline double winrt::tcalc::implementation::MainPage::space_for_XPanel() {
-    double space_for_XPanel_ = ActualHeight() - calcPanel().ActualHeight() - bottomAppBar().ActualHeight() - 10; // - 10 for margin (can't figure how to do this in AXML)
-    if (space_for_XPanel_ < 0)
-        space_for_XPanel_ = 0;
-    return space_for_XPanel_;
-}
-
-inline void winrt::tcalc::implementation::MainPage::update_XPanel_button_labels(double space_for_XPanel_) {
-    // space_for_XPanel_ is optimization for update_page_ui to avoid duplicate call to space_for_XPanel()
-    assert(space_for_XPanel_ == space_for_XPanel());
-    bool show_help = !space_for_XPanel_ || helpPanel().Visibility() == Visibility::Collapsed;
+inline void winrt::tcalc::implementation::MainPage::update_XPanel_button_labels() {
+    bool show_help = helpPanel().Visibility() == Visibility::Collapsed;
     help_menu_hide_help().IsEnabled(!show_help);
     
-    bool show_vars = !space_for_XPanel_ || varsPanel().Visibility() == Visibility::Collapsed;
+    bool show_vars = varsPanel().Visibility() == Visibility::Collapsed;
     auto varsButtonLabel = show_vars ? L"Variables" : L"Hide Variables";
     if (varsButton().Label() != varsButtonLabel)
         varsButton().Label(varsButtonLabel);
@@ -156,13 +173,15 @@ void winrt::tcalc::implementation::MainPage::update_page_ui() {
             output().Width(initial_output_size.Width + delta_width + output_padding);
     }
 
-    auto space_for_XPanel_ = space_for_XPanel();
-    if (varsPanel().ActualHeight() != space_for_XPanel_)
-        varsPanel().Height(space_for_XPanel_);
-    if (helpPanel().ActualHeight() != space_for_XPanel_)
-        helpPanel().Height(space_for_XPanel_);
+    double space_for_XPanel = ActualHeight() - calcPanel().ActualHeight() - bottomAppBar().ActualHeight() - 10; // - 10 for margin (can't figure how to do this in AXML)
+    if (space_for_XPanel < 0)
+        space_for_XPanel = 0;
+    if (varsPanel().ActualHeight() != space_for_XPanel)
+        varsPanel().Height(space_for_XPanel);
+    if (helpPanel().ActualHeight() != space_for_XPanel)
+        helpPanel().Height(space_for_XPanel);
 
-    update_XPanel_button_labels(space_for_XPanel_);
+    update_XPanel_button_labels();
 }
 
 void winrt::tcalc::implementation::MainPage::update_mode_menu() {
@@ -405,21 +424,35 @@ void winrt::tcalc::implementation::MainPage::on_vars_changed() {
     varsTextBlock().Text(out_buf.str());
 }
 
-void winrt::tcalc::implementation::MainPage::ToggleVars_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
-{
-    if (ActualHeight() <= default_page_size.Height // should be helpPanel.ActualHeight() == 0 but for unknown reason helpPanel.ActualHeight() is not reliable
+void winrt::tcalc::implementation::MainPage::toggle_vars(bool force_show) {
+    if (force_show
+            || ActualHeight() <= default_page_size.Height // should be helpPanel.ActualHeight() == 0 but for unknown reason helpPanel.ActualHeight() is not reliable
             || varsPanel().Visibility() == Visibility::Collapsed) {
-        TryResizeView(make_size(default_page_size.Width, 300));
+        Size page_size;
+        if (page_resized_for_variables == default_page_size)
+            page_size = make_size(default_page_size.Width, 300);
+        else
+            page_size = page_resized_for_variables;
         varsPanel().Visibility(Visibility::Visible);
         helpPanel().Visibility(Visibility::Collapsed);
+        TryResizeView(page_size);
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"XPanel", box_value(L"variables"));
     } else if (varsPanel().Visibility() == Visibility::Visible) {
-        TryResizeView(default_page_size);
         varsPanel().Visibility(Visibility::Collapsed);
         helpPanel().Visibility(Visibility::Collapsed);
+        TryResizeView(page_resized_for_general);
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"XPanel", box_value(L"none"));
     } else
         assert(false); // missed something
     input().Focus(FocusState::Programmatic);
     update_XPanel_button_labels();
+}
+
+void winrt::tcalc::implementation::MainPage::ToggleVars_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+{
+    toggle_vars();
 }
 
 void winrt::tcalc::implementation::MainPage::help_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
@@ -500,20 +533,28 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     if (making_visible) {
         varsPanel().Visibility(Visibility::Collapsed); // incase showing
 
-        double width, height;
-        if (helpPanel().Visibility() == Visibility::Collapsed || !space_for_XPanel()) {
-            width = 500;
+        Size page_size;
+        if (page_resized_for_help == default_page_size) {
             const auto& info = Graphics::Display::DisplayInformation::GetForCurrentView();
-            height = (info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel()) * 0.8;
-            TryResizeView(make_size(width, height));
-        }
+            double height = (info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel()) * 0.8; // 80% of screen height
+            page_size = make_size(500, height);
+        } else
+            page_size = page_resized_for_help;
         helpPanel().Visibility(Visibility::Visible);
         make_visible.Visibility(Visibility::Visible);
+        TryResizeView(page_size);
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"XPanel", box_value(tag));
     } else if (varsPanel().Visibility() == Visibility::Collapsed) {
-        TryResizeView(default_page_size);
         helpPanel().Visibility(Visibility::Collapsed);
+        TryResizeView(page_resized_for_general);
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"XPanel", box_value(L"none"));
     }
 }
+
+void winrt::tcalc::implementation::MainPage::help_link_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_quick_start_guide");}
 
 void winrt::tcalc::implementation::MainPage::help_link_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_variables");}
@@ -539,5 +580,5 @@ void winrt::tcalc::implementation::MainPage::help_link_statistical_functions_Cli
 void winrt::tcalc::implementation::MainPage::help_link_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_operator_precedence_and_associativity");}
 
-void winrt::tcalc::implementation::MainPage::help_link_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
-{show_help(L"help_quick_start_guide");}
+void winrt::tcalc::implementation::MainPage::help_link_hide_help_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_hide_help");}
