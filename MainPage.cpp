@@ -39,6 +39,9 @@ inline auto winrt::tcalc::implementation::MainPage::make_size(double width, doub
 
 void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
+    assert(varsPanel().Visibility() == Visibility::Collapsed);
+    assert(helpPanel().Visibility() == Visibility::Collapsed);
+
     auto local_settings = Storage::ApplicationData::Current().LocalSettings();
 
     default_page_size = make_size(calcPanel().ActualWidth(), calcPanel().ActualHeight() + bottomAppBar().ActualHeight());
@@ -50,15 +53,9 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
     page_resized_for_general = unbox_value_or(local_settings.Values().Lookup(L"page_resized_for_general"), default_page_size);
     size_values_valid = true;
 
-    assert(varsPanel().Visibility() == Visibility::Collapsed);
     ApplicationView::GetForCurrentView().SetPreferredMinSize(default_page_size);
-    if (!local_settings.Values().HasKey(L"launchedWithPrefSize")) {
-        ApplicationView::PreferredLaunchViewSize(default_page_size);
-        ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::PreferredLaunchViewSize);
-        local_settings.Values().Insert(L"launchedWithPrefSize", box_value(true)); // causes changes to have immediate effect
-
-        // make sure help is visible in PC mode; in tablet mode this should be
-        // redundant as help should be visible by default
+    if (!local_settings.Values().HasKey(L"Launched")) {
+        local_settings.Values().Insert(L"Launched", box_value(true));
         show_help(L"help_quick_start_guide");
     } else {
         auto XPanel = unbox_value_or(local_settings.Values().Lookup(L"XPanel"), L"none");
@@ -67,7 +64,6 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
         else if (XPanel != L"none")
             show_help(XPanel);
     }
-    ApplicationView::PreferredLaunchWindowingMode(ApplicationViewWindowingMode::Auto); // takes effect next launch
 
     update_page_ui();
     on_vars_changed();
@@ -104,7 +100,9 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
 void winrt::tcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Foundation:: IInspectable const&, winrt::Windows::UI::Xaml::SizeChangedEventArgs const&)
 {
     update_page_ui();
-    if (varsPanel().Visibility() == Visibility::Visible) {
+    if (!size_values_valid)
+        ;
+    else if (varsPanel().Visibility() == Visibility::Visible) {
         assert(helpPanel().Visibility() == Visibility::Collapsed);
         page_resized_for_variables = make_size(ActualWidth(), ActualHeight());
         Storage::ApplicationData::Current().LocalSettings().
