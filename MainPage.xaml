@@ -116,10 +116,16 @@
                         <LineBreak />
                         <LineBreak />
                         <Bold>2*sin(1.8)</Bold> means 2 times the sine of 1.8
+                        <LineBreak />
+                        <LineBreak />
+                        <Bold>avg(1,2,3,4,5,6,7,8,9)</Bold> means the average of 1,2,3,4,5,6,7,8,9
                     </Paragraph>
                     <Paragraph>
-                        <LineBreak />The
+                        <LineBreak />For reference, the
                         <Bold>Scientific</Bold> menu has all of the available scientific functions.
+                        <LineBreak />
+                        <LineBreak />For reference, the
+                        <Bold>Statistics</Bold> menu has all of the available statistical functions.
                         <LineBreak />
                         <LineBreak />The
                         <Bold>Values</Bold> menu has all of the available internal values (pi, e).
@@ -533,15 +539,17 @@
                         <Bold>Scientific Functions:</Bold>
                         <LineBreak />
                         <LineBreak />The calculator provides a variety of scientific functions
-                        such as log, sin, cos, etc., which operate on floating point numbers.
-                        For each function, an integer parameter will be converted to floating
-                        point, and the result will be a floating point value. The syntax for
-                        each function is &lt;name&gt;(&lt;parameter&gt;) where &lt;name&gt; is
-                        the name of the function and &lt;parameter&gt; is a number or expression;
-                        examples: sin(2), log(3/2), sqrt(5**2).
+                        such as log, sin, cos, etc., which operate on floating point parameters.
+                        The syntax of each function is &lt;name&gt;(&lt;parameter&gt;) where
+                        &lt;name&gt; is the name of the function and &lt;parameter&gt; is a
+                        number or expression; examples: sin(2), log(3/2), sqrt(5**2).
+                        For each function, if the parameter is an integer one then it will be
+                        converted to floating point. Also, the result of each function will be a
+                        floating point value.
                         <LineBreak />
-                        <LineBreak />The complete set of scientific functions is available in the
-                        <Bold>Scientific</Bold> menu. The scientific functions are:
+                        <LineBreak />The complete set of scientific functions is available for
+                        reference below and in the <Bold>Scientific</Bold> menu. The scientific
+                        functions are:
                     </Paragraph>
                     <Paragraph Margin="20,0,0,0">
                         <LineBreak /><Bold>exp</Bold> - e**n
@@ -568,6 +576,42 @@
                     <Paragraph>
                         <LineBreak />
                         <Hyperlink Click="help_link_integer_arithmetic_and_bitwise_logic_operators_Click">Previous: Integer Arithmetic and Bitwise Logic Operators</Hyperlink><LineBreak />
+                        <Hyperlink Click="help_link_statistical_functions_Click">Next: Statistical Functions</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </ScrollViewer>
+            <ScrollViewer x:Name="help_statistical_functions" Visibility="Collapsed">
+                <RichTextBlock>
+                    <Paragraph>
+                        <Bold>Statistical Functions:</Bold>
+                        <LineBreak />
+                        <LineBreak />The calculator provides a variety of statistical functions
+                        such as avg, stddev, etc., which operate on lists of floating point numbers.
+                        The syntax of each function is &lt;name&gt;(&lt;parameter&gt; [,&lt;parameter&gt;]...)
+                        where &lt;name&gt; is the name of the function and &lt;parameter&gt; is a
+                        number or expression; for example: avg(2,e,pi,3/2,sqrt(5**2)) computes the
+                        average of 2, e, pi, 3/2 and sqrt(5**2).
+                        For each function, any integer parameters will be converted to floating
+                        point, and the result will be either a floating point value or another list.
+                        <LineBreak />
+                        <LineBreak />The complete set of statistical functions is available for
+                        reference below and in the <Bold>Statistics</Bold> menu. The statistical
+                        functions are:
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        <LineBreak /><Bold>sum</Bold> - Sum
+                        <LineBreak /><Bold>prod</Bold> - Product
+                        <LineBreak /><Bold>avg</Bold> - Average (Arithmetic Mean)
+                        <LineBreak /><Bold>geomean</Bold> - Geometric Mean
+                        <LineBreak /><Bold>harmmean</Bold> - Harmonic Mean
+                        <LineBreak /><Bold>variance</Bold> - Variance
+                        <LineBreak /><Bold>stddev</Bold> - Standard Deviation
+                        <LineBreak /><Bold>median</Bold> - Median
+                        <LineBreak /><Bold>mode</Bold> - Mode
+                    </Paragraph>
+                    <Paragraph>
+                        <LineBreak />
+                        <Hyperlink Click="help_link_scientific_functions_Click">Previous: Scientific Functions</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_operator_precedence_and_associativity_Click">Next: Operator Precedence and Associativity</Hyperlink>
                     </Paragraph>
                 </RichTextBlock>
@@ -608,7 +652,7 @@
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
-                        <Hyperlink Click="help_link_scientific_functions_Click">Previous: Scientific Functions</Hyperlink><LineBreak />
+                        <Hyperlink Click="help_link_statistical_functions_Click">Previous: Statistical Functions</Hyperlink><LineBreak />
                         <Hyperlink Click="help_link_quick_start_guide_Click">Top: Quick Start Guide</Hyperlink>
                     </Paragraph>                    
                 </RichTextBlock>            
@@ -727,6 +771,7 @@
                         <MenuFlyoutItem Tag="help_fp_arithmetic_operators" Text="Floating Point Arithmetic Operators" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_integer_arithmetic_and_bitwise_logic_operators" Text="Integer Arithmetic and Bitwise Logic Operators" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_scientific_functions" Text="Scientific Functions" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_statistical_functions" Text="Statistical Functions" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_operator_precedence_and_associativity" Text="Operator Precedence and Associativity" Click="help_Click" />
                         <MenuFlyoutItem x:Name="help_menu_hide_help" Tag="help_hide_help" Text="Hide Help" Click="help_Click" />
                     </MenuFlyout>
