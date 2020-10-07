@@ -135,10 +135,10 @@ inline double winrt::tcalc::implementation::MainPage::space_for_XPanel() {
 inline void winrt::tcalc::implementation::MainPage::update_XPanel_button_labels(double space_for_XPanel_) {
     // space_for_XPanel_ is optimization for update_page_ui to avoid duplicate call to space_for_XPanel()
     assert(space_for_XPanel_ == space_for_XPanel());
-    bool show_help = space_for_XPanel_ == 0 || helpPanel().Visibility() == Visibility::Collapsed;
+    bool show_help = !space_for_XPanel_ || helpPanel().Visibility() == Visibility::Collapsed;
     help_menu_hide_help().IsEnabled(!show_help);
     
-    bool show_vars = space_for_XPanel_ == 0 || varsPanel().Visibility() == Visibility::Collapsed;
+    bool show_vars = !space_for_XPanel_ || varsPanel().Visibility() == Visibility::Collapsed;
     auto varsButtonLabel = show_vars ? L"Variables" : L"Hide Variables";
     if (varsButton().Label() != varsButtonLabel)
         varsButton().Label(varsButtonLabel);
@@ -409,13 +409,13 @@ void winrt::tcalc::implementation::MainPage::ToggleVars_Click(winrt::Windows::Fo
 {
     if (ActualHeight() <= default_page_size.Height // should be helpPanel.ActualHeight() == 0 but for unknown reason helpPanel.ActualHeight() is not reliable
             || varsPanel().Visibility() == Visibility::Collapsed) {
+        TryResizeView(make_size(default_page_size.Width, 300));
         varsPanel().Visibility(Visibility::Visible);
         helpPanel().Visibility(Visibility::Collapsed);
-        TryResizeView(make_size(default_page_size.Width, 300));
     } else if (varsPanel().Visibility() == Visibility::Visible) {
+        TryResizeView(default_page_size);
         varsPanel().Visibility(Visibility::Collapsed);
         helpPanel().Visibility(Visibility::Collapsed);
-        TryResizeView(default_page_size);
     } else
         assert(false); // missed something
     input().Focus(FocusState::Programmatic);
@@ -455,6 +455,9 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     } else if (help_scientific_functions().Visibility() == Visibility::Visible) {
         visible = help_scientific_functions();
         have_visible = true;
+    } else if (help_statistical_functions().Visibility() == Visibility::Visible) {
+        visible = help_statistical_functions();
+        have_visible = true;
     } else if (help_operator_precedence_and_associativity().Visibility() == Visibility::Visible) {
         visible = help_operator_precedence_and_associativity();
         have_visible = true;
@@ -483,6 +486,9 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     } else if (tag == L"help_scientific_functions") {
         make_visible = help_scientific_functions();
         making_visible = true;
+    } else if (tag == L"help_statistical_functions") {
+        make_visible = help_statistical_functions();
+        making_visible = true;
     } else if (tag == L"help_operator_precedence_and_associativity") {
         make_visible = help_operator_precedence_and_associativity();
         making_visible = true;
@@ -494,15 +500,18 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     if (making_visible) {
         varsPanel().Visibility(Visibility::Collapsed); // incase showing
 
+        double width, height;
+        if (helpPanel().Visibility() == Visibility::Collapsed || !space_for_XPanel()) {
+            width = 500;
+            const auto& info = Graphics::Display::DisplayInformation::GetForCurrentView();
+            height = (info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel()) * 0.8;
+            TryResizeView(make_size(width, height));
+        }
         helpPanel().Visibility(Visibility::Visible);
         make_visible.Visibility(Visibility::Visible);
-        const auto& info = Graphics::Display::DisplayInformation::GetForCurrentView();
-        auto height = info.ScreenHeightInRawPixels();
-        auto scale_factor = info.RawPixelsPerViewPixel();
-        TryResizeView(make_size(500, (height / scale_factor) * 0.8));
     } else if (varsPanel().Visibility() == Visibility::Collapsed) {
-        helpPanel().Visibility(Visibility::Collapsed);
         TryResizeView(default_page_size);
+        helpPanel().Visibility(Visibility::Collapsed);
     }
 }
 
@@ -523,6 +532,9 @@ void winrt::tcalc::implementation::MainPage::help_link_integer_arithmetic_and_bi
 
 void winrt::tcalc::implementation::MainPage::help_link_scientific_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_scientific_functions");}
+
+void winrt::tcalc::implementation::MainPage::help_link_statistical_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_statistical_functions");}
 
 void winrt::tcalc::implementation::MainPage::help_link_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_operator_precedence_and_associativity");}
