@@ -224,8 +224,8 @@
                         in the variable "r". A variable can be used in expressions in place of
                         a number; for example, <Bold>pi*r**2</Bold> multiplies pi by r squared.
                         <LineBreak />
-                        <LineBreak />A variable name begins with a letter or underscore, which
-                        is followed by 0 or more letters, digits or underscores; examples of
+                        <LineBreak />A variable name begins with a letter or underscore
+                        followed by 0 or more letters, digits or underscores; examples of
                         valid variable names are: "x", "max_x" and "x2". Variable names are
                         case-sensitive; for example, "x" and "X" are different variables.
                         <LineBreak />
@@ -552,12 +552,14 @@
                         <LineBreak />
                         <LineBreak />The calculator provides a variety of scientific functions
                         such as log, sin, cos, etc., which operate on floating point parameters.
-                        The syntax of each function is &lt;name&gt;(&lt;parameter&gt;) where
-                        &lt;name&gt; is the name of the function and &lt;parameter&gt; is a
+                        <LineBreak />
+                        <LineBreak />The syntax of each function is &lt;name&gt;(&lt;parameter&gt;)
+                        where &lt;name&gt; is the name of the function and &lt;parameter&gt; is a
                         number or expression; examples: sin(2), log(3/2), sqrt(5**2).
-                        For each function, if the parameter is an integer one then it will be
-                        converted to floating point. Also, the result of each function will be a
-                        floating point value.
+                        <LineBreak />
+                        <LineBreak />For each function, if the parameter is an integer one then it
+                        will be converted to floating point. Also, the result of each function will
+                        be a floating point value.
                         <LineBreak />
                         <LineBreak />The complete set of scientific functions is available for
                         reference below and in the <Bold>Scientific</Bold> menu. The scientific
@@ -600,14 +602,32 @@
                         <LineBreak /><Bold>Statistical Functions:</Bold>
                         <LineBreak />
                         <LineBreak />The calculator provides a variety of statistical functions
-                        such as avg, stddev, etc., which operate on lists of floating point numbers.
-                        The syntax of each function is &lt;name&gt;(&lt;parameter&gt; [,&lt;parameter&gt;]...)
-                        where &lt;name&gt; is the name of the function and &lt;parameter&gt; is a
-                        number or expression; for example: avg(2,e,pi,3/2,sqrt(5**2)) computes the
-                        average of 2, e, pi, 3/2 and sqrt(5**2).
-                        For each function, any integer parameters will be converted to floating
-                        point, and the result will be either a floating point value or another list.
+                        such as avg, stddev, mode, etc., which operate on lists of numbers.
                         <LineBreak />
+                        <LineBreak />The syntax of each function is &lt;name&gt;&lt;list&gt; where &lt;name&gt;
+                        is the name of the function, and &lt;list&gt; is a list of comma delimited
+                        parameters enclosed in parenthesis, where each parameter is a number or
+                        expression; for example: avg(2,e,pi,3/2,sqrt(5**2)) computes the average of
+                        2, e, pi, 3/2 and sqrt(5**2).
+                        <LineBreak />
+                        <LineBreak />For each statistical function, any integer
+                        parameters will be converted to floating point, and the result will be
+                        a floating point value, except in the case where the mode function
+                        finds more than one mode, then the result will be another list.
+                        <LineBreak />
+                        <LineBreak />Lists can be stored in variables, which can be used in
+                        statistical functions; for example:
+                    </Paragraph>
+                    <Paragraph Margin="20,0,0,0">
+                        sample=(1,2,3,4,5,6,7,8,9)
+                        <LineBreak />avg(sample)
+                        <LineBreak />median(sample)
+                        <LineBreak />stddev(sample)
+                    </Paragraph>
+                    <Paragraph>
+                        Note that the parenthesis around the list of parameters are required.
+                    </Paragraph>
+                    <Paragraph>
                         <LineBreak />The complete set of statistical functions is available for
                         reference below and in the <Bold>Statistics</Bold> menu. The statistical
                         functions are:
@@ -618,10 +638,21 @@
                         <LineBreak /><Bold>avg</Bold> - Average (Arithmetic Mean)
                         <LineBreak /><Bold>geomean</Bold> - Geometric Mean
                         <LineBreak /><Bold>harmmean</Bold> - Harmonic Mean
-                        <LineBreak /><Bold>variance</Bold> - Variance
-                        <LineBreak /><Bold>stddev</Bold> - Standard Deviation
+                        <LineBreak /><Bold>variance</Bold> - Sample Variance
+                        <LineBreak /><Bold>stddev</Bold> - Sample Standard Deviation
+                        <LineBreak /><Bold>pvariance</Bold> - Population Variance
+                        <LineBreak /><Bold>pstddev</Bold> - Population Standard Deviation
                         <LineBreak /><Bold>median</Bold> - Median
                         <LineBreak /><Bold>mode</Bold> - Mode
+                        <LineBreak /><Bold>min</Bold> - Minimum
+                        <LineBreak /><Bold>max</Bold> - Maximum
+                        <LineBreak /><Bold>quartile1</Bold> - First Quartile (Q1) 25%
+                        <LineBreak /><Bold>quartile2</Bold> - Second Quartile (Q2) 50%
+                        <LineBreak /><Bold>quartile3</Bold> - Third Quartile (Q3) 75%
+                        <LineBreak /><Bold>iqr</Bold> - Interquartile Range
+                        <LineBreak /><Bold>range</Bold> - Range
+                        <LineBreak /><Bold>mad</Bold> - Mean Absolute Deviation
+                        <LineBreak /><Bold>qdev</Bold> - Quartile Deviation
                     </Paragraph>
                     <Paragraph>
                         <LineBreak />
@@ -727,10 +758,21 @@
                         <MenuFlyoutItem Tag="avg(" Text="avg - Average (Arithmetic Mean)" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="geomean(" Text="geomean - Geometric Mean" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="harmmean(" Text="harmmean - Harmonic Mean" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="variance(" Text="variance - Variance" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="stddev(" Text="stddev - Standard Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="variance(" Text="variance - Sample Variance" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="stddev(" Text="stddev - Sample Standard Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="pvariance(" Text="pvariance - Population Variance" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="pstddev(" Text="pstddev - Population Standard Deviation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="median(" Text="median - Median" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="mode(" Text="mode - Mode" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="min(" Text="min - Minimum" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="max(" Text="max - Maximum" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="quartile1(" Text="quartile1 - First Quartile (Q1) 25%" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="quartile2(" Text="quartile2 - Second Quartile (Q2) 50%" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="quartile3(" Text="quartile3 - Third Quartile (Q3) 75%" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="iqr(" Text="iqr - Interquartile Range" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="range(" Text="range - Range" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="mad(" Text="mad - Mean Absolute Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="qdev(" Text="qdev - Quartile Deviation" Click="append_tag_to_input_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
