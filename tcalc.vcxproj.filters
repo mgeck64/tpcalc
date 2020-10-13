@@ -54,6 +54,9 @@
     <ClInclude Include="..\rdcalc\stream_state_restorer.h">
       <Filter>Calc</Filter>
     </ClInclude>
+    <ClInclude Include="..\rdcalc\calc_util.h">
+      <Filter>Calc</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">

@@ -212,6 +212,7 @@ void winrt::tcalc::implementation::MainPage::update_page_layout() {
             bottomAppBar().ActualHeight();
         if (extra_space < 0)
             extra_space = 0;
+        extra_space_for_input_output = extra_space;
 
         double extra_space_part = extra_space / (XPanel_visible ? 6.0 : 2.0); // divisors were empirically determined
         

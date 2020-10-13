@@ -125,6 +125,7 @@
     <ClInclude Include="..\rdcalc\calc_lexer.h" />
     <ClInclude Include="..\rdcalc\calc_outputter.h" />
     <ClInclude Include="..\rdcalc\calc_parser.h" />
+    <ClInclude Include="..\rdcalc\calc_util.h" />
     <ClInclude Include="..\rdcalc\char_helper.h" />
     <ClInclude Include="..\rdcalc\ieee_double.h" />
     <ClInclude Include="..\rdcalc\lookahead.h" />
