@@ -131,6 +131,7 @@
     <ClInclude Include="..\rdcalc\lookahead.h" />
     <ClInclude Include="..\rdcalc\parse_error.h" />
     <ClInclude Include="..\rdcalc\stream_state_restorer.h" />
+    <ClInclude Include="calc_util_windows.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="App.h">
       <DependentUpon>App.xaml</DependentUpon>

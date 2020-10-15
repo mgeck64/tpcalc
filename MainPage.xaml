@@ -33,8 +33,8 @@
         Page_Loaded; without it, calcPanel().ActualWidth() gives wrong result-->
             <StackPanel Margin="16,4,16,10" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="input" Width="280" Height="32" PreviewKeyDown="input_KeyDown" />
-                    <Button x:Name="min_max_in_out_Button" Tag="none" Margin="8,0,0,0" Width="32" Height="32"
+                    <TextBox x:Name="input" PlaceholderText="Type in an expression, then press Enter" Width="288" Height="32" PreviewKeyDown="input_KeyDown" />
+                    <Button x:Name="min_max_in_out_Button" Tag="none" Margin="8,0,0,0" Padding="0.5,0,0,0" Width="24" Height="32"
                             IsEnabled="False" Click="min_max_in_out_Click">▲</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -91,7 +91,7 @@
                         <Paragraph>
                             <Underline>Quick Start Guide</Underline>
                             <LineBreak />
-                            <LineBreak />Enter an arithmetic expression and press Enter to calculate the result.
+                            <LineBreak />Type in an arithmetic expression and then press Enter to calculate the result.
                             <Bold>+</Bold>,
                             <Bold>-</Bold>,
                             <Bold>*</Bold>,
@@ -117,9 +117,7 @@
                             <LineBreak />
                             <LineBreak />
                             <Bold>5**2**3</Bold> is equivalent to
-                            <Bold>5**(2**3)</Bold>
-                            <Hyperlink NavigateUri="https://core.tcl-lang.org/tips/doc/trunk/tip/274.md">
-                                (exponentiation is right-associative)</Hyperlink>
+                            <Bold>5**(2**3)</Bold> (exponentiation is right-associative)
                             <LineBreak />
                             <LineBreak />
                             <Bold>8!</Bold> means the factorial of 8; factorial can be applied generally
@@ -675,9 +673,7 @@
                         <Paragraph Margin="20,0,0,0">
                             <LineBreak />1: <Bold>!</Bold>, <Bold>!!</Bold> factorial, double factorial (unary postfix operators)
                             <LineBreak />
-                            <LineBreak />2: <Bold>**</Bold> exponentiation
-                            <Hyperlink NavigateUri="https://core.tcl-lang.org/tips/doc/trunk/tip/274.md">
-                                (right associative)</Hyperlink>
+                            <LineBreak />2: <Bold>**</Bold> exponentiation (right associative)
                             <LineBreak />
                             <LineBreak />3: <Bold>+</Bold>, <Bold>-</Bold>, <Bold>~</Bold> unary plus, negation,
                             bitwise not (bitwise negation) (unary prefix operators)

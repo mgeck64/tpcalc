@@ -2,6 +2,7 @@
 
 #include "MainPage.g.h"
 #include "..\rdcalc\calc_outputter.h"
+#include "calc_util_windows.h"
 #include <sstream>
 
 namespace winrt::tcalc::implementation
@@ -13,25 +14,30 @@ namespace winrt::tcalc::implementation
         using radices = typename parser_type::radices;
         using outputter_type = calc_outputter<wchar_t>;
         using Size = Windows::Foundation::Size;
+        using DSize = calc_util::DSize;
         parser_type parser;
         outputter_type outputter;
 
         void eval_input();
 
         bool size_values_valid = false;
-        Size default_page_size{0, 0};
-        Size initial_calcPanel_size{0, 0};
-        Size initial_input_size{0, 0};
-        Size initial_output_size{0, 0};
-        Size initial_XPanel_size{0, 0};
-        Size page_resized_for_variables{0, 0};
-        Size page_resized_for_help{0, 0};
-        Size page_resized_for_general{0, 0};
-        Size input_resized_for_general{0, 0};
-        Size output_resized_for_general{0, 0};
-        Size XPanel_resized_for_general{0, 0};
+        DSize resizing_to{0, 0};
+        DSize default_page_size{0, 0};
+        DSize initial_calcPanel_size{0, 0};
+        DSize initial_input_size{0, 0};
+        DSize initial_output_size{0, 0};
+        DSize page_resized_for_variables{0, 0};
+        DSize page_resized_for_help{0, 0};
+        DSize page_resized_for_general{0, 0};
+        DSize base_input_size{0, 0};
+        DSize base_output_size{0, 0};
 
-        bool initializing = true;
+        bool page_SizeChanged_update_layout = true;
+
+        bool minimize_input_output = true;
+
+        const DSize XPanel_hint_for_vars = {0, 200}; // width n/a
+        const DSize XPanel_hint_for_help = {500, 300};
 
         parser_type::string last_input;
         using last_inputs_type = std::vector<parser_type::string>;
@@ -41,12 +47,6 @@ namespace winrt::tcalc::implementation
 
         bool outputted_last_val = false;
 
-        bool page_SizeChanged_update_layout = true;
-
-        bool minimize_input_output = true;
-        double extra_space_for_input_output = 0;
-
-        static auto make_size(double width, double height) -> Size;
         void set_output_to_last_val();
         void set_output_to_text(std::wstring_view text);
         void update_button_labels();
@@ -55,7 +55,8 @@ namespace winrt::tcalc::implementation
         void update_mode_display();
         void update_integer_result_type_menu();
         void on_vars_changed();
-        void TryResizeView(Size size);
+        void TryResizeView(DSize size);
+        void TryResizeView(double width, double height) {return TryResizeView(DSize(width, height));}
         void show_vars(std::wstring_view tag);
         void show_help(std::wstring_view tag);
 

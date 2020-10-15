@@ -57,6 +57,9 @@
     <ClInclude Include="..\rdcalc\calc_util.h">
       <Filter>Calc</Filter>
     </ClInclude>
+    <ClInclude Include="calc_util_windows.h">
+      <Filter>Other</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Wide310x150Logo.scale-200.png">
