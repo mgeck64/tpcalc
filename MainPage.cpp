@@ -108,8 +108,8 @@ void winrt::tcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Fo
 
     if (!size_values_valid)
         ;
-    else if ((fabs(resizing_to.Width() - ActualWidth()) < 2)
-            && (fabs(resizing_to.Height() - ActualHeight()) < 2))
+    else if ((fabs(resizing_to.width() - ActualWidth()) < 2)
+            && (fabs(resizing_to.height() - ActualHeight()) < 2))
         ; // assume this is a programmatic change, which we don't want to track
     else if (varsPanel().Visibility() == Visibility::Visible) {
         assert(helpPanel().Visibility() == Visibility::Collapsed);
@@ -178,7 +178,7 @@ inline void winrt::tcalc::implementation::MainPage::update_button_labels() {
 
     { // min_max_in_out_Button()
         auto tag = unbox_value_or(min_max_in_out_Button().Tag(), L"");
-        if (input().Height() > initial_input_size.Height()) {
+        if (input().Height() > initial_input_size.height()) {
             if (tag != L"min_in_out") {
                 min_max_in_out_Button().Tag(box_value(L"min_in_out"));
                 min_max_in_out_Button().Content(box_value(L"▲"));
@@ -206,7 +206,7 @@ void winrt::tcalc::implementation::MainPage::update_page_layout() {
 
         double extra_height = 
             ActualHeight() -
-            initial_calcPanel_size.Height() -
+            initial_calcPanel_size.height() -
             bottomAppBar().ActualHeight();
         if (extra_height < 0)
             extra_height = 0;
@@ -219,29 +219,29 @@ void winrt::tcalc::implementation::MainPage::update_page_layout() {
         else if (varsPanel().Visibility() == Visibility::Visible)
             XPanel_hint = XPanel_hint_for_vars;
 
-        double extra_height_for_input_output = std::max(extra_height - XPanel_hint.Height() / 2, 0.0);
+        double extra_height_for_input_output = std::max(extra_height - XPanel_hint.height() / 2, 0.0);
         
         double extra_height_for_input = extra_height_for_input_output / 2;
         if (XPanel_visible)
-            if (base_input_size.Height() < (initial_input_size.Height() + extra_height_for_input))
-                extra_height_for_input = std::max(base_input_size.Height() - initial_input_size.Height(), 0.0);
+            if (base_input_size.height() < (initial_input_size.height() + extra_height_for_input))
+                extra_height_for_input = std::max(base_input_size.height() - initial_input_size.height(), 0.0);
         double extra_height_for_output = std::max(2 * extra_height_for_input_output - extra_height_for_input, 0.0);
         if (XPanel_visible)
-            if (base_input_size.Height() < (initial_output_size.Height() + extra_height_for_output))
-                extra_height_for_output = std::max(base_output_size.Height() - initial_output_size.Height(), 0.0);
+            if (base_input_size.height() < (initial_output_size.height() + extra_height_for_output))
+                extra_height_for_output = std::max(base_output_size.height() - initial_output_size.height(), 0.0);
 
         if (minimize_input_output) {
             extra_height_for_input = 0;
             extra_height_for_output = 0;
         }
 
-        input().Height(initial_input_size.Height() + extra_height_for_input);
+        input().Height(initial_input_size.height() + extra_height_for_input);
         if (calc_util::almost_equal(extra_height_for_input, 0.0))
             input().TextWrapping(TextWrapping::NoWrap);
         else
             input().TextWrapping(TextWrapping::Wrap);
 
-        output().Height(initial_output_size.Height() + extra_height_for_output);
+        output().Height(initial_output_size.height() + extra_height_for_output);
         outputType().Height(output().Height());
 
         auto space_for_XPanel = extra_height - extra_height_for_input - extra_height_for_output;
@@ -258,15 +258,15 @@ void winrt::tcalc::implementation::MainPage::update_page_layout() {
         else
             helpPanel().Height(0);
 
-        auto delta_width = ActualWidth() - default_page_size.Width();
-        if (initial_calcPanel_size.Width() + delta_width >= 0)
-            calcPanel().Width(initial_calcPanel_size.Width() + delta_width);
-        if (initial_input_size.Width() + delta_width >= 0)
-            input().Width(initial_input_size.Width() + delta_width);
+        auto delta_width = ActualWidth() - default_page_size.width();
+        if (initial_calcPanel_size.width() + delta_width >= 0)
+            calcPanel().Width(initial_calcPanel_size.width() + delta_width);
+        if (initial_input_size.width() + delta_width >= 0)
+            input().Width(initial_input_size.width() + delta_width);
 
         auto output_padding = outputType().Visibility() == Visibility::Visible ? 0 : outputType().Width();
-        if (initial_output_size.Width() + delta_width + output_padding >= 0)
-            output().Width(initial_output_size.Width() + delta_width + output_padding);
+        if (initial_output_size.width() + delta_width + output_padding >= 0)
+            output().Width(initial_output_size.width() + delta_width + output_padding);
 
     }
 
@@ -485,10 +485,10 @@ inline void winrt::tcalc::implementation::MainPage::TryResizeView(DSize size) {
     // calling windows TryResizeView(size) will do nothing because of min. size
     // setting. note: size can become smaller than default_page_size due to
     // rounding/tolerance error
-    if (size.Size::Width < default_page_size.Size::Width)
-        size.Width(default_page_size.Size::Width);
-    if (size.Size::Height < default_page_size.Size::Height)
-        size.Height(default_page_size.Size::Height);
+    if (size.Width < default_page_size.Width)
+        size.width(default_page_size.Width);
+    if (size.Height < default_page_size.Height)
+        size.height(default_page_size.Height);
 
     // max width/height heuristic:
     // windows TryResizeView(size) does nothing if size is too large
@@ -496,10 +496,10 @@ inline void winrt::tcalc::implementation::MainPage::TryResizeView(DSize size) {
     auto max_size = DSize(
         info.ScreenWidthInRawPixels() / info.RawPixelsPerViewPixel() * 0.8,
         info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel() * 0.8);
-    if (size.Width() > max_size.Width())
-        size.Width(max_size.Width());
-    if (size.Height() > max_size.Height())
-        size.Height(max_size.Height());
+    if (size.width() > max_size.width())
+        size.width(max_size.width());
+    if (size.height() > max_size.height())
+        size.height(max_size.height());
 
     page_SizeChanged_update_layout = false;
     // we'll call update_page_layout here incase TryResizeView doesn't trigger
@@ -545,15 +545,15 @@ void winrt::tcalc::implementation::MainPage::show_vars(std::wstring_view tag) {
         helpPanel().Visibility(Visibility::Collapsed);
         XPanel().Visibility(Visibility::Visible);
         auto input_output_extra_height =
-            base_input_size.Height() + base_output_size.Height()
-            - initial_input_size.Height() - initial_output_size.Height();
-        auto height_hint = default_page_size.Height() + input_output_extra_height + XPanel_hint_for_vars.Height();
+            base_input_size.height() + base_output_size.height()
+            - initial_input_size.height() - initial_output_size.height();
+        auto height_hint = default_page_size.height() + input_output_extra_height + XPanel_hint_for_vars.height();
         double width, height;
         if (page_resized_for_variables != default_page_size) { // want exact match here
-            width = page_resized_for_variables.Width();
-            height = std::max(page_resized_for_variables.Height(), height_hint);
+            width = page_resized_for_variables.width();
+            height = std::max(page_resized_for_variables.height(), height_hint);
         } else {
-            width = page_resized_for_general.Width();
+            width = page_resized_for_general.width();
             height = height_hint;
         }
         TryResizeView(width, height);
@@ -664,15 +664,15 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
         XPanel().Visibility(Visibility::Visible);
         const auto& info = Graphics::Display::DisplayInformation::GetForCurrentView();
         auto input_output_extra_space =
-            base_input_size.Height() + base_output_size.Height()
-            - initial_input_size.Height() - initial_output_size.Height();
-        auto height_hint = default_page_size.Height() + input_output_extra_space + XPanel_hint_for_vars.Height();
+            base_input_size.height() + base_output_size.height()
+            - initial_input_size.height() - initial_output_size.height();
+        auto height_hint = default_page_size.height() + input_output_extra_space + XPanel_hint_for_vars.height();
         double width, height;
         if (page_resized_for_help != default_page_size) { // check for exact match here
-            width = page_resized_for_help.Width();
-            height = std::max(page_resized_for_help.Height(), height_hint);
+            width = page_resized_for_help.width();
+            height = std::max(page_resized_for_help.height(), height_hint);
         } else {
-            width = XPanel_hint_for_vars.Width();
+            width = XPanel_hint_for_vars.width();
             height = std::max(ActualHeight(), height_hint);
             height = std::max(height, info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel() * 0.8);
         }
@@ -745,14 +745,14 @@ void winrt::tcalc::implementation::MainPage::min_max_in_out_Click(winrt::Windows
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"minimize_input_output", box_value(minimize_input_output));
 
-        if (calc_util::almost_equal(base_input_size.Size::Height, initial_input_size.Size::Height)) {
-            assert(calc_util::almost_equal(base_output_size.Size::Height, initial_output_size.Size::Height));
-            base_input_size.Size::Height *= 3;
-            base_output_size.Size::Height *= 3;
+        if (calc_util::almost_equal(base_input_size.Height, initial_input_size.Height)) {
+            assert(calc_util::almost_equal(base_output_size.Height, initial_output_size.Height));
+            base_input_size.Height *= 3;
+            base_output_size.Height *= 3;
             auto space = 
-                (base_input_size.Size::Height - initial_input_size.Size::Height) +
-                (base_output_size.Size::Height - initial_output_size.Size::Height);
-            page_resized_for_general.Size::Height += space;
+                (base_input_size.Height - initial_input_size.Height) +
+                (base_output_size.Height - initial_output_size.Height);
+            page_resized_for_general.Height += space;
             Storage::ApplicationData::Current().LocalSettings().
                 Values().Insert(L"page_resized_for_general", box_value(page_resized_for_general));
             Storage::ApplicationData::Current().LocalSettings().
@@ -767,9 +767,9 @@ void winrt::tcalc::implementation::MainPage::min_max_in_out_Click(winrt::Windows
         else if (helpPanel().Visibility() == Visibility::Visible)
             XPanel_hint = XPanel_hint_for_help;
         auto input_output_extra_height =
-            base_input_size.Height() + base_output_size.Height()
-            - initial_input_size.Height() - initial_output_size.Height();
-        auto height_hint = default_page_size.Height() + input_output_extra_height + XPanel_hint.Height();
+            base_input_size.height() + base_output_size.height()
+            - initial_input_size.height() - initial_output_size.height();
+        auto height_hint = default_page_size.height() + input_output_extra_height + XPanel_hint.height();
         if (ActualHeight() < height_hint)
             TryResizeView(ActualWidth(), height_hint);
         else

@@ -17,12 +17,12 @@ struct DSize : public winrt::Windows::Foundation::Size {
     DSize() : Size{0, 0} {}
     DSize(double width, double height);
     DSize(const Size& size) : Size{size} {}
-    double Width() const {return Size::Width;}
-    double Height() const {return Size::Height;}
-    void Width(double width) {Size::Width = static_cast<float>(width); assert(static_cast<double>(Size::Width) == width);}
-    void Height(double height) {Size::Height = static_cast<float>(height); assert(static_cast<double>(Size::Height) == height);}
-    void Width(float width) {Size::Width = width;}
-    void Height(float height) {Size::Height = height;}
+    double width() const {return Width;}
+    double height() const {return Height;}
+    void width(double width) {Width = static_cast<float>(width); assert(static_cast<double>(Width) == width);}
+    void height(double height) {Height = static_cast<float>(height); assert(static_cast<double>(Height) == height);}
+    void width(float width) {Width = width;}
+    void height(float height) {Height = height;}
 };
 
 inline DSize::DSize(double width, double height)
