@@ -31,6 +31,22 @@ inline DSize::DSize(double width, double height)
     assert(fabs(static_cast<double>(Size::Height) - height) < 0.001);
 }
 
+inline DSize max_page_size() {
+// heuristic for maximum size that ApplicationView::TryResizePage will take;
+// can't figure out how to determine actual size
+    const auto& info = winrt::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+    return DSize(
+        info.ScreenWidthInRawPixels() / info.RawPixelsPerViewPixel() * 0.8,
+        info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel() * 0.8);
+}
+
+inline DSize exceeds_max_page_size(DSize size) {
+    auto max_size = max_page_size();
+    return DSize(
+        size.Width > max_size.Width ? size.Width - max_size.Width : 0,
+        size.Height > max_size.Height ? size.Height - max_size.Height : 0);
+}
+
 } // namespace calc_util
 
 namespace winrt {
