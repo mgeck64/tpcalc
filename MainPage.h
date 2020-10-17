@@ -26,9 +26,7 @@ namespace winrt::tcalc::implementation
         DSize initial_calcPanel_size{0, 0};
         DSize initial_input_size{0, 0};
         DSize initial_output_size{0, 0};
-        DSize page_resized_for_vars{0, 0};
-        DSize page_resized_for_help{0, 0};
-        DSize page_resized_for_general{0, 0};
+        DSize page_resized_for_no_XPanel{0, 0};
         DSize base_input_size{0, 0};
         DSize base_output_size{0, 0};
 
@@ -36,8 +34,8 @@ namespace winrt::tcalc::implementation
 
         bool minimize_input_output = true;
 
-        const DSize XPanel_hint_for_vars = {0, 200}; // width n/a
-        const DSize XPanel_hint_for_help = {500, 300};
+        DSize XPanel_hint_for_vars = {0, 200};
+        DSize XPanel_hint_for_help = {500, 400}; // height overridden in initialization
 
         parser_type::string last_input;
         using last_inputs_type = std::vector<parser_type::string>;
