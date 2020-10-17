@@ -19,8 +19,8 @@ struct DSize : public winrt::Windows::Foundation::Size {
     DSize(const Size& size) : Size{size} {}
     double width() const {return Width;}
     double height() const {return Height;}
-    void width(double width) {Width = static_cast<float>(width); assert(static_cast<double>(Width) == width);}
-    void height(double height) {Height = static_cast<float>(height); assert(static_cast<double>(Height) == height);}
+    void width(double width) {Width = static_cast<float>(width); assert(fabs(static_cast<double>(Width) - width) < 0.001);}
+    void height(double height) {Height = static_cast<float>(height); assert(fabs(static_cast<double>(Height) - height) < 0.001);}
     void width(float width) {Width = width;}
     void height(float height) {Height = height;}
 };
