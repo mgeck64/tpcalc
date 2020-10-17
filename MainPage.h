@@ -26,7 +26,7 @@ namespace winrt::tcalc::implementation
         DSize initial_calcPanel_size{0, 0};
         DSize initial_input_size{0, 0};
         DSize initial_output_size{0, 0};
-        DSize page_resized_for_variables{0, 0};
+        DSize page_resized_for_vars{0, 0};
         DSize page_resized_for_help{0, 0};
         DSize page_resized_for_general{0, 0};
         DSize base_input_size{0, 0};
