@@ -35,7 +35,7 @@ namespace winrt::tcalc::implementation
         bool minimize_input_output = true;
 
         DSize XPanel_hint_for_vars = {0, 200};
-        DSize XPanel_hint_for_help = {500, 400}; // height overridden in initialization
+        DSize XPanel_hint_for_help = {500, 400};
 
         parser_type::string last_input;
         using last_inputs_type = std::vector<parser_type::string>;
@@ -57,6 +57,7 @@ namespace winrt::tcalc::implementation
         void TryResizeView(double width, double height) {return TryResizeView(DSize(width, height));}
         void show_vars(std::wstring_view tag);
         void show_help(std::wstring_view tag);
+        template <typename XPanelHint> auto width_and_height(const XPanelHint& XPanel_hint) -> DSize const;
 
     public:
         MainPage();
