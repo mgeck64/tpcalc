@@ -194,7 +194,7 @@
                             <LineBreak />
                             <LineBreak /><Bold>a&lt;&lt;b</Bold> means arithmetically shift left a by b
                             <LineBreak />
-                            <LineBreak /><Bold>a&lt;&lt;&lt;b</Bold> means logically shift left a by b
+                            <LineBreak /><Bold>a&lt;&lt;&lt;b</Bold> means logically shift left a by b (equivalent to arithmetic shift left)
                             <LineBreak />
                             <LineBreak /><Bold>a&gt;&gt;b</Bold> means arithmetically shift right a by b
                             <LineBreak />
@@ -522,7 +522,7 @@
                             <LineBreak />
                             <LineBreak /><Bold>&lt;&lt;</Bold> Arithmetic shift left
                             <LineBreak />
-                            <LineBreak /><Bold>&lt;&lt;&lt;</Bold> Logical shift left
+                            <LineBreak /><Bold>&lt;&lt;&lt;</Bold> Logical shift left (equivalent to arithmetic shift left)
                             <LineBreak />
                             <LineBreak /><Bold>&gt;&gt;</Bold> Arithmetic shift right
                             <LineBreak />
@@ -683,7 +683,8 @@
                             <LineBreak />5: <Bold>+</Bold>, <Bold>-</Bold> addition, subtraction
                             <LineBreak />
                             <LineBreak />6: <Bold>&lt;&lt;</Bold>, <Bold>&lt;&lt;&lt;</Bold>, <Bold>&gt;&gt;</Bold>, <Bold>&gt;&gt;&gt;</Bold>
-                            arithmetic shift left, logical shift left, arithmetic shift right, logical shift right
+                            arithmetic shift left, logical shift left (arithmetic and logical shift are equivalent), arithmetic shift right,
+                            logical shift right
                             <LineBreak />
                             <LineBreak />7: <Bold>&amp;</Bold> bitwise and
                             <LineBreak />
