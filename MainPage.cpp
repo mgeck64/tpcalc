@@ -12,7 +12,7 @@ using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::ViewManagement;
 using namespace Windows::System;
 
-namespace winrt::tcalc::implementation
+namespace winrt::tpcalc::implementation
 {
     MainPage::MainPage() : parser{[&]{on_vars_changed();}}
     {
@@ -30,7 +30,7 @@ namespace winrt::tcalc::implementation
     }
 }
 
-void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     assert(varsPanel().Visibility() == Visibility::Collapsed);
     assert(helpPanel().Visibility() == Visibility::Collapsed);
@@ -97,7 +97,7 @@ void winrt::tcalc::implementation::MainPage::page_Loaded(winrt::Windows::Foundat
     set_output_to_last_val();
 }
 
-void winrt::tcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Foundation:: IInspectable const&, winrt::Windows::UI::Xaml::SizeChangedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Foundation:: IInspectable const&, winrt::Windows::UI::Xaml::SizeChangedEventArgs const&)
 {
     if (!page_SizeChanged_update_layout)
         return;
@@ -126,7 +126,7 @@ void winrt::tcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Fo
     }
 }
 
-void winrt::tcalc::implementation::MainPage::set_output_to_last_val() {
+void winrt::tpcalc::implementation::MainPage::set_output_to_last_val() {
     // if outputType() is hidden, show it
     if (outputType().Visibility() == Visibility::Collapsed) { // ...ActualWidth() is unreliable, so using ...Width()
         output().Width(output().Width() - outputType().Width());
@@ -145,7 +145,7 @@ void winrt::tcalc::implementation::MainPage::set_output_to_last_val() {
     outputted_last_val = true;
 }
 
-void winrt::tcalc::implementation::MainPage::set_output_to_text(std::wstring_view text) {
+void winrt::tpcalc::implementation::MainPage::set_output_to_text(std::wstring_view text) {
     // if outputType is showing, hide it
     if (outputType().Visibility() == Visibility::Visible) {
         outputType().Visibility(Visibility::Collapsed);
@@ -156,7 +156,7 @@ void winrt::tcalc::implementation::MainPage::set_output_to_text(std::wstring_vie
     outputted_last_val = false;
 }
 
-inline void winrt::tcalc::implementation::MainPage::update_button_labels() {
+inline void winrt::tpcalc::implementation::MainPage::update_button_labels() {
     bool show_help = helpPanel().Visibility() == Visibility::Collapsed;
     help_menu_hide_help().IsEnabled(!show_help);
 
@@ -186,7 +186,7 @@ inline void winrt::tcalc::implementation::MainPage::update_button_labels() {
     }
 }
 
-void winrt::tcalc::implementation::MainPage::update_page_layout() {
+void winrt::tpcalc::implementation::MainPage::update_page_layout() {
     if (size_values_valid) {
         // dynamically size page sections:
 
@@ -265,7 +265,7 @@ void winrt::tcalc::implementation::MainPage::update_page_layout() {
     update_button_labels();
 }
 
-void winrt::tcalc::implementation::MainPage::update_mode_menu() {
+void winrt::tpcalc::implementation::MainPage::update_mode_menu() {
     input_mode_fpd().Icon().Visibility(parser.default_radix() == radices::decimal ? Visibility::Visible : Visibility::Collapsed);
     input_mode_bin().Icon().Visibility(parser.default_radix() == radices::base2 ? Visibility::Visible : Visibility::Collapsed);
     input_mode_oct().Icon().Visibility(parser.default_radix() == radices::base8 ? Visibility::Visible : Visibility::Collapsed);
@@ -278,7 +278,7 @@ void winrt::tcalc::implementation::MainPage::update_mode_menu() {
     output_mode_hex().Icon().Visibility(outputter.radix() == radices::base16 ? Visibility::Visible : Visibility::Collapsed);
 }
 
-void winrt::tcalc::implementation::MainPage::update_mode_display() {
+void winrt::tpcalc::implementation::MainPage::update_mode_display() {
     switch (parser.default_radix()) {
     case radices::decimal:
         inputModeText().Text(L"Input: Floating Point Decimal");
@@ -314,7 +314,7 @@ void winrt::tcalc::implementation::MainPage::update_mode_display() {
     }
 }
 
-void winrt::tcalc::implementation::MainPage::update_integer_result_type_menu() {
+void winrt::tpcalc::implementation::MainPage::update_integer_result_type_menu() {
     integer_result_type_int8().Icon().Visibility(parser.int_result_tag() == parser_type::int8_tag ? Visibility::Visible : Visibility::Collapsed);
     integer_result_type_uint8().Icon().Visibility(parser.int_result_tag() == parser_type::uint8_tag ? Visibility::Visible : Visibility::Collapsed);
     integer_result_type_int16().Icon().Visibility(parser.int_result_tag() == parser_type::int16_tag ? Visibility::Visible : Visibility::Collapsed);
@@ -325,11 +325,11 @@ void winrt::tcalc::implementation::MainPage::update_integer_result_type_menu() {
     integer_result_type_uint64().Icon().Visibility(parser.int_result_tag() == parser_type::uint64_tag ? Visibility::Visible : Visibility::Collapsed);
 }
 
-void winrt::tcalc::implementation::MainPage::mode_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
+void winrt::tpcalc::implementation::MainPage::mode_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
     update_mode_menu();
 }
 
-void winrt::tcalc::implementation::MainPage::input_mode_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::input_mode_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto tag = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
     if (tag == L"fpd")
@@ -348,7 +348,7 @@ void winrt::tcalc::implementation::MainPage::input_mode_Click(winrt::Windows::Fo
     update_mode_display();
 }
 
-void winrt::tcalc::implementation::MainPage::output_mode_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::output_mode_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto old_radix = outputter.radix();
     auto tag = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
@@ -370,11 +370,11 @@ void winrt::tcalc::implementation::MainPage::output_mode_Click(winrt::Windows::F
     update_mode_display();
 }
 
-void winrt::tcalc::implementation::MainPage::integer_result_type_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
+void winrt::tpcalc::implementation::MainPage::integer_result_type_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
     update_integer_result_type_menu();
 }
 
-void winrt::tcalc::implementation::MainPage::integer_result_type_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::integer_result_type_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto tag = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
     if (tag == L"int8")
@@ -400,7 +400,7 @@ void winrt::tcalc::implementation::MainPage::integer_result_type_Click(winrt::Wi
     input().Focus(FocusState::Programmatic);
 }
 
-void winrt::tcalc::implementation::MainPage::eval_input()
+void winrt::tpcalc::implementation::MainPage::eval_input()
 {
     auto input_str = input().Text();
     bool input_is_blank = false;
@@ -428,11 +428,11 @@ void winrt::tcalc::implementation::MainPage::eval_input()
     }
 }
 
-void winrt::tcalc::implementation::MainPage::page_KeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& /*e*/)
+void winrt::tpcalc::implementation::MainPage::page_KeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& /*e*/)
 {
 }
 
-void winrt::tcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& e)
+void winrt::tpcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& e)
 {
     using namespace winrt::Windows::UI::Core;
     auto it = CoreWindow::GetForCurrentThread();
@@ -464,7 +464,7 @@ void winrt::tcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Found
     }
 }
 
-void winrt::tcalc::implementation::MainPage::append_tag_to_input_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::append_tag_to_input_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto new_text = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
     input().SelectedText(new_text); // should insert new_text at caret position if nothing was selected
@@ -472,7 +472,7 @@ void winrt::tcalc::implementation::MainPage::append_tag_to_input_Click(winrt::Wi
     input().Focus(FocusState::Programmatic);
 }
 
-inline void winrt::tcalc::implementation::MainPage::TryResizeView(DSize size) {
+inline void winrt::tpcalc::implementation::MainPage::TryResizeView(DSize size) {
     // make sure size is no smaller than min. page size (default_page_size) else
     // calling windows TryResizeView(size) will do nothing because of min. size
     // setting. note: size can become smaller than default_page_size due to
@@ -497,7 +497,7 @@ inline void winrt::tcalc::implementation::MainPage::TryResizeView(DSize size) {
     update_page_layout();
 }
 
-void winrt::tcalc::implementation::MainPage::output_Copy_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::output_Copy_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto start = output().SelectionStart();
     auto end = output().SelectionEnd();
@@ -507,7 +507,7 @@ void winrt::tcalc::implementation::MainPage::output_Copy_Click(winrt::Windows::F
     output().Select(start, end); // undo SelectAll
 }
 
-void winrt::tcalc::implementation::MainPage::on_vars_changed() {
+void winrt::tpcalc::implementation::MainPage::on_vars_changed() {
     if (!parser.vars().size()) {
         varsTextBlock().Text(L"There are no variables to show.");
         return;
@@ -526,7 +526,7 @@ void winrt::tcalc::implementation::MainPage::on_vars_changed() {
     varsTextBlock().Text(out_buf.str());
 }
 
-void winrt::tcalc::implementation::MainPage::show_vars(std::wstring_view tag) {
+void winrt::tpcalc::implementation::MainPage::show_vars(std::wstring_view tag) {
     if (tag == L"vars_show") {
         varsPanel().Visibility(Visibility::Visible);
         helpPanel().Visibility(Visibility::Collapsed);
@@ -547,25 +547,25 @@ void winrt::tcalc::implementation::MainPage::show_vars(std::wstring_view tag) {
     input().Focus(FocusState::Programmatic);
 }
 
-void winrt::tcalc::implementation::MainPage::vars_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::vars_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     show_vars(unbox_value_or(sender.as<FrameworkElement>().Tag(), L""));
 }
 
-void winrt::tcalc::implementation::MainPage::vars_hide_vars_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::vars_hide_vars_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {show_vars(L"vars_hide");}
 
-void winrt::tcalc::implementation::MainPage::help_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&)
+void winrt::tpcalc::implementation::MainPage::help_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&)
 {
     update_button_labels();
 }
 
-void winrt::tcalc::implementation::MainPage::help_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     show_help(unbox_value_or(sender.as<FrameworkElement>().Tag(), L""));
 }
 
-void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
+void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     ScrollViewer visible;
     bool have_visible = false;
     if (help_quick_start_guide().Visibility() == Visibility::Visible) {
@@ -652,37 +652,37 @@ void winrt::tcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     input().Focus(FocusState::Programmatic);
 }
 
-void winrt::tcalc::implementation::MainPage::help_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_quick_start_guide");}
 
-void winrt::tcalc::implementation::MainPage::help_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_variables");}
 
-void winrt::tcalc::implementation::MainPage::help_numbers_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_numbers_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_numbers");}
 
-void winrt::tcalc::implementation::MainPage::help_fp_and_integer_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_fp_and_integer_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_fp_and_integer_arithmetic_operators");}
 
-void winrt::tcalc::implementation::MainPage::help_fp_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_fp_arithmetic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_fp_arithmetic_operators");}
 
-void winrt::tcalc::implementation::MainPage::help_integer_arithmetic_and_bitwise_logic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_integer_arithmetic_and_bitwise_logic_operators_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_integer_arithmetic_and_bitwise_logic_operators");}
 
-void winrt::tcalc::implementation::MainPage::help_scientific_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_scientific_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_scientific_functions");}
 
-void winrt::tcalc::implementation::MainPage::help_statistical_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_statistical_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_statistical_functions");}
 
-void winrt::tcalc::implementation::MainPage::help_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_operator_precedence_and_associativity");}
 
-void winrt::tcalc::implementation::MainPage::help_hide_help_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::help_hide_help_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {show_help(L"help_hide_help");}
 
-void winrt::tcalc::implementation::MainPage::min_max_in_out_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::min_max_in_out_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
     auto tag = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
     if (tag == L"min_in_out") {
@@ -742,7 +742,7 @@ void winrt::tcalc::implementation::MainPage::min_max_in_out_Click(winrt::Windows
 }
 
 template <typename XPanelHint>
-auto winrt::tcalc::implementation::MainPage::width_and_height(const XPanelHint& XPanel_hint) -> DSize const {
+auto winrt::tpcalc::implementation::MainPage::width_and_height(const XPanelHint& XPanel_hint) -> DSize const {
     auto width = std::max(page_resized_for_no_XPanel.Width, XPanel_hint.Width);
     auto input_output_extra_height =
         base_input_size.Height + base_output_size.Height

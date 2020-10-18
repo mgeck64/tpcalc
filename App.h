@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "App.xaml.g.h"
 
-namespace winrt::tcalc::implementation
+namespace winrt::tpcalc::implementation
 {
     struct App : AppT<App>
     {

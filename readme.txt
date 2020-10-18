@@ -1,5 +1,5 @@
 ========================================================================
-    C++/WinRT tcalc Project Overview
+    C++/WinRT tpcalc Project Overview
 ========================================================================
 
 This project demonstrates how to get started writing XAML apps directly

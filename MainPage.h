@@ -5,7 +5,7 @@
 #include "calc_util_windows.h"
 #include <sstream>
 
-namespace winrt::tcalc::implementation
+namespace winrt::tpcalc::implementation
 {
     struct MainPage : MainPageT<MainPage>
     {
@@ -94,7 +94,7 @@ namespace winrt::tcalc::implementation
     };
 }
 
-namespace winrt::tcalc::factory_implementation
+namespace winrt::tpcalc::factory_implementation
 {
     struct MainPage : MainPageT<MainPage, implementation::MainPage>
     {
