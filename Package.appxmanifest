@@ -3,7 +3,7 @@
   <Identity
     Name="27575MarkGeck.tpcalc"
     Publisher="CN=BF880966-7170-49F6-9CB0-134CD88A45B5"
-    Version="1.0.9.0" />
+    Version="1.0.11.0" />
   <mp:PhoneIdentity PhoneProductId="aec3aeb5-98f4-4c94-a471-aeb1a080aefb" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
   <Properties>
     <DisplayName>tpcalc</DisplayName>
