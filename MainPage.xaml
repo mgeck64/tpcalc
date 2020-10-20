@@ -83,15 +83,13 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0" Margin="0,0,0,8" >
-                    <RichTextBlock><Paragraph><Bold>Help</Bold></Paragraph></RichTextBlock>
+                    <RichTextBlock><Paragraph><Bold><Run x:Name="helpTitle">Help</Run></Bold></Paragraph></RichTextBlock>
                     <Button Width="24" Height="24" Padding="0,0,0,0" HorizontalAlignment="Right" Click="help_hide_help_Click">X</Button>
                 </Grid>
                 <ScrollViewer x:Name="help_quick_start_guide" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock x:Name="help_quick_start_guide_TextBlock">
                         <Paragraph>
-                            <Underline>Quick Start Guide</Underline>
-                            <LineBreak />
-                            <LineBreak />Type in an arithmetic expression and then press Enter to calculate the result.
+                            Type in an arithmetic expression and then press Enter to calculate the result.
                             <Bold>+</Bold>,
                             <Bold>-</Bold>,
                             <Bold>*</Bold>,
@@ -229,9 +227,7 @@
                 <ScrollViewer x:Name="help_variables" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
                         <Paragraph>
-                            <Underline>Variables</Underline>
-                            <LineBreak />
-                            <LineBreak />Numbers and the results of expressions can be stored in
+                            Numbers and the results of expressions can be stored in
                             variables. For example, <Bold>r=6.8/2</Bold> stores the result of 6.8/2
                             in the variable "r". A variable can be used in expressions in place of
                             a number; for example, <Bold>pi*r**2</Bold> multiplies pi by r squared.
@@ -268,9 +264,7 @@
                 <ScrollViewer x:Name="help_numbers" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
                         <Paragraph>
-                            <Underline>Numbers</Underline>
-                            <LineBreak />
-                            <LineBreak />This section is rather technical and assumes you have a basic
+                            This section is rather technical and assumes you have a basic
                             understanding of how computers represent numbers and perform arithmetic.
                             (If you don't, you can still use the calculator in its default mode,
                             which is suitable for general and scientific calculations. This section
@@ -444,11 +438,7 @@
                 </ScrollViewer>
                 <ScrollViewer x:Name="help_fp_and_integer_arithmetic_operators" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
-                        <Paragraph>
-                            <Underline>Floating Point and Integer Arithmetic Operators</Underline>
-                        </Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            <LineBreak />
                             <Bold>+</Bold> Addition
                             <LineBreak />
                             <LineBreak /><Bold>-</Bold> Subtraction or negation
@@ -474,11 +464,8 @@
                 </ScrollViewer>
                 <ScrollViewer x:Name="help_fp_arithmetic_operators" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
-                        <Paragraph>
-                            <Underline>Floating Point Arithmetic Operators</Underline>
-                        </Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            <LineBreak /><Bold>**</Bold> Exponentiation
+                            <Bold>**</Bold> Exponentiation
                             <LineBreak />
                             <LineBreak /><Bold>!</Bold>
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Factorial">
@@ -512,13 +499,8 @@
                 </ScrollViewer>
                 <ScrollViewer x:Name="help_integer_arithmetic_and_bitwise_logic_operators" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
-                        <Paragraph>
-                            <Underline>Integer Arithmetic and
-                                <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                                    Bitwise Logic</Hyperlink> Operators</Underline>
-                        </Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            <LineBreak /><Bold>%</Bold> Modulo (x%y is the remainder of x/y)
+                            <Bold>%</Bold> Modulo (x%y is the remainder of x/y)
                             <LineBreak />
                             <LineBreak /><Bold>&lt;&lt;</Bold> Arithmetic shift left
                             <LineBreak />
@@ -526,9 +508,10 @@
                             <LineBreak />
                             <LineBreak /><Bold>&gt;&gt;</Bold> Arithmetic shift right
                             <LineBreak />
-                            <LineBreak /><Bold>&gt;&gt;&gt;</Bold> Logical shitt right
+                            <LineBreak /><Bold>&gt;&gt;&gt;</Bold> Logical shift right
                             <LineBreak />
-                            <LineBreak /><Bold>&amp;</Bold> Bitwise and
+                            <LineBreak /><Bold>&amp;</Bold> <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
+                                Bitwise</Hyperlink> and
                             <LineBreak />
                             <LineBreak /><Bold>|</Bold> Bitwise or
                             <LineBreak />
@@ -550,9 +533,7 @@
                 <ScrollViewer x:Name="help_scientific_functions" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
                         <Paragraph>
-                            <Underline>Scientific Functions</Underline>
-                            <LineBreak />
-                            <LineBreak />The calculator provides a variety of scientific functions
+                            The calculator provides a variety of scientific functions
                             such as log, sin, cos, etc., which operate on floating point parameters.
                             <LineBreak />
                             <LineBreak />The syntax of each function is &lt;name&gt;(&lt;parameter&gt;)
@@ -599,9 +580,7 @@
                 <ScrollViewer x:Name="help_statistical_functions" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
                         <Paragraph>
-                            <Underline>Statistical Functions</Underline>
-                            <LineBreak />
-                            <LineBreak />The calculator provides a variety of statistical functions
+                            The calculator provides a variety of statistical functions
                             such as avg, stddev, mode, etc., which operate on lists of numbers.
                             <LineBreak />
                             <LineBreak />The syntax of each function is &lt;name&gt;&lt;list&gt; where &lt;name&gt;
@@ -664,9 +643,7 @@
                 <ScrollViewer x:Name="help_operator_precedence_and_associativity" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
                         <Paragraph>
-                            <Underline>Operator Precedence and Associativity</Underline>
-                            <LineBreak />
-                            <LineBreak />Binary (two-operand) operators associate left to right except for
+                            Binary (two-operand) operators associate left to right except for
                             exponentiation and assignment, which associate right to left. Operators are listed
                             from highest to lowest precedence:
                         </Paragraph>

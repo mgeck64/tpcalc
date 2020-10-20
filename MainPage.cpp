@@ -599,32 +599,42 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
 
     ScrollViewer make_visible;
     bool making_visible = false;
+    std::wstring_view help_title;
     if (tag == L"help_quick_start_guide") {
         make_visible = help_quick_start_guide();
+        help_title = L"Quick Start Guide";
         making_visible = true;
     } else if (tag == L"help_variables") {
         make_visible = help_variables();
+        help_title = L"Variables";
         making_visible = true;
     } else if (tag == L"help_numbers") {
         make_visible = help_numbers();
+        help_title = L"Numbers";
         making_visible = true;
     } else if (tag == L"help_fp_and_integer_arithmetic_operators") {
         make_visible = help_fp_and_integer_arithmetic_operators();
+        help_title = L"Floating Point and Integer Arithmetic Operators";
         making_visible = true;
     } else if (tag == L"help_fp_arithmetic_operators") {
         make_visible = help_fp_arithmetic_operators();
+        help_title = L"Floating Poing Arithmetic Operators";
         making_visible = true;
     } else if (tag == L"help_integer_arithmetic_and_bitwise_logic_operators") {
         make_visible = help_integer_arithmetic_and_bitwise_logic_operators();
+        help_title = L"Integer Arithmetic and Bitwise Logic Operators";
         making_visible = true;
     } else if (tag == L"help_scientific_functions") {
         make_visible = help_scientific_functions();
+        help_title = L"Scientific Functions";
         making_visible = true;
     } else if (tag == L"help_statistical_functions") {
         make_visible = help_statistical_functions();
+        help_title = L"Statistical Functions";
         making_visible = true;
     } else if (tag == L"help_operator_precedence_and_associativity") {
         make_visible = help_operator_precedence_and_associativity();
+        help_title = L"Operator Precedence and Associativity";
         making_visible = true;
     } else
         assert(tag == L"help_hide_help");
@@ -636,6 +646,7 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
 
         helpPanel().Visibility(Visibility::Visible);
         make_visible.Visibility(Visibility::Visible);
+        helpTitle().Text(help_title);
         XPanel().Visibility(Visibility::Visible);
         XPanel_hint_for_help.height(calc_util::max_page_size().Height); // override with max page height
         TryResizeView(width_and_height(XPanel_hint_for_help));
