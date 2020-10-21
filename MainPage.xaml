@@ -754,8 +754,8 @@
             <AppBarButton Label="Values">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Tag="pi" Text="pi" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="e" Text="e" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="pi" Text="pi - 3.14..." Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="e" Text="e - Euler's Number" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="last" Text="last - Last Evaluated Value" Click="append_tag_to_input_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
