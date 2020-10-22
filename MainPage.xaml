@@ -86,8 +86,8 @@
                     <RichTextBlock><Paragraph><Bold><Run x:Name="helpTitle">Help</Run></Bold></Paragraph></RichTextBlock>
                     <Button Width="24" Height="24" Padding="0,0,0,0" HorizontalAlignment="Right" Click="help_hide_help_Click">X</Button>
                 </Grid>
-                <ScrollViewer x:Name="help_quick_start_guide" Grid.Row="1" Visibility="Collapsed">
-                    <RichTextBlock x:Name="help_quick_start_guide_TextBlock">
+                <ScrollViewer x:Name="help_quick_start_guide_basic" Grid.Row="1" Visibility="Collapsed">
+                    <RichTextBlock x:Name="help_quick_start_guide_basic_TextBlock">
                         <Paragraph>
                             Type in an arithmetic expression and then press Enter to calculate the result.
                             <Bold>+</Bold>,
@@ -150,15 +150,23 @@
                             input. The Alt+Up Arrow and Alt+Down Arrow keys, when pressed from the expression
                             input box, recall up to the last 25 inputs.
                             <LineBreak />
-                            <LineBreak />By default, the calculator represents numbers internally in floating
-                            point (abbreviated Flt. Pt.) format and performs floating point arithmetic on them.
-                            Such numbers are referred to simply as floating point (abbreviated Flt. Pt.).
-                            This is the mode suitable for general and scientific calculations.
+                            <LineBreak />
+                            <Hyperlink Click="help_quick_start_guide_advanced_Click">Next: Quick Start Guide - Advanced</Hyperlink>
+                        </Paragraph>
+                    </RichTextBlock>
+                </ScrollViewer>
+                <ScrollViewer x:Name="help_quick_start_guide_advanced" Grid.Row="1" Visibility="Collapsed">
+                    <RichTextBlock x:Name="help_quick_start_guide_advanced_TextBlock">
+                        <Paragraph>
+                            By default, the calculator represents numbers internally in floating
+                            point (abbreviated Flt. Pt.) format and performs floating point arithmetic on them;
+                            such numbers are referred to simply as floating point (abbreviated Flt. Pt.).
+                            This is the representation suitable for general calculations.
                             The calculator can also represent numbers internally as integers and perform
                             integer arithmetic and
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                                bitwise logic</Hyperlink> on them; this can be useful to computer programmers.
-                            Such numbers are referred to simply as integers.
+                                bitwise logic</Hyperlink> on them; this can be useful to computer programmers;
+                            such numbers are referred to simply as integers.
                             <LineBreak />
                             <LineBreak />The calculator can also accept numbers in several numeric bases:
                             binary, octal and hexadecimal in addition to decimal. The following are examples
@@ -215,11 +223,13 @@
                             (binary, octal, decimal or hexadecimal).
                             <LineBreak />
                             <LineBreak />The
-                            <Bold>Numbers</Bold> section provides a detailed explanation of
+                            <Bold><Hyperlink Click="help_numbers_Click">
+                                Numbers</Hyperlink></Bold> section provides a detailed explanation of
                             input modes and how inputted numbers are interpreted and represented.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />
+                            <Hyperlink Click="help_quick_start_guide_basic_Click">Previous: Quick Start Guide - Basic</Hyperlink><LineBreak />
                             <Hyperlink Click="help_variables_Click">Next: Variables</Hyperlink>
                         </Paragraph>
                     </RichTextBlock>
@@ -256,7 +266,7 @@
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />
-                            <Hyperlink Click="help_quick_start_guide_Click">Previous: Quick Start Guide</Hyperlink><LineBreak />
+                            <Hyperlink Click="help_quick_start_guide_advanced_Click">Previous: Quick Start Guide - Advanced</Hyperlink><LineBreak />
                             <Hyperlink Click="help_numbers_Click">Next: Numbers</Hyperlink>
                         </Paragraph>
                     </RichTextBlock>
@@ -275,14 +285,11 @@
                             <LineBreak />
                             <LineBreak />A number is normally represented internally in
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">
-                                64 bit wide IEEE double precision floating point format</Hyperlink>
-                            but may also be represented internally as an
+                                64 bit wide IEEE double precision floating point format</Hyperlink>; such numbers are
+                            referred to simply as floating point. A number may also be represented internally as an
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Integer_(computer_science)">
-                                unsigned or signed two's compliment integer type, 8, 16, 32 or 64 bit</Hyperlink>.
-                            <LineBreak />
-                            <LineBreak />Generally, "floating point" refers to numbers represented
-                            internally in floating point format, and "integer" refers to numbers represented
-                            internally as integer types.
+                                unsigned or signed two's compliment integer type, 8, 16, 32 or 64 bit</Hyperlink>;
+                            such numbers are referred to simply as integers.
                             <LineBreak />
                             <LineBreak />The default integer type is signed 64 bit. Other types can be
                             selected from the
@@ -598,13 +605,13 @@
                             statistical functions; for example:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            sample=(1,2,3,4,5,6,7,8,9)
-                            <LineBreak />avg(sample)
-                            <LineBreak />median(sample)
-                            <LineBreak />stddev(sample)
+                            l=(1,2,3,4,5,6,7,8,9)
+                            <LineBreak />avg(l)
+                            <LineBreak />median(l)
+                            <LineBreak />stddev(l)
                         </Paragraph>
                         <Paragraph>
-                            Note that the parenthesis around the list of parameters are required.
+                            Note that the parenthesis around the list are required.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The complete set of statistical functions is available for
@@ -614,27 +621,52 @@
                         <Paragraph Margin="20,0,0,0">
                             <LineBreak /><Bold>sum</Bold> - Sum
                             <LineBreak /><Bold>prod</Bold> - Product
-                            <LineBreak /><Bold>avg</Bold> - Average (Arithmetic Mean)
-                            <LineBreak /><Bold>geomean</Bold> - Geometric Mean
-                            <LineBreak /><Bold>harmmean</Bold> - Harmonic Mean
-                            <LineBreak /><Bold>variance</Bold> - Sample Variance
-                            <LineBreak /><Bold>stddev</Bold> - Sample Standard Deviation
-                            <LineBreak /><Bold>pvariance</Bold> - Population Variance
-                            <LineBreak /><Bold>pstddev</Bold> - Population Standard Deviation
-                            <LineBreak /><Bold>median</Bold> - Median
-                            <LineBreak /><Bold>mode</Bold> - Mode
-                            <LineBreak /><Bold>min</Bold> - Minimum
-                            <LineBreak /><Bold>max</Bold> - Maximum
-                            <LineBreak /><Bold>quartile1</Bold> - First Quartile (Q1) 25%
-                            <LineBreak /><Bold>quartile2</Bold> - Second Quartile (Q2) 50%
-                            <LineBreak /><Bold>quartile3</Bold> - Third Quartile (Q3) 75%
-                            <LineBreak /><Bold>iqr</Bold> - Interquartile Range
-                            <LineBreak /><Bold>range</Bold> - Range
-                            <LineBreak /><Bold>mad</Bold> - Mean Absolute Deviation
-                            <LineBreak /><Bold>qdev</Bold> - Quartile Deviation
+                            <LineBreak /><Bold>avg</Bold> - Average (<Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Arithmetic_mean">
+                                Arithmetic Mean</Hyperlink>)
+                            <LineBreak /><Bold>geomean</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Geometric_mean">
+                                Geometric Mean</Hyperlink>
+                            <LineBreak /><Bold>harmmean</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Harmonic_mean">
+                                Harmonic Mean</Hyperlink>
+                            <LineBreak /><Bold>variance</Bold> - Sample <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Variance">
+                                Variance</Hyperlink>
+                            <LineBreak /><Bold>stddev</Bold> - Sample <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Standard_deviation">
+                                Standard Deviation</Hyperlink>
+                            <LineBreak /><Bold>pvariance</Bold> - Population <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Variance">
+                                Variance</Hyperlink>
+                            <LineBreak /><Bold>pstddev</Bold> - Population <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Standard_deviation">
+                                Standard Deviation</Hyperlink>
+                            <LineBreak /><Bold>median</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Median">
+                                Median</Hyperlink>
+                            <LineBreak /><Bold>mode</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Mode_(statistics)">
+                                Mode</Hyperlink>
+                            <LineBreak /><Bold>min</Bold> - Minimum (Smallest) Value
+                            <LineBreak /><Bold>max</Bold> - Maximum (Largest) Value
+                            <LineBreak /><Bold>quartile1</Bold> - First <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Quartile">
+                                Quartile</Hyperlink> (Q1) 25%
+                            <LineBreak /><Bold>quartile2</Bold> - Second <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Quartile">
+                                Quartile</Hyperlink> (Q2) 50%
+                            <LineBreak /><Bold>quartile3</Bold> - Third <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Quartile">
+                                Quartile</Hyperlink> (Q3) 75%
+                            <LineBreak /><Bold>iqr</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Interquartile_range">
+                                Interquartile Range</Hyperlink>
+                            <LineBreak /><Bold>range</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Range_(statistics)">
+                                Range</Hyperlink>
+                            <LineBreak /><Bold>madmean</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Average_absolute_deviation#Mean_absolute_deviation_around_the_mean">
+                                Mean Absolute Deviation</Hyperlink>
+                            <LineBreak /><Bold>madmed</Bold> - <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Median_absolute_deviation">
+                                Median Absolute Deviation</Hyperlink>
+                            <LineBreak /><Bold>qdev</Bold> - Quartile Deviation (Q1-Q3)/2
                         </Paragraph>
                         <Paragraph>
-                            <LineBreak />
+                            <LineBreak />The calculator uses
+                                <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford's_online_algorithm">
+                                    Welford's online algorithm</Hyperlink> to avoid the catastrophic cancellation described in
+                            the <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">
+                                main article</Hyperlink>.
+                            <LineBreak /><LineBreak />The calculator uses Method 4 described in the
+                            <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Quartile">
+                                Wikipedia article for quartiles</Hyperlink> to compute quartiles.
+                            <LineBreak /><LineBreak />
                             <Hyperlink Click="help_scientific_functions_Click">Previous: Scientific Functions</Hyperlink><LineBreak />
                             <Hyperlink Click="help_operator_precedence_and_associativity_Click">Next: Operator Precedence and Associativity</Hyperlink>
                         </Paragraph>
@@ -674,7 +706,7 @@
                         <Paragraph>
                             <LineBreak />
                             <Hyperlink Click="help_statistical_functions_Click">Previous: Statistical Functions</Hyperlink><LineBreak />
-                            <Hyperlink Click="help_quick_start_guide_Click">Top: Quick Start Guide</Hyperlink>
+                            <Hyperlink Click="help_quick_start_guide_basic_Click">Top: Quick Start Guide - Basic</Hyperlink>
                         </Paragraph>                    
                     </RichTextBlock>            
                 </ScrollViewer>            
@@ -739,14 +771,15 @@
                         <MenuFlyoutItem Tag="pstddev(" Text="pstddev - Population Standard Deviation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="median(" Text="median - Median" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="mode(" Text="mode - Mode" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="min(" Text="min - Minimum" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="max(" Text="max - Maximum" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="min(" Text="min - Minimum (Smallest) Value" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="max(" Text="max - Maximum (Largest) Value" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="quartile1(" Text="quartile1 - First Quartile (Q1) 25%" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="quartile2(" Text="quartile2 - Second Quartile (Q2) 50%" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="quartile3(" Text="quartile3 - Third Quartile (Q3) 75%" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="iqr(" Text="iqr - Interquartile Range" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="range(" Text="range - Range" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="mad(" Text="mad - Mean Absolute Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="madmean(" Text="madmean - Mean Absolute Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="madmed(" Text="madmed - Median Absolute Deviation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="qdev(" Text="qdev - Quartile Deviation" Click="append_tag_to_input_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
@@ -797,7 +830,8 @@
             <AppBarButton Label="Help">
                 <AppBarButton.Flyout>
                     <MenuFlyout Opening="help_menu_Opening">
-                        <MenuFlyoutItem Tag="help_quick_start_guide" Text="Quick Start Guide" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_quick_start_guide_basic" Text="Quick Start Guide - Basic" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_quick_start_guide_advanced" Text="Quick Start Guide - Advanced" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_variables" Text="Variables" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_numbers" Text="Numbers" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_fp_and_integer_arithmetic_operators" Text="Floating Point and Integer Arithmetic Operators" Click="help_Click" />

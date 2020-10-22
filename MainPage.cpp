@@ -51,7 +51,7 @@ void winrt::tpcalc::implementation::MainPage::page_Loaded(winrt::Windows::Founda
     ApplicationView::GetForCurrentView().SetPreferredMinSize(default_page_size);
     if (!local_settings.Values().HasKey(L"Launched")) {
         local_settings.Values().Insert(L"Launched", box_value(true));
-        show_help(L"help_quick_start_guide");
+        show_help(L"help_quick_start_guide_basic");
      } else {
         auto XPanel = unbox_value_or(local_settings.Values().Lookup(L"XPanel"), L"none");
         if (XPanel == L"vars")
@@ -568,8 +568,11 @@ void winrt::tpcalc::implementation::MainPage::help_Click(winrt::Windows::Foundat
 void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     ScrollViewer visible;
     bool have_visible = false;
-    if (help_quick_start_guide().Visibility() == Visibility::Visible) {
-        visible = help_quick_start_guide();
+    if (help_quick_start_guide_basic().Visibility() == Visibility::Visible) {
+        visible = help_quick_start_guide_basic();
+        have_visible = true;
+    } else if (help_quick_start_guide_advanced().Visibility() == Visibility::Visible) {
+        visible = help_quick_start_guide_advanced();
         have_visible = true;
     } else if (help_variables().Visibility() == Visibility::Visible) {
         visible = help_variables();
@@ -600,9 +603,13 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     ScrollViewer make_visible;
     bool making_visible = false;
     std::wstring_view help_title;
-    if (tag == L"help_quick_start_guide") {
-        make_visible = help_quick_start_guide();
-        help_title = L"Quick Start Guide";
+    if (tag == L"help_quick_start_guide_basic") {
+        make_visible = help_quick_start_guide_basic();
+        help_title = L"Quick Start Guide - Basic";
+        making_visible = true;
+    } else if (tag == L"help_quick_start_guide_advanced") {
+        make_visible = help_quick_start_guide_advanced();
+        help_title = L"Quick Start Guide - Advanced";
         making_visible = true;
     } else if (tag == L"help_variables") {
         make_visible = help_variables();
@@ -663,8 +670,11 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     input().Focus(FocusState::Programmatic);
 }
 
-void winrt::tpcalc::implementation::MainPage::help_quick_start_guide_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
-{show_help(L"help_quick_start_guide");}
+void winrt::tpcalc::implementation::MainPage::help_quick_start_guide_basic_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_quick_start_guide_basic");}
+
+void winrt::tpcalc::implementation::MainPage::help_quick_start_guide_advanced_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_quick_start_guide_advanced");}
 
 void winrt::tpcalc::implementation::MainPage::help_variables_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_variables");}
