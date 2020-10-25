@@ -10,11 +10,12 @@ namespace winrt::tpcalc::implementation
     struct MainPage : MainPageT<MainPage>
     {
     private:
-        using parser_type = calc_parser<wchar_t>;
+        using parser_type = ::tpcalc::parser<wchar_t>;
         using radices = typename parser_type::radices;
-        using outputter_type = calc_outputter<wchar_t>;
+        using outputter_type = ::tpcalc::outputter<wchar_t>;
+        using parse_error = ::tpcalc::parse_error<wchar_t>;
         using Size = Windows::Foundation::Size;
-        using DSize = calc_util::DSize;
+        using DSize = ::tpcalc::DSize;
         parser_type parser;
         outputter_type outputter;
 

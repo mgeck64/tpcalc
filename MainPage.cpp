@@ -11,6 +11,7 @@ using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::ViewManagement;
 using namespace Windows::System;
+using namespace ::tpcalc;
 
 namespace winrt::tpcalc::implementation
 {
@@ -134,7 +135,7 @@ void winrt::tpcalc::implementation::MainPage::set_output_to_last_val() {
     }
 
     std::wstring text;
-    char_helper::append_to(text, parser_type::num_type_short_txt.at(parser.last_val().index()));
+    char_helper::append_to(text, parser_val_type_short_txt.at(parser.last_val().index()));
     text += L":";
     outputType().Text(text);
 
@@ -228,7 +229,7 @@ void winrt::tpcalc::implementation::MainPage::update_page_layout() {
         }
 
         input().Height(initial_input_size.height() + extra_height_for_input);
-        if (calc_util::almost_equal(extra_height_for_input, 0.0))
+        if (almost_equal(extra_height_for_input, 0.0))
             input().TextWrapping(TextWrapping::NoWrap);
         else
             input().TextWrapping(TextWrapping::Wrap);
@@ -408,7 +409,7 @@ void winrt::tpcalc::implementation::MainPage::eval_input()
         input_is_blank = !parser.eval(input_str.c_str());
         set_output_to_last_val();
         input().Text(L""); // clear for next input (even if input_is_blank is true, input may have whitespace chars)
-    } catch (const parser_type::parse_error& e) {
+    } catch (const parse_error& e) {
         set_output_to_text(e.error_str());
         if (e.view_is_valid_for(input_str.c_str()))
             input().Select(e.tok.tok_str.data() - input_str.c_str(), e.tok.tok_str.size());
@@ -484,14 +485,14 @@ inline void winrt::tpcalc::implementation::MainPage::TryResizeView(DSize size) {
 
     // max width/height heuristic:
     // windows TryResizeView(size) does nothing if size is too large
-    auto excess = calc_util::exceeds_max_page_size(size);
+    auto excess = exceeds_max_page_size(size);
     size.Width -= excess.Width;
     size.Height -= excess.Height;
 
     page_SizeChanged_update_layout = false;
     // we'll call update_page_layout here incase TryResizeView doesn't trigger
     // page_SizeChanged
-    calc_util::make_resetter(page_SizeChanged_update_layout, true);
+    make_resetter(page_SizeChanged_update_layout, true);
     resizing_to = size;
     ApplicationView::GetForCurrentView().TryResizeView(size); // note: can't rely on return value
     update_page_layout();
@@ -520,7 +521,7 @@ void winrt::tpcalc::implementation::MainPage::on_vars_changed() {
         if (var_pos != vars_begin)
             out_buf << '\n';
         out_buf << var_pos->first << " = "
-            << parser_type::num_type_short_txt.at(var_pos->second.val_var.index())
+            << parser_val_type_short_txt.at(var_pos->second.val_var.index())
             << ": " << outputter(var_pos->second.val_var);
     }
     varsTextBlock().Text(out_buf.str());
@@ -655,7 +656,7 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
         make_visible.Visibility(Visibility::Visible);
         helpTitle().Text(help_title);
         XPanel().Visibility(Visibility::Visible);
-        XPanel_hint_for_help.height(calc_util::max_page_size().Height); // override with max page height
+        XPanel_hint_for_help.height(max_page_size().Height); // override with max page height
         TryResizeView(width_and_height(XPanel_hint_for_help));
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"XPanel", box_value(tag));
@@ -728,8 +729,8 @@ void winrt::tpcalc::implementation::MainPage::min_max_in_out_Click(winrt::Window
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"minimize_input_output", box_value(minimize_input_output));
 
-        if (calc_util::almost_equal(base_input_size.Height, initial_input_size.Height)) {
-            assert(calc_util::almost_equal(base_output_size.Height, initial_output_size.Height));
+        if (almost_equal(base_input_size.Height, initial_input_size.Height)) {
+            assert(almost_equal(base_output_size.Height, initial_output_size.Height));
             base_input_size.Height *= 3;
             base_output_size.Height += std::max(base_input_size.Height - initial_input_size.Height, 0.0f);
             auto extra_height_for_input_output = 
