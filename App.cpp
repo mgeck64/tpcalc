@@ -10,8 +10,8 @@ using namespace Windows::Foundation;
 using namespace Windows::UI::Xaml;
 using namespace Windows::UI::Xaml::Controls;
 using namespace Windows::UI::Xaml::Navigation;
-using namespace tpcalc;
-using namespace tpcalc::implementation;
+using namespace winrt::tpcalc;
+using namespace winrt::tpcalc::implementation;
 
 /// <summary>
 /// Initializes the singleton application object.  This is the first line of authored code
