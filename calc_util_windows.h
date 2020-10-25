@@ -5,7 +5,7 @@
 #include "pch.h"
 #include <cassert>
 
-namespace calc_util {
+namespace tpcalc {
 
 struct DSize : public winrt::Windows::Foundation::Size {
 // variation of window's Size struct but with accessor functions that give
@@ -47,16 +47,16 @@ inline DSize exceeds_max_page_size(DSize size) {
         size.Height > max_size.Height ? size.Height - max_size.Height : 0);
 }
 
-} // namespace calc_util
+} // namespace tpcalc
 
 namespace winrt {
 
-inline Windows::Foundation::IInspectable box_value(const calc_util::DSize& value) {
+inline Windows::Foundation::IInspectable box_value(const ::tpcalc::DSize& value) {
     return box_value(static_cast<const Windows::Foundation::Size&>(value));
 }
 
-inline calc_util::DSize
-unbox_value_or(winrt::Windows::Foundation::IInspectable const& value, const calc_util::DSize& default_value) {
+inline ::tpcalc::DSize
+unbox_value_or(winrt::Windows::Foundation::IInspectable const& value, const ::tpcalc::DSize& default_value) {
     return unbox_value_or(value, static_cast<const Windows::Foundation::Size&>(default_value));
 }
 
