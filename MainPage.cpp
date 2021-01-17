@@ -437,30 +437,34 @@ void winrt::tpcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Foun
 {
     using namespace winrt::Windows::UI::Core;
     auto it = CoreWindow::GetForCurrentThread();
-    enum {shift_flag = 1, ctrl_flag = 2, alt_flag = 4}; // bit flags
-    auto shift_down = ((it.GetKeyState(VirtualKey::Shift) & CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down) ? shift_flag : 0;
-    auto ctrl_down = ((it.GetKeyState(VirtualKey::Control) & CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down) ? ctrl_flag : 0;
-    auto alt_down = ((it.GetKeyState(VirtualKey::Menu) & CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down) ? alt_flag : 0;
-    auto modifiers_down = shift_down | ctrl_down | alt_down;
+    enum {shift_down_flag = 1, ctrl_down_flag = 2, alt_down_flag = 4}; // bit flags
+    auto shift_down = ((it.GetKeyState(VirtualKey::Shift) & CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down) ? shift_down_flag : 0;
+    auto ctrl_down = ((it.GetKeyState(VirtualKey::Control) & CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down) ? ctrl_down_flag : 0;
+    auto alt_down = ((it.GetKeyState(VirtualKey::Menu) & CoreVirtualKeyStates::Down) == CoreVirtualKeyStates::Down) ? alt_down_flag : 0;
+    auto key_modifiers = shift_down | ctrl_down | alt_down;
 
-    if (e.Key() == VirtualKey::Enter && !modifiers_down) {
+    if (e.Key() == VirtualKey::Enter && !key_modifiers)
         eval_input();
-    } else if ((e.Key() == VirtualKey::F3) && !modifiers_down) { // recall last input
+    else if (e.Key() == VirtualKey::Enter && key_modifiers == shift_down_flag) {
+        input().Select(input().Text().size(), 0); // should select end position
+        input().SelectedText(L"\n");
+        input().Select(input().Text().size(), 0);
+    } else if ((e.Key() == VirtualKey::F3) && !key_modifiers) { // recall last input
         input().SelectedText(last_input); // should insert new_text at caret position if nothing was selected
         input().Select(input().SelectionStart() + last_input.size(), 0);
-    } else if ((e.Key() == VirtualKey::Up) && (modifiers_down == alt_flag)) {
+    } else if ((e.Key() == VirtualKey::Up) && (key_modifiers == alt_down_flag)) {
         if (last_inputs_idx > 0) {
             --last_inputs_idx;
             auto& text = last_inputs[last_inputs_idx];
-            input().Text(text);
-            input().Select(text.size(), 0); // place caret at end
+            input().SelectedText(text);
+            input().Select(input().SelectionStart() + last_input.size(), 0);
         }
-    } else if ((e.Key() == VirtualKey::Down) && (modifiers_down == alt_flag)) {
+    } else if ((e.Key() == VirtualKey::Down) && (key_modifiers == alt_down_flag)) {
         if (last_inputs_idx + 1 < last_inputs.size()) {
             ++last_inputs_idx;
             auto& text = last_inputs[last_inputs_idx];
-            input().Text(text);
-            input().Select(text.size(), 0); // place caret at end
+            input().SelectedText(text);
+            input().Select(input().SelectionStart() + last_input.size(), 0);
         }
     }
 }
@@ -596,6 +600,9 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     } else if (help_statistical_functions().Visibility() == Visibility::Visible) {
         visible = help_statistical_functions();
         have_visible = true;
+    } else if (help_vector_arithmetic().Visibility() == Visibility::Visible) {
+        visible = help_vector_arithmetic();
+        have_visible = true;
     } else if (help_operator_precedence_and_associativity().Visibility() == Visibility::Visible) {
         visible = help_operator_precedence_and_associativity();
         have_visible = true;
@@ -639,6 +646,10 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
     } else if (tag == L"help_statistical_functions") {
         make_visible = help_statistical_functions();
         help_title = L"Statistical Functions";
+        making_visible = true;
+    } else if (tag == L"help_vector_arithmetic") {
+        make_visible = help_vector_arithmetic();
+        help_title = L"Vector Arithmetic";
         making_visible = true;
     } else if (tag == L"help_operator_precedence_and_associativity") {
         make_visible = help_operator_precedence_and_associativity();
@@ -697,6 +708,9 @@ void winrt::tpcalc::implementation::MainPage::help_scientific_functions_Click(wi
 
 void winrt::tpcalc::implementation::MainPage::help_statistical_functions_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_statistical_functions");}
+
+void winrt::tpcalc::implementation::MainPage::help_vector_arithmetic_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
+{show_help(L"help_vector_arithmetic");}
 
 void winrt::tpcalc::implementation::MainPage::help_operator_precedence_and_associativity_Click(winrt::Windows::UI::Xaml::Documents::Hyperlink const&, winrt::Windows::UI::Xaml::Documents::HyperlinkClickEventArgs const&)
 {show_help(L"help_operator_precedence_and_associativity");}
@@ -765,7 +779,7 @@ void winrt::tpcalc::implementation::MainPage::min_max_in_out_Click(winrt::Window
 
 template <typename XPanelHint>
 auto winrt::tpcalc::implementation::MainPage::width_and_height(const XPanelHint& XPanel_hint) -> DSize const {
-    auto width = std::max(page_resized_for_no_XPanel.Width, XPanel_hint.Width);
+    auto width = std::max(ActualWidth(), XPanel_hint.width());
     auto input_output_extra_height =
         base_input_size.Height + base_output_size.Height
         - initial_input_size.Height - initial_output_size.Height;

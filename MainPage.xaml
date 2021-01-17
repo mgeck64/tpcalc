@@ -592,8 +592,8 @@
                             <LineBreak />
                             <LineBreak />The syntax of each function is &lt;name&gt;&lt;list&gt; where &lt;name&gt;
                             is the name of the function, and &lt;list&gt; is a list of comma delimited
-                            parameters enclosed in parenthesis, where each parameter is a number or
-                            expression; for example: avg(2,e,pi,3/2,sqrt(5**2)) computes the average of
+                            parameters enclosed in square brackets, where each parameter is a number or
+                            expression; for example: avg[2,e,pi,3/2,sqrt(5**2)] computes the average of
                             2, e, pi, 3/2 and sqrt(5**2).
                             <LineBreak />
                             <LineBreak />For each statistical function, any integer
@@ -605,13 +605,13 @@
                             statistical functions; for example:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            l=(1,2,3,4,5,6,7,8,9)
-                            <LineBreak />avg(l)
-                            <LineBreak />median(l)
-                            <LineBreak />stddev(l)
+                            l=[1,2,3,4,5,6,7,8,9]
+                            <LineBreak />avg[l]
+                            <LineBreak />median[l]
+                            <LineBreak />stddev[l]
                         </Paragraph>
                         <Paragraph>
-                            Note that the parenthesis around the list are required.
+                            Note that the square brackets around the list are required.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The complete set of statistical functions is available for
@@ -668,6 +668,90 @@
                                 Wikipedia article for quartiles</Hyperlink> to compute quartiles.
                             <LineBreak /><LineBreak />
                             <Hyperlink Click="help_scientific_functions_Click">Previous: Scientific Functions</Hyperlink><LineBreak />
+                            <Hyperlink Click="help_vector_arithmetic_Click">Next: Vector Arithmetic</Hyperlink>
+                        </Paragraph>
+                    </RichTextBlock>
+                </ScrollViewer>
+                <ScrollViewer x:Name="help_vector_arithmetic" Grid.Row="1" Visibility="Collapsed">
+                    <RichTextBlock>
+                        <Paragraph>
+                            The calculator can perform vector arithmetic on vectors. A vector is just
+                            another name for a list of numbers and can be specified as a list of comma
+                            delimited numbers or expressions enclosed in square brackets;
+                            for example, [1,2,pi], which resolves to the list 1, 2, 3.14159265358979.
+                            <LineBreak /><LineBreak />Vectors can be assigned to variables, for example, i=[1,2,pi]
+                            <LineBreak /><LineBreak />Vectors can be combined to produce larger vectors;
+                            for example, given:
+                        </Paragraph>
+                        <Paragraph Margin="20,0,0,0">
+                            i=[1,2]
+                            <LineBreak />j=[3,4]
+                            <LineBreak />k=[i,j]
+                        </Paragraph>
+                        <Paragraph>
+                            k will have the contents 1, 2, 3, 4.
+                            <LineBreak /><LineBreak /><Underline>Scalar operations</Underline>:
+                            <LineBreak /><LineBreak />A scalar operation applies a scalar and an operation
+                            to each element of a vector to produce a new vector; for example: 2*[1,2,pi]
+                            produces the list 2, 4, 6.28318530717959.
+                            <LineBreak /><LineBreak />Syntax: &lt;scalar&gt;&lt;operator&gt;&lt;vector&gt;
+                            or &lt;vector&gt;&lt;operator&gt;&lt;scalar&gt; where:
+                        </Paragraph>
+                        <Paragraph Margin="20,0,0,0">
+                            &lt;scalar&gt; is a number (or a parentesized expresssion that resolves to a number).
+                            <LineBreak />&lt;vector&gt; is a list as described above.
+                            <LineBreak />&lt;operator&gt; is one of the following:
+                        </Paragraph>
+                        <Paragraph Margin="40,0,0,0">
+                            <Bold>+</Bold> Scalar addition
+                            <LineBreak /><Bold>-</Bold> Scalar subtraction
+                            <LineBreak /><Bold>*</Bold> Scalar multiplication (scalar product)
+                            <LineBreak /><Bold>/</Bold> Scalar division
+                            <LineBreak /><Bold>**</Bold> Scalar exponentation
+                        </Paragraph>
+                        <Paragraph>
+                            <LineBreak />A more complex example:
+                        </Paragraph>
+                        <Paragraph Margin="20,0,0,0">
+                            x=3
+                            <LineBreak />i=[1,2,3]
+                            <LineBreak />(2*x)+i
+                        </Paragraph>
+                        <Paragraph>
+                            (2*x) is a scalar and i is a vector; this set of expressions produces the list 7, 8, 9.
+                            <LineBreak /><LineBreak /><Underline>
+                                <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Dot_product">Dot product</Hyperlink>
+                            </Underline>:                            
+                            <LineBreak /><LineBreak />The period character denotes the dot product operator between vectors.
+                            For example, [1,2,3].[4,5,6] denotes the dot product of two vectors; the result of this
+                            particular operation is 32. The above example can also be expressed using variables:
+                        </Paragraph>
+                        <Paragraph Margin="20,0,0,0">
+                            i=[1,2,3]
+                            <LineBreak />j=[4,5,6]
+                            <LineBreak />i.j
+                        </Paragraph>
+                        <Paragraph>
+                            The two vectors must be the same size (same number of elements).
+                            <LineBreak /><LineBreak /><Underline>Vector memberwise operations</Underline>:
+                            <LineBreak /><LineBreak />Each of the following operators, when specified for
+                            two vectors, applies an operation to the corresponsing elements of the two
+                            vectors  and produces a new vector:
+                        </Paragraph>
+                        <Paragraph Margin="20,0,0,0">
+                            <Bold>+</Bold> is for memberwise addition (vector addition)
+                            <LineBreak /><Bold>-</Bold> is for memberwise subtraction (vector subtraction)
+                            <LineBreak /><Bold>*</Bold> is for memberwise multiplication
+                            (a.k.a. <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">
+                                Hadamard product</Hyperlink>)
+                            <LineBreak /><Bold>/</Bold> is for memberwise division
+                            <LineBreak /><Bold>**</Bold> is for memberwise exponentation
+                        </Paragraph>                            
+                        <Paragraph>
+                            Syntax: &lt;vector&gt;&lt;operator&gt;&lt;vector&gt;; for example, [1,2,3]+[4,5,6] produces
+                            the list 5, 7, 9. The two vectors must be the same size (same number of elements).
+                            <LineBreak /><LineBreak />
+                            <Hyperlink Click="help_statistical_functions_Click">Previous: Statistical Functions</Hyperlink><LineBreak />
                             <Hyperlink Click="help_operator_precedence_and_associativity_Click">Next: Operator Precedence and Associativity</Hyperlink>
                         </Paragraph>
                     </RichTextBlock>
@@ -705,7 +789,7 @@
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />
-                            <Hyperlink Click="help_statistical_functions_Click">Previous: Statistical Functions</Hyperlink><LineBreak />
+                            <Hyperlink Click="help_vector_arithmetic_Click">Previous: Vector Arithmetic</Hyperlink><LineBreak />
                             <Hyperlink Click="help_quick_start_guide_basic_Click">Top: Quick Start Guide - Basic</Hyperlink>
                         </Paragraph>                    
                     </RichTextBlock>            
@@ -760,27 +844,27 @@
             <AppBarButton Label="Statistical">
                 <AppBarButton.Flyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Tag="sum(" Text="sum - Sum" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="prod(" Text="prod - Product" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="avg(" Text="avg - Average (Arithmetic Mean)" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="geomean(" Text="geomean - Geometric Mean" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="harmmean(" Text="harmmean - Harmonic Mean" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="variance(" Text="variance - Sample Variance" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="stddev(" Text="stddev - Sample Standard Deviation" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="pvariance(" Text="pvariance - Population Variance" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="pstddev(" Text="pstddev - Population Standard Deviation" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="median(" Text="median - Median" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="mode(" Text="mode - Mode" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="min(" Text="min - Minimum (Smallest) Value" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="max(" Text="max - Maximum (Largest) Value" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="quartile1(" Text="quartile1 - First Quartile (Q1) 25%" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="quartile2(" Text="quartile2 - Second Quartile (Q2) 50%" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="quartile3(" Text="quartile3 - Third Quartile (Q3) 75%" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="iqr(" Text="iqr - Interquartile Range" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="range(" Text="range - Range" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="madmean(" Text="madmean - Mean Absolute Deviation" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="madmed(" Text="madmed - Median Absolute Deviation" Click="append_tag_to_input_Click" />
-                        <MenuFlyoutItem Tag="qdev(" Text="qdev - Quartile Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="sum[" Text="sum - Sum" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="prod[" Text="prod - Product" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="avg[" Text="avg - Average (Arithmetic Mean)" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="geomean[" Text="geomean - Geometric Mean" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="harmmean[" Text="harmmean - Harmonic Mean" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="variance[" Text="variance - Sample Variance" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="stddev[" Text="stddev - Sample Standard Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="pvariance[" Text="pvariance - Population Variance" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="pstddev[" Text="pstddev - Population Standard Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="median[" Text="median - Median" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="mode[" Text="mode - Mode" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="min[" Text="min - Minimum (Smallest) Value" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="max[" Text="max - Maximum (Largest) Value" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="quartile1[" Text="quartile1 - First Quartile (Q1) 25%" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="quartile2[" Text="quartile2 - Second Quartile (Q2) 50%" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="quartile3[" Text="quartile3 - Third Quartile (Q3) 75%" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="iqr[" Text="iqr - Interquartile Range" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="range[" Text="range - Range" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="madmean[" Text="madmean - Mean Absolute Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="madmed[" Text="madmed - Median Absolute Deviation" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="qdev[" Text="qdev - Quartile Deviation" Click="append_tag_to_input_Click" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
@@ -839,6 +923,7 @@
                         <MenuFlyoutItem Tag="help_integer_arithmetic_and_bitwise_logic_operators" Text="Integer Arithmetic and Bitwise Logic Operators" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_scientific_functions" Text="Scientific Functions" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_statistical_functions" Text="Statistical Functions" Click="help_Click" />
+                        <MenuFlyoutItem Tag="help_vector_arithmetic" Text="Vector Arithmetic" Click="help_Click" />
                         <MenuFlyoutItem Tag="help_operator_precedence_and_associativity" Text="Operator Precedence and Associativity" Click="help_Click" />
                         <MenuFlyoutItem x:Name="help_menu_hide_help" Tag="help_hide_help" Text="Hide Help" Click="help_Click" />
                     </MenuFlyout>
