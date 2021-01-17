@@ -13,6 +13,7 @@ namespace winrt::tpcalc::implementation
         using parser_type = ::tpcalc::parser<wchar_t>;
         using radices = typename parser_type::radices;
         using outputter_type = ::tpcalc::outputter<wchar_t>;
+        using internal_error = ::tpcalc::internal_error;
         using parse_error = ::tpcalc::parse_error<wchar_t>;
         using Size = Windows::Foundation::Size;
         using DSize = ::tpcalc::DSize;

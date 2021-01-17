@@ -413,6 +413,10 @@ void winrt::tpcalc::implementation::MainPage::eval_input()
         set_output_to_text(e.error_str());
         if (e.view_is_valid_for(input_str.c_str()))
             input().Select(e.tok.tok_str.data() - input_str.c_str(), e.tok.tok_str.size());
+    } catch (const internal_error& e) {
+        std::wostringstream out_buf;
+        out_buf << "Unexpected error in " << e.str.c_str() << '.';
+        set_output_to_text(out_buf.str());
     }
 
     if (!input_is_blank) { // save input string so can be recalled later
