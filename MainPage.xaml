@@ -131,7 +131,7 @@
                             <Bold>2*sin(1.8)</Bold> means 2 times the sine of 1.8
                             <LineBreak />
                             <LineBreak />
-                            <Bold>avg(1,2,3,4,5,6,7,8,9)</Bold> means the average of 1,2,3,4,5,6,7,8,9
+                            <Bold>avg[1,2,3,4,5,6,7,8,9]</Bold> means the average of 1,2,3,4,5,6,7,8,9
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The
@@ -158,34 +158,29 @@
                 <ScrollViewer x:Name="help_quick_start_guide_advanced" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock x:Name="help_quick_start_guide_advanced_TextBlock">
                         <Paragraph>
-                            By default, the calculator represents numbers internally in floating
-                            point (abbreviated Flt. Pt.) format and performs floating point arithmetic on them;
-                            such numbers are referred to simply as floating point (abbreviated Flt. Pt.).
+                            By default, the calculator represents numbers internally as floating
+                            point and performs floating point arithmetic on them; floating point
+                            is abbreviated Flt. Pt. on the UI.
                             This is the representation suitable for general calculations.
                             The calculator can also represent numbers internally as integers and perform
                             integer arithmetic and
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
-                                bitwise logic</Hyperlink> on them; this can be useful to computer programmers;
-                            such numbers are referred to simply as integers.
+                                bitwise logic</Hyperlink> on them; this can be useful to computer programmers.
                             <LineBreak />
-                            <LineBreak />The calculator can also accept numbers in several numeric bases:
-                            binary, octal and hexadecimal in addition to decimal. The following are examples
+                            <LineBreak />The calculator can also accept numbers in several numeric bases
+                            in addition to decimal: binary, octal and hexadecimal. The following are examples
                             of numbers specified in different bases:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
+                            <LineBreak /><Bold>0b1100100</Bold> specifies binary integer 1100100 (decimal 100)
                             <LineBreak />
-                            <Bold>0b1100100</Bold> specifies binary integer 1100100 (decimal 100)
+                            <LineBreak /><Bold>0o144</Bold> specifies octal integer 144 (decimal 100)
                             <LineBreak />
+                            <LineBreak /><Bold>0d100</Bold> specifies decimal integer 100;
+                            <Bold>0d100.0</Bold> specifies decimal floating point 100.0
                             <LineBreak />
-                            <Bold>0o144</Bold> specifies octal integer 144 (decimal 100)
-                            <LineBreak />
-                            <LineBreak />
-                            <Bold>0d100</Bold> specifies decimal integer 100 (not floating
-                            point 100); 0d100.0 specifies decimal floating point 100.0
-                            <LineBreak />
-                            <LineBreak />
-                            <Bold>0x64</Bold> specifies hexadecimal integer 64 (decimal 100);
-                            0x64.0 specifies hexadecimal floating point 1.9p+6 (64.0 normalized)
+                            <LineBreak /><Bold>0x64</Bold> specifies hexadecimal integer 64 (decimal 100);
+                            <Bold>0x64.0</Bold> specifies hexadecimal floating point 1.9p+6 (64.0 normalized)
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The following are examples of exclusive integer arithmetic and
@@ -303,8 +298,7 @@
                             to be specified, but also because negative numbers cannot be directly specified,
                             as '-' is the negation operator and not the negative sign (this has to do with
                             the expression parser). Thus -9223372036854775808 (minimum 64 bit signed integer)
-                            is equivalent to -(9223372036854775808). (9223372036854775808 cannot be
-                            represented as a signed 64 bit integer.)
+                            is equivalent to -(9223372036854775808).
                             <LineBreak />
                             <LineBreak />The initial representation of an integer as an unsigned
                             64 bit integer type is the only situation where integer range checking is
