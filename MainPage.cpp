@@ -401,12 +401,12 @@ void winrt::tpcalc::implementation::MainPage::integer_result_type_Click(winrt::W
     input().Focus(FocusState::Programmatic);
 }
 
-void winrt::tpcalc::implementation::MainPage::eval_input()
+void winrt::tpcalc::implementation::MainPage::evaluate_input()
 {
     auto input_str = input().Text();
     bool input_is_blank = false;
     try {
-        input_is_blank = !parser.eval(input_str.c_str());
+        input_is_blank = !parser.evaluate(input_str.c_str());
         set_output_to_last_val();
         input().Text(L""); // clear for next input (even if input_is_blank is true, input may have whitespace chars)
     } catch (const parse_error& e) {
@@ -448,7 +448,7 @@ void winrt::tpcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Foun
     auto key_modifiers = shift_down | ctrl_down | alt_down;
 
     if (e.Key() == VirtualKey::Enter && !key_modifiers)
-        eval_input();
+        evaluate_input();
     else if (e.Key() == VirtualKey::Enter && key_modifiers == shift_down_flag) {
         input().Select(input().Text().size(), 0); // should select end position
         input().SelectedText(L"\n");

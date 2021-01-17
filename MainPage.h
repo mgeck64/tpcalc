@@ -20,7 +20,7 @@ namespace winrt::tpcalc::implementation
         parser_type parser;
         outputter_type outputter;
 
-        void eval_input();
+        void evaluate_input();
 
         bool size_values_valid = false;
         DSize resizing_to{0, 0};
