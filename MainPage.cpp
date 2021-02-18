@@ -433,10 +433,6 @@ void winrt::tpcalc::implementation::MainPage::evaluate_input()
     }
 }
 
-void winrt::tpcalc::implementation::MainPage::page_KeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& /*e*/)
-{
-}
-
 void winrt::tpcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::Input::KeyRoutedEventArgs const& e)
 {
     using namespace winrt::Windows::UI::Core;
