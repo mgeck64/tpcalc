@@ -449,26 +449,22 @@ void winrt::tpcalc::implementation::MainPage::input_KeyDown(winrt::Windows::Foun
 
     if (e.Key() == VirtualKey::Enter && !key_modifiers)
         evaluate_input();
-    else if (e.Key() == VirtualKey::Enter && key_modifiers == shift_down_flag) {
-        input().Select(input().Text().size(), 0); // should select end position
-        input().SelectedText(L"\n");
-        input().Select(input().Text().size(), 0);
-    } else if ((e.Key() == VirtualKey::F3) && !key_modifiers) { // recall last input
-        input().SelectedText(last_input); // should insert new_text at caret position if nothing was selected
-        input().Select(input().SelectionStart() + last_input.size(), 0);
-    } else if ((e.Key() == VirtualKey::Up) && (key_modifiers == alt_down_flag)) {
+    else if ((e.Key() == VirtualKey::F3) && !key_modifiers) { // recall last input
+        input().SelectedText(last_input); // replace selected text or insert text at caret position if nothing was selected
+        input().Select(input().SelectionStart() + input().SelectionLength(), 0); // place caret at end of new text
+    } else if ((e.Key() == VirtualKey::Up) && (key_modifiers == alt_down_flag)) { // recall prior input
         if (last_inputs_idx > 0) {
             --last_inputs_idx;
             auto& text = last_inputs[last_inputs_idx];
-            input().SelectedText(text);
-            input().Select(input().SelectionStart() + last_input.size(), 0);
+            input().Text(text); // replacing selection as for F3 is problematic here when there's more than one input; just replace entire input
+            input().Select(std::numeric_limits<int32_t>::max(), 0); // place caret at end of input
         }
-    } else if ((e.Key() == VirtualKey::Down) && (key_modifiers == alt_down_flag)) {
+    } else if ((e.Key() == VirtualKey::Down) && (key_modifiers == alt_down_flag)) { // recall prior input
         if (last_inputs_idx + 1 < last_inputs.size()) {
             ++last_inputs_idx;
             auto& text = last_inputs[last_inputs_idx];
-            input().SelectedText(text);
-            input().Select(input().SelectionStart() + last_input.size(), 0);
+            input().Text(text); // see comment above
+            input().Select(std::numeric_limits<int32_t>::max(), 0); // see comment above
         }
     }
 }
