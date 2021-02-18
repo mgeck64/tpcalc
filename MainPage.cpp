@@ -404,11 +404,23 @@ void winrt::tpcalc::implementation::MainPage::integer_result_type_Click(winrt::W
 void winrt::tpcalc::implementation::MainPage::evaluate_input()
 {
     auto input_str = input().Text();
-    bool input_is_blank = false;
     try {
-        input_is_blank = !parser.evaluate(input_str.c_str());
+        auto input_evaluated = parser.evaluate(input_str.c_str());
         set_output_to_last_val();
-        input().Text(L""); // clear for next input (even if input_is_blank is true, input may have whitespace chars)
+        input().Text(L""); // clear for next input (input may have whitespace chars even if "blank")
+
+        if (input_evaluated) { // save input string so can be recalled later
+            last_input = input_str;
+            assert(last_inputs.size() <= max_last_inputs_size);
+            if (last_inputs.size() < max_last_inputs_size)
+                last_inputs.emplace_back(input_str);
+            else {
+                assert(last_inputs.begin() < last_inputs.end());
+                std::move(last_inputs.begin() + 1, last_inputs.end(), last_inputs.begin());
+                last_inputs.back() = input_str;
+            }
+            last_inputs_idx = last_inputs.size();
+        }
     } catch (const parse_error& e) {
         set_output_to_text(e.error_str());
         if (e.view_is_valid_for(input_str.c_str()))
@@ -417,19 +429,6 @@ void winrt::tpcalc::implementation::MainPage::evaluate_input()
         std::wostringstream out_buf;
         out_buf << "Unexpected error in " << e.str.c_str() << '.';
         set_output_to_text(out_buf.str());
-    }
-
-    if (!input_is_blank) { // save input string so can be recalled later
-        last_input = input_str;
-        assert(last_inputs.size() <= max_last_inputs_size);
-        if (last_inputs.size() < max_last_inputs_size)
-            last_inputs.emplace_back(input_str);
-        else {
-            assert(last_inputs.begin() < last_inputs.end());
-            std::move(last_inputs.begin() + 1, last_inputs.end(), last_inputs.begin());
-            last_inputs.back() = input_str;
-        }
-        last_inputs_idx = last_inputs.size();
     }
 }
 
