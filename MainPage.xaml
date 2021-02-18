@@ -654,8 +654,8 @@
                             <LineBreak />The calculator uses
                                 <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford's_online_algorithm">
                                     Welford's online algorithm</Hyperlink> to avoid the catastrophic cancellation described in
-                            the <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">
-                                main article</Hyperlink>.
+                                    the <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">
+                                    main article</Hyperlink>.
                             <LineBreak /><LineBreak />The calculator uses Method 4 described in the
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Quartile">
                                 Wikipedia article for quartiles</Hyperlink> to compute quartiles.
