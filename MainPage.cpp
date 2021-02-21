@@ -109,7 +109,7 @@ void winrt::tpcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::F
         ;
     else if ((fabs(resizing_to.width() - ActualWidth()) < 2)
             && (fabs(resizing_to.height() - ActualHeight()) < 2))
-        ; // assume this is a programmatic change, which we don't want to track
+        ; // assume this is a programmatic change (as opposed to user-initiated change), which we don't want to track
     else if (varsPanel().Visibility() == Visibility::Visible) {
         assert(helpPanel().Visibility() == Visibility::Collapsed);
     } else if (helpPanel().Visibility() == Visibility::Visible) {
@@ -488,10 +488,10 @@ inline void winrt::tpcalc::implementation::MainPage::TryResizeView(DSize size) {
     size.Width -= excess.Width;
     size.Height -= excess.Height;
 
-    page_SizeChanged_update_layout = false;
     // we'll call update_page_layout here incase TryResizeView doesn't trigger
     // page_SizeChanged
-    make_resetter(page_SizeChanged_update_layout, true);
+    auto resetter = make_resetter(page_SizeChanged_update_layout, true);
+    page_SizeChanged_update_layout = false;
     resizing_to = size;
     ApplicationView::GetForCurrentView().TryResizeView(size); // note: can't rely on return value
     update_page_layout();
