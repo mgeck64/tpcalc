@@ -32,9 +32,9 @@
         Page_Loaded; without it, calcPanel().ActualWidth() gives wrong result-->
             <StackPanel Margin="16,4,16,10" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal">
-                    <TextBox x:Name="input" PlaceholderText="Type in an expression, then press Enter" Width="288" Height="32" PreviewKeyDown="input_KeyDown" />
-                    <Button x:Name="min_max_in_out_Button" Tag="none" Margin="8,0,0,0" Padding="0.5,0,0,0" Width="24" Height="32"
-                            IsEnabled="False" Click="min_max_in_out_Click">▲</Button>
+                    <TextBox x:Name="input" PlaceholderText="Type in an expression, then press Enter" Width="288" Height="33" PreviewKeyDown="input_KeyDown" />
+                    <Button x:Name="min_in_out_Button" FontFamily="Arial" Tag="none" Margin="8,0,0,0" Padding="0.5,0,0,0" Width="24" Height="31"
+                            IsEnabled="False" Click="min_in_out_Click">▼</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <StackPanel.Resources>
@@ -47,8 +47,8 @@
                     <TextBlock x:Name="outputModeText" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
-                    <TextBlock x:Name="outputType" FontSize="12" Width="45" Height="38" Padding="0,2,0,0"/>
-                    <TextBlock x:Name="output" IsTextSelectionEnabled="True" Width="275" Height="38">
+                    <TextBlock x:Name="outputType" FontSize="12" Width="45" Height="22" Padding="0,2,0,0" />
+                    <TextBlock x:Name="output" Width="275" Height="22" IsTextSelectionEnabled="True" TextTrimming="CharacterEllipsis" PointerEntered="output_PointerEntered">
                         <TextBlock.ContextFlyout>
                             <MenuFlyout>
                                 <MenuFlyoutItem Text="Copy" Icon="Copy" Click="output_Copy_Click">

@@ -12,39 +12,26 @@ struct DSize : public winrt::Windows::Foundation::Size {
 // double values instead of float values. this is to keep calculations in the
 // double domain, especially since functions such as
 // FrameworkElement::ActualHeight return double instead of float. float values
-// are still accessable via base class
+// are still accessable via base class.
+//
+// do not extend this class by adding any member data or slicing will happen
+// with boxing functions below (for binary layout, DSize must match Size).
     using Size = winrt::Windows::Foundation::Size;
     DSize() : Size{0, 0} {}
     DSize(double width, double height);
     DSize(const Size& size) : Size{size} {}
-    double width() const {return Width;}
-    double height() const {return Height;}
-    void width(double width) {Width = static_cast<float>(width); assert(fabs(static_cast<double>(Width) - width) < 0.001);}
-    void height(double height) {Height = static_cast<float>(height); assert(fabs(static_cast<double>(Height) - height) < 0.001);}
-    void width(float width) {Width = width;}
-    void height(float height) {Height = height;}
+    double DWidth() const {return Width;}
+    double DHeight() const {return Height;}
+    void DWidth(double width) {Width = static_cast<float>(width); assert(fabs(static_cast<double>(Width) - width) < 0.001);}
+    void DHeight(double height) {Height = static_cast<float>(height); assert(fabs(static_cast<double>(Height) - height) < 0.001);}
+    void DWidth(float width) {Width = width;}
+    void DHeight(float height) {Height = height;}
 };
 
 inline DSize::DSize(double width, double height)
         : Size{static_cast<float>(width), static_cast<float>(height)} {
     assert(fabs(static_cast<double>(Size::Width) - width) < 0.001);
     assert(fabs(static_cast<double>(Size::Height) - height) < 0.001);
-}
-
-inline DSize max_page_size() {
-// heuristic for maximum size that ApplicationView::TryResizePage will take;
-// can't figure out how to determine actual size
-    const auto& info = winrt::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
-    return DSize(
-        info.ScreenWidthInRawPixels() / info.RawPixelsPerViewPixel() * 0.8,
-        info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel() * 0.8);
-}
-
-inline DSize exceeds_max_page_size(DSize size) {
-    auto max_size = max_page_size();
-    return DSize(
-        size.Width > max_size.Width ? size.Width - max_size.Width : 0,
-        size.Height > max_size.Height ? size.Height - max_size.Height : 0);
 }
 
 } // namespace tpcalc

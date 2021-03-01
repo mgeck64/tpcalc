@@ -38,21 +38,31 @@ void winrt::tpcalc::implementation::MainPage::page_Loaded(winrt::Windows::Founda
 
     auto local_settings = Storage::ApplicationData::Current().LocalSettings();
 
-    resizing_to = DSize(ActualWidth(), ActualHeight());
     default_page_size = DSize(calcPanel().ActualWidth(), calcPanel().ActualHeight() + bottomAppBar().ActualHeight());
+    XPanel_hint_for_vars.Width = default_page_size.Width;
     initial_calcPanel_size = DSize(calcPanel().ActualWidth(), calcPanel().ActualHeight());
     initial_input_size = DSize(input().Width(), input().Height());
     initial_output_size = DSize(output().Width(), output().Height()); // output.ActualWidth() is returning 0 for some unknown reason
-    page_resized_for_no_XPanel = unbox_value_or(local_settings.Values().Lookup(L"page_resized_for_no_XPanel"), default_page_size);
-    base_input_size = unbox_value_or(local_settings.Values().Lookup(L"base_input_size"), initial_input_size);
-    base_output_size = unbox_value_or(local_settings.Values().Lookup(L"base_output_size"), initial_output_size);
-    minimize_input_output = unbox_value_or(local_settings.Values().Lookup(L"minimize_input_output"), minimize_input_output);
+    input_height_limit_when_XPanel_showing
+        = unbox_value_or(local_settings.Values().Lookup(L"input_height_limit_when_XPanel_showing"), initial_input_size.DHeight());
+    output_height_limit_when_XPanel_showing
+        = unbox_value_or(local_settings.Values().Lookup(L"output_height_limit_when_XPanel_showing"), initial_output_size.DHeight());
     size_values_valid = true;
+
+    auto input_size = unbox_value_or(local_settings.Values().Lookup(L"input_size"), initial_input_size);
+    auto output_size = unbox_value_or(local_settings.Values().Lookup(L"output_size"), initial_output_size);
+    input().Width(input_size.Width);
+    input().Height(input_size.Height);
+    output().Width(output_size.Width);
+    output().Height(output_size.Height);
+    outputType().Height(output().Height());
+
+    ToolTipService::SetToolTip(output(), outputTip);
 
     ApplicationView::GetForCurrentView().SetPreferredMinSize(default_page_size);
     if (!local_settings.Values().HasKey(L"Launched")) {
         local_settings.Values().Insert(L"Launched", box_value(true));
-        show_help(L"help_quick_start_guide_basic");
+        show_help(L"help_quick_start_guide_basic", true /*first_app_launch*/);
      } else {
         auto XPanel = unbox_value_or(local_settings.Values().Lookup(L"XPanel"), L"none");
         if (XPanel == L"vars")
@@ -99,32 +109,57 @@ void winrt::tpcalc::implementation::MainPage::page_Loaded(winrt::Windows::Founda
 }
 
 void winrt::tpcalc::implementation::MainPage::page_SizeChanged(winrt::Windows::Foundation:: IInspectable const&, winrt::Windows::UI::Xaml::SizeChangedEventArgs const&)
+// indirectly called by TryResizeView.
+// also called in response to the user resizing the page window
 {
-    if (!page_SizeChanged_update_layout)
-        return;
+    if (size_values_valid) {
+        auto extra_height =
+            ActualHeight()
+            - calcPanel().ActualHeight()
+            - bottomAppBar().ActualHeight();
+
+        assert(input().Height());
+        auto p = (input().Height() + output().Height()) / input().Height();
+        assert(p);
+        auto extra_input_height = extra_height / p;
+
+        if (extra_height && XPanel().Visibility() == Visibility::Collapsed) {
+            input().Height(input().Height() + extra_input_height);
+            output().Height(output().Height() + (extra_height - extra_input_height));
+            outputType().Height(output().Height());
+
+            auto input_size = DSize(input().Width(), input().Height());
+            Storage::ApplicationData::Current().LocalSettings().
+                Values().Insert(L"input_size", box_value(input_size));
+            auto output_size = DSize(output().Width(), output().Height());
+            Storage::ApplicationData::Current().LocalSettings().
+                Values().Insert(L"output_size", box_value(output_size));
+
+            input_height_limit_when_XPanel_showing = input().Height();
+            output_height_limit_when_XPanel_showing = output().Height();
+
+            Storage::ApplicationData::Current().LocalSettings().
+                Values().Insert(L"input_height_limit_when_XPanel_showing", box_value(input_height_limit_when_XPanel_showing));
+            Storage::ApplicationData::Current().LocalSettings().
+                Values().Insert(L"output_height_limit_when_XPanel_showing", box_value(output_height_limit_when_XPanel_showing));
+        } else if (extra_height
+                && (extra_height + input().Height() + output().Height()
+                    <= input_height_limit_when_XPanel_showing + output_height_limit_when_XPanel_showing)) {
+            input().Height(input().Height() + extra_input_height);
+            output().Height(output().Height() + (extra_height - extra_input_height));
+            outputType().Height(output().Height());
+
+            auto input_size = DSize(input().Width(), input().Height());
+            Storage::ApplicationData::Current().LocalSettings().
+                Values().Insert(L"input_size", box_value(input_size));
+            auto output_size = DSize(output().Width(), output().Height());
+            Storage::ApplicationData::Current().LocalSettings().
+                Values().Insert(L"output_size", box_value(output_size));
+        }
+
+    }
 
     update_page_layout();
-
-    if (!size_values_valid)
-        ;
-    else if ((fabs(resizing_to.width() - ActualWidth()) < 2)
-            && (fabs(resizing_to.height() - ActualHeight()) < 2))
-        ; // assume this is a programmatic change (as opposed to user-initiated change), which we don't want to track
-    else if (varsPanel().Visibility() == Visibility::Visible) {
-        assert(helpPanel().Visibility() == Visibility::Collapsed);
-    } else if (helpPanel().Visibility() == Visibility::Visible) {
-        assert(varsPanel().Visibility() == Visibility::Collapsed);
-    } else {
-        page_resized_for_no_XPanel = DSize(ActualWidth(), ActualHeight());
-        base_input_size = DSize(input().Width(), input().Height());
-        base_output_size = DSize(output().Width(), output().Height());
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"page_resized_for_no_XPanel", box_value(page_resized_for_no_XPanel));
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"base_input_size", box_value(base_input_size));
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"base_output_size", box_value(base_output_size));
-    }
 }
 
 void winrt::tpcalc::implementation::MainPage::set_output_to_last_val() {
@@ -139,14 +174,19 @@ void winrt::tpcalc::implementation::MainPage::set_output_to_last_val() {
     text += L":";
     outputType().Text(text);
 
-    std::wostringstream out_buf;
-    out_buf << outputter(parser.last_val());
-    auto out_str = out_buf.str();
-    output().Text(out_str);
+    std::wostringstream out_stream;
+    out_stream << outputter(parser.last_val());
+    output().Text(out_stream.str());
+
+    auto tip_outputter = outputter_type(radices::decimal);
+    out_stream = std::wostringstream();
+    out_stream << "Decimal: " << tip_outputter(parser.last_val());
+    outputTip.Content(box_value(out_stream.str()));
+
     outputted_last_val = true;
 }
 
-void winrt::tpcalc::implementation::MainPage::set_output_to_text(std::wstring_view text) {
+void winrt::tpcalc::implementation::MainPage::set_output_to(std::wstring_view text) {
     // if outputType is showing, hide it
     if (outputType().Visibility() == Visibility::Visible) {
         outputType().Visibility(Visibility::Collapsed);
@@ -154,6 +194,7 @@ void winrt::tpcalc::implementation::MainPage::set_output_to_text(std::wstring_vi
     }
 
     output().Text(text);
+    outputTip.Content(box_value(text));
     outputted_last_val = false;
 }
 
@@ -169,98 +210,56 @@ inline void winrt::tpcalc::implementation::MainPage::update_button_labels() {
     if (unbox_value_or(varsButton().Tag(), L"") != varsButton_tag)
         varsButton().Tag(box_value(varsButton_tag));
 
-    { // min_max_in_out_Button()
-        auto tag = unbox_value_or(min_max_in_out_Button().Tag(), L"");
-        if (input().Height() > initial_input_size.height()) {
-            if (tag != L"min_in_out") {
-                min_max_in_out_Button().Tag(box_value(L"min_in_out"));
-                min_max_in_out_Button().Content(box_value(L"▲"));
-                min_max_in_out_Button().IsEnabled(true);
-            }
+    { // min_in_out_Button()
+        auto tag = unbox_value_or(min_in_out_Button().Tag(), L"");
+        if (input().Height() < initial_input_size.DHeight() + 2) { // + 2 for rounding/tolerance error (approx. value; empirically determined)
+            min_in_out_Button().Tag(box_value(L"min_in_out_down"));
+            min_in_out_Button().Content(box_value(L"▼"));
+            min_in_out_Button().IsEnabled(true);
         } else {
-            if (tag != L"not_min_in_out") {
-                min_max_in_out_Button().Tag(box_value(L"not_min_in_out"));
-                min_max_in_out_Button().Content(box_value(L"▼"));
-                min_max_in_out_Button().IsEnabled(true);
-            }
+            min_in_out_Button().Tag(box_value(L"min_in_out_up"));
+            min_in_out_Button().Content(box_value(L"▲"));
+            min_in_out_Button().IsEnabled(true);
         }
     }
 }
 
 void winrt::tpcalc::implementation::MainPage::update_page_layout() {
     if (size_values_valid) {
-        // dynamically size page sections:
-
-        bool XPanel_visible = XPanel().Visibility() == Visibility::Visible;
-
-       if (!XPanel_visible)
-            minimize_input_output = fabs(default_page_size.Width - page_resized_for_no_XPanel.Width) < 2
-               && fabs(default_page_size.Height - page_resized_for_no_XPanel.Height) < 2;
-
-        double extra_height = 
-            ActualHeight() -
-            initial_calcPanel_size.height() -
-            bottomAppBar().ActualHeight();
-        if (extra_height < 0)
-            extra_height = 0;
-
-        assert(!(helpPanel().Visibility() == Visibility::Visible
-            && varsPanel().Visibility() == Visibility::Visible));
-        DSize XPanel_hint;
-        if (helpPanel().Visibility() == Visibility::Visible)
-            XPanel_hint = XPanel_hint_for_help;
-        else if (varsPanel().Visibility() == Visibility::Visible)
-            XPanel_hint = XPanel_hint_for_vars;
-
-        double extra_height_for_input_output = std::max(extra_height - XPanel_hint.height() / 2, 0.0);
-        
-        double extra_height_for_input = extra_height_for_input_output / 2;
-        if (XPanel_visible)
-            if (base_input_size.height() < (initial_input_size.height() + extra_height_for_input))
-                extra_height_for_input = std::max(base_input_size.height() - initial_input_size.height(), 0.0);
-        double extra_height_for_output = std::max(extra_height_for_input_output - extra_height_for_input, 0.0);
-        if (XPanel_visible)
-            if (base_input_size.height() < (initial_output_size.height() + extra_height_for_output))
-                extra_height_for_output = std::max(base_output_size.height() - initial_output_size.height(), 0.0);
-
-        if (minimize_input_output) {
-            extra_height_for_input = 0;
-            extra_height_for_output = 0;
-        }
-
-        input().Height(initial_input_size.height() + extra_height_for_input);
-        if (almost_equal(extra_height_for_input, 0.0))
+        if (input().Height() < initial_input_size.DHeight() + 2) // + 2 for rounding/tolerance error (approx. value; empirically determined)
             input().TextWrapping(TextWrapping::NoWrap);
         else
             input().TextWrapping(TextWrapping::Wrap);
 
-        output().Height(initial_output_size.height() + extra_height_for_output);
-        outputType().Height(output().Height());
+        auto height_space_for_XPanel = 
+            ActualHeight()
 
-        auto space_for_XPanel = extra_height - extra_height_for_input - extra_height_for_output;
-        if (space_for_XPanel > 16) // extra space for bottom margin; can't make this work in XAML
-            space_for_XPanel -= 16;
-        else
-            space_for_XPanel = 0;
+            // - calcPanel().ActualHeight() // SIGH! ActualHeight is unreliable here!; need to calculate what this should be:
+            - initial_calcPanel_size.DHeight()
+            + initial_input_size.DHeight()
+            + initial_output_size.DHeight()
+            - input().Height()
+            - output().Height()
+
+            - XPanel_margin_bottom
+            - bottomAppBar().ActualHeight();
+        if (height_space_for_XPanel < 0)
+            height_space_for_XPanel = 0;
+
         if (varsPanel().Visibility() == Visibility::Visible)
-            varsPanel().Height(space_for_XPanel);
-        else
-            varsPanel().Height(0);
-        if (helpPanel().Visibility() == Visibility::Visible)
-            helpPanel().Height(space_for_XPanel);
-        else
-            helpPanel().Height(0);
+            varsPanel().Height(height_space_for_XPanel);
+        else if (helpPanel().Visibility() == Visibility::Visible)
+            helpPanel().Height(height_space_for_XPanel);
 
-        auto delta_width = ActualWidth() - default_page_size.width();
-        if (initial_calcPanel_size.width() + delta_width >= 0)
-            calcPanel().Width(initial_calcPanel_size.width() + delta_width);
-        if (initial_input_size.width() + delta_width >= 0)
-            input().Width(initial_input_size.width() + delta_width);
+        auto delta_width = ActualWidth() - default_page_size.DWidth();
+        if (initial_calcPanel_size.DWidth() + delta_width >= 0)
+            calcPanel().Width(initial_calcPanel_size.DWidth() + delta_width);
+        if (initial_input_size.DWidth() + delta_width >= 0)
+            input().Width(initial_input_size.DWidth() + delta_width);
 
-        auto output_padding = outputType().Visibility() == Visibility::Visible ? 0 : outputType().Width();
-        if (initial_output_size.width() + delta_width + output_padding >= 0)
-            output().Width(initial_output_size.width() + delta_width + output_padding);
-
+        auto output_width_padding = outputType().Visibility() == Visibility::Visible ? 0 : outputType().Width();
+        if (initial_output_size.DWidth() + delta_width + output_width_padding >= 0)
+            output().Width(initial_output_size.DWidth() + delta_width + output_width_padding);
     }
 
     update_button_labels();
@@ -422,13 +421,13 @@ void winrt::tpcalc::implementation::MainPage::evaluate_input()
             last_inputs_idx = last_inputs.size();
         }
     } catch (const parse_error& e) {
-        set_output_to_text(e.error_str());
+        set_output_to(e.error_str());
         if (e.view_is_valid_for(input_str.c_str()))
             input().Select(e.tok.tok_str.data() - input_str.c_str(), e.tok.tok_str.size());
     } catch (const internal_error& e) {
-        std::wostringstream out_buf;
-        out_buf << "Unexpected error in " << e.str.c_str() << '.';
-        set_output_to_text(out_buf.str());
+        std::wostringstream out_stream;
+        out_stream << "Unexpected error in " << e.str.c_str() << '.';
+        set_output_to(out_stream.str());
     }
 }
 
@@ -478,22 +477,20 @@ inline void winrt::tpcalc::implementation::MainPage::TryResizeView(DSize size) {
     // setting. note: size can become smaller than default_page_size due to
     // rounding/tolerance error
     if (size.Width < default_page_size.Width)
-        size.width(default_page_size.Width);
+        size.Width = default_page_size.Width;
     if (size.Height < default_page_size.Height)
-        size.height(default_page_size.Height);
+        size.Height = default_page_size.Height;
 
-    // max width/height heuristic:
-    // windows TryResizeView(size) does nothing if size is too large
-    auto excess = exceeds_max_page_size(size);
-    size.Width -= excess.Width;
-    size.Height -= excess.Height;
-
-    // we'll call update_page_layout here incase TryResizeView doesn't trigger
-    // page_SizeChanged
-    auto resetter = make_resetter(page_SizeChanged_update_layout, true);
-    page_SizeChanged_update_layout = false;
-    resizing_to = size;
-    ApplicationView::GetForCurrentView().TryResizeView(size); // note: can't rely on return value
+    ApplicationView::GetForCurrentView().TryResizeView(size);
+    // we will call update_page_layout again incase TryResizeView doesn't
+    // trigger page_SizeChanged. this means that in normal cases
+    // update_page_layout will be called twice unnecessarily. notes: return
+    // value of TryResizeView is unreliable; also, TryResizeView seems to
+    // operate asynchronously so we can't use a flag to suppress
+    // update_page_layout there because update_page_layout would be called here
+    // at the wrong time. we don't just call page_SizeChange directly here
+    // because TryResizeView also causes new size to be stored so window size
+    // can be restored when app is relaunched
     update_page_layout();
 }
 
@@ -513,17 +510,15 @@ void winrt::tpcalc::implementation::MainPage::on_vars_changed() {
         return;
     }
 
-    std::wstringstream out_buf;
-    auto vars_begin = parser.vars().begin();
-    auto vars_end = parser.vars().end();
-    for (auto var_pos = vars_begin; var_pos != vars_end; ++var_pos) {
-        if (var_pos != vars_begin)
-            out_buf << '\n';
-        out_buf << var_pos->first << " = "
+    std::wstringstream out_stream;
+    for (auto var_pos = parser.vars().begin(); var_pos != parser.vars().end(); ++var_pos) {
+        if (var_pos != parser.vars().begin())
+            out_stream << '\n';
+        out_stream << var_pos->first << " = "
             << parser_val_type_short_txt.at(var_pos->second.val_var.index())
             << ": " << outputter(var_pos->second.val_var);
     }
-    varsTextBlock().Text(out_buf.str());
+    varsTextBlock().Text(out_stream.str());
 }
 
 void winrt::tpcalc::implementation::MainPage::show_vars(std::wstring_view tag) {
@@ -535,10 +530,11 @@ void winrt::tpcalc::implementation::MainPage::show_vars(std::wstring_view tag) {
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"XPanel", box_value(L"vars"));
     } else if (tag == L"vars_hide") {
+        auto XPanel_height = XPanel().ActualHeight() + XPanel_margin_bottom;
         varsPanel().Visibility(Visibility::Collapsed);
         helpPanel().Visibility(Visibility::Collapsed);
         XPanel().Visibility(Visibility::Collapsed);
-        TryResizeView(page_resized_for_no_XPanel);
+        TryResizeView(default_page_size.DWidth(), ActualHeight() - XPanel_height);
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"XPanel", box_value(L"none"));
     } else
@@ -565,7 +561,7 @@ void winrt::tpcalc::implementation::MainPage::help_Click(winrt::Windows::Foundat
     show_help(unbox_value_or(sender.as<FrameworkElement>().Tag(), L""));
 }
 
-void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
+void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag, bool first_app_launch) {
     ScrollViewer visible;
     bool have_visible = false;
     if (help_quick_start_guide_basic().Visibility() == Visibility::Visible) {
@@ -657,19 +653,18 @@ void winrt::tpcalc::implementation::MainPage::show_help(std::wstring_view tag) {
         visible.Visibility(Visibility::Collapsed);
     if (making_visible) {
         varsPanel().Visibility(Visibility::Collapsed); // incase showing
-
         helpPanel().Visibility(Visibility::Visible);
         make_visible.Visibility(Visibility::Visible);
         helpTitle().Text(help_title);
         XPanel().Visibility(Visibility::Visible);
-        XPanel_hint_for_help.height(max_page_size().Height); // override with max page height
-        TryResizeView(width_and_height(XPanel_hint_for_help));
+        TryResizeView(width_and_height(XPanel_hint_for_help, first_app_launch));
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"XPanel", box_value(tag));
     } else if (varsPanel().Visibility() == Visibility::Collapsed) {
+        auto XPanel_height = XPanel().ActualHeight() + XPanel_margin_bottom;
         helpPanel().Visibility(Visibility::Collapsed);
         XPanel().Visibility(Visibility::Collapsed);
-        TryResizeView(page_resized_for_no_XPanel);
+        TryResizeView(default_page_size.DWidth(), ActualHeight() - XPanel_height);
         Storage::ApplicationData::Current().LocalSettings().
             Values().Insert(L"XPanel", box_value(L"none"));
     }
@@ -713,71 +708,145 @@ void winrt::tpcalc::implementation::MainPage::help_operator_precedence_and_assoc
 void winrt::tpcalc::implementation::MainPage::help_hide_help_Click(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {show_help(L"help_hide_help");}
 
-void winrt::tpcalc::implementation::MainPage::min_max_in_out_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
+void winrt::tpcalc::implementation::MainPage::min_in_out_Click(winrt::Windows::Foundation::IInspectable const& sender, winrt::Windows::UI::Xaml::RoutedEventArgs const&)
 {
+    input_height_limit_when_XPanel_showing = initial_input_size.DHeight();
+    output_height_limit_when_XPanel_showing = initial_output_size.DHeight();
+
+    auto delta_input_height = 0.0;
+    auto delta_output_height = 0.0;
+    auto resize_to_width = 0.0;
+    bool handled = false;
     auto tag = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
-    if (tag == L"min_in_out") {
-        minimize_input_output = true;
-        page_resized_for_no_XPanel.Height = default_page_size.Height;
-        base_input_size = initial_input_size;
-        base_output_size = initial_output_size;
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"minimize_input_output", box_value(minimize_input_output));
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"page_resized_for_no_XPanel", box_value(page_resized_for_no_XPanel));
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"base_input_size", box_value(base_input_size));
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"base_output_size", box_value(base_output_size));
+    if (tag == L"min_in_out_up") {
+        delta_input_height = initial_input_size.DHeight() - input().Height();
+        delta_output_height = initial_output_size.DHeight() - output().Height();
         if (XPanel().Visibility() == Visibility::Collapsed)
-            TryResizeView(page_resized_for_no_XPanel);
+            resize_to_width = default_page_size.DWidth();
         else
-            update_page_layout();
-    } else if (tag == L"not_min_in_out") {
-        minimize_input_output = false;
-        Storage::ApplicationData::Current().LocalSettings().
-            Values().Insert(L"minimize_input_output", box_value(minimize_input_output));
-
-        if (almost_equal(base_input_size.Height, initial_input_size.Height)) {
-            assert(almost_equal(base_output_size.Height, initial_output_size.Height));
-            base_input_size.Height *= 3;
-            base_output_size.Height += std::max(base_input_size.Height - initial_input_size.Height, 0.0f);
-            auto extra_height_for_input_output = 
-                (base_input_size.Height - initial_input_size.Height) +
-                (base_output_size.Height - initial_output_size.Height);
-            page_resized_for_no_XPanel.Height += extra_height_for_input_output;
-            Storage::ApplicationData::Current().LocalSettings().
-                Values().Insert(L"page_resized_for_no_XPanel", box_value(page_resized_for_no_XPanel));
-            Storage::ApplicationData::Current().LocalSettings().
-                Values().Insert(L"base_input_size", box_value(base_input_size));
-            Storage::ApplicationData::Current().LocalSettings().
-                Values().Insert(L"base_output_size", box_value(base_output_size));
-        }
-
-        DSize XPanel_hint;
-        if (varsPanel().Visibility() == Visibility::Visible)
-            XPanel_hint = XPanel_hint_for_vars;
-        else if (helpPanel().Visibility() == Visibility::Visible)
-            XPanel_hint = XPanel_hint_for_help;
-        auto input_output_extra_height =
-            base_input_size.height() + base_output_size.height()
-            - initial_input_size.height() - initial_output_size.height();
-        auto height_hint = default_page_size.height() + input_output_extra_height + XPanel_hint.height();
-        if (ActualHeight() < height_hint)
-            TryResizeView(ActualWidth(), height_hint);
-        else
-            update_page_layout();
+            resize_to_width = ActualWidth();
+        handled = true;
+    } else if (tag == L"min_in_out_down") {
+        input_height_limit_when_XPanel_showing *= min_in_out_down_scale_factor;
+        output_height_limit_when_XPanel_showing *= min_in_out_down_scale_factor; // factor must be same as for input_height_limit_when_XPanel_showing to maintain proportionality of input and output else resizing view to minimum won't be quite right
+        delta_input_height = input_height_limit_when_XPanel_showing - input().Height();
+        delta_output_height = output_height_limit_when_XPanel_showing - output().Height();
+        resize_to_width = ActualWidth();
+        handled = true;
     } else if (tag != L"none")
         assert(false); // missed one
+
+    if (handled) {
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"input_height_limit_when_XPanel_showing", box_value(input_height_limit_when_XPanel_showing));
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"output_height_limit_when_XPanel_showing", box_value(output_height_limit_when_XPanel_showing));
+
+        input().Height(input_height_limit_when_XPanel_showing);
+        output().Height(output_height_limit_when_XPanel_showing);
+        outputType().Height(output().Height());
+
+        auto input_size = DSize(input().Width(), input().Height());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"input_size", box_value(input_size));
+        auto output_size = DSize(output().Width(), output().Height());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"output_size", box_value(output_size));
+
+        TryResizeView(resize_to_width, ActualHeight() + delta_input_height + delta_output_height);
+    }
+
     input().Focus(FocusState::Programmatic);
 }
 
 template <typename XPanelHint>
-auto winrt::tpcalc::implementation::MainPage::width_and_height(const XPanelHint& XPanel_hint) -> DSize const {
-    auto width = std::max(ActualWidth(), XPanel_hint.width());
-    auto input_output_extra_height =
-        base_input_size.Height + base_output_size.Height
-        - initial_input_size.Height - initial_output_size.Height;
-    auto height = default_page_size.Height + input_output_extra_height + XPanel_hint.Height;
+auto winrt::tpcalc::implementation::MainPage::width_and_height(const XPanelHint& XPanel_hint, bool first_app_launch) -> DSize const {
+// determine page width and height values that will accommodate an XPanel (vars or help panel).
+// side effect: input and output elements may be reduced in height to make more space for the XPanel
+    auto XPanel_height_space =
+        ActualHeight()
+        - calcPanel().ActualHeight()
+        - bottomAppBar().ActualHeight();
+
+    auto width = 0.0;
+    if (first_app_launch)
+        width = XPanel_hint.DWidth();
+    else if (XPanel_height_space < 1 // should be XPanel().Visibility() == Visibility::Collapsed but XPanel().Visibility() is returning wrong value! why?!
+                // < 1 for rounding/tolerance error (approx. value; empirically determined)
+            && ActualWidth() < default_page_size.DWidth() + 3) // + 3 for rounding/tolerance error (approx. value; empirically determined)
+        width = XPanel_hint.DWidth();
+    else
+        width = ActualWidth();
+
+    auto height = 0.0;
+    if (XPanel_height_space > XPanel_height_space_threshold && !first_app_launch)
+        height = ActualHeight();
+    else {
+        auto input_output_extra_height =
+            input().Height() + output().Height()
+            - initial_input_size.DHeight() - initial_output_size.DHeight();
+        height = default_page_size.Height + input_output_extra_height + XPanel_hint.Height;
+    }
+
+    auto max_width_height = max_page_size();
+    if (width > max_width_height.DWidth())
+        width = max_width_height.DWidth();
+    if (height > max_width_height.DHeight())
+        height = max_width_height.DHeight();
+
+    auto new_XPanel_height_space =
+        height
+        - calcPanel().ActualHeight()
+        - bottomAppBar().ActualHeight();
+
+    if (new_XPanel_height_space <= XPanel_height_space_threshold) {
+        auto factor = input().Height() > initial_input_size.DHeight() * min_in_out_down_scale_factor
+            ? min_in_out_down_scale_factor : 1;
+        input().Height(initial_input_size.DHeight() * factor);
+        output().Height(initial_output_size.DHeight() * factor);
+        outputType().Height(output().Height());
+        input_height_limit_when_XPanel_showing = input().Height();
+        output_height_limit_when_XPanel_showing = output().Height();
+        auto input_size = DSize(input().Width(), input().Height());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"input_size", box_value(input_size));
+        auto output_size = DSize(output().Width(), output().Height());
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"output_size", box_value(output_size));
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"input_height_limit_when_XPanel_showing", box_value(input_height_limit_when_XPanel_showing));
+        Storage::ApplicationData::Current().LocalSettings().
+            Values().Insert(L"output_height_limit_when_XPanel_showing", box_value(output_height_limit_when_XPanel_showing));
+    }
+
     return {width, height};
+}
+
+DSize winrt::tpcalc::implementation::MainPage::max_page_size() {
+// heuristic for maximum size that ApplicationView::TryResizePage will take;
+// can't figure out how to determine actual size
+    const auto& info = winrt::Windows::Graphics::Display::DisplayInformation::GetForCurrentView();
+    auto max = DSize{
+        info.ScreenWidthInRawPixels() / info.RawPixelsPerViewPixel() * 0.8,
+        info.ScreenHeightInRawPixels() / info.RawPixelsPerViewPixel() * 0.8};
+    if (max.DWidth() <= ActualWidth())
+        max.DWidth(ActualWidth());
+    if (max.DHeight() <= ActualHeight())
+        max.DHeight(ActualHeight());
+    return max;
+}
+
+void winrt::tpcalc::implementation::MainPage::output_PointerEntered(winrt::Windows::Foundation::IInspectable const& /*sender*/, winrt::Windows::UI::Xaml::Input::PointerRoutedEventArgs const& /*e*/)
+{
+    auto visibility = Visibility::Visible;
+    if (outputted_last_val) {
+        // see set_output_to_last_val where outputTip text is set
+        if (outputter.radix() == radices::decimal || outputter.radix() == radices::base10)
+            visibility = Visibility::Collapsed;
+    } else {
+        // see set_output_to where outputTip text is set
+        if (!output().IsTextTrimmed())
+            visibility = Visibility::Collapsed;
+    }
+    outputTip.Visibility(visibility);
 }
