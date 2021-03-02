@@ -315,14 +315,14 @@ void winrt::tpcalc::implementation::MainPage::update_mode_display() {
 }
 
 void winrt::tpcalc::implementation::MainPage::update_integer_result_type_menu() {
-    integer_result_type_int8().Icon().Visibility(parser.int_result_tag() == parser_type::int8_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_uint8().Icon().Visibility(parser.int_result_tag() == parser_type::uint8_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_int16().Icon().Visibility(parser.int_result_tag() == parser_type::int16_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_uint16().Icon().Visibility(parser.int_result_tag() == parser_type::uint16_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_int32().Icon().Visibility(parser.int_result_tag() == parser_type::int32_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_uint32().Icon().Visibility(parser.int_result_tag() == parser_type::uint32_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_int64().Icon().Visibility(parser.int_result_tag() == parser_type::int64_tag ? Visibility::Visible : Visibility::Collapsed);
-    integer_result_type_uint64().Icon().Visibility(parser.int_result_tag() == parser_type::uint64_tag ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_int8().Icon().Visibility(parser.int_result_type() == parser_type::int8_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_uint8().Icon().Visibility(parser.int_result_type() == parser_type::uint8_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_int16().Icon().Visibility(parser.int_result_type() == parser_type::int16_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_uint16().Icon().Visibility(parser.int_result_type() == parser_type::uint16_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_int32().Icon().Visibility(parser.int_result_type() == parser_type::int32_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_uint32().Icon().Visibility(parser.int_result_type() == parser_type::uint32_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_int64().Icon().Visibility(parser.int_result_type() == parser_type::int64_type ? Visibility::Visible : Visibility::Collapsed);
+    integer_result_type_uint64().Icon().Visibility(parser.int_result_type() == parser_type::uint64_type ? Visibility::Visible : Visibility::Collapsed);
 }
 
 void winrt::tpcalc::implementation::MainPage::mode_menu_Opening(winrt::Windows::Foundation::IInspectable const&, winrt::Windows::Foundation::IInspectable const&) {
@@ -378,21 +378,21 @@ void winrt::tpcalc::implementation::MainPage::integer_result_type_Click(winrt::W
 {
     auto tag = unbox_value_or(sender.as<FrameworkElement>().Tag(), L"");
     if (tag == L"int8")
-        parser.int_result_tag(parser_type::int8_tag);
+        parser.int_result_type(parser_type::int8_type);
     else if (tag == L"uint8")
-        parser.int_result_tag(parser_type::uint8_tag);
+        parser.int_result_type(parser_type::uint8_type);
     else if (tag == L"int16")
-        parser.int_result_tag(parser_type::int16_tag);
+        parser.int_result_type(parser_type::int16_type);
     else if (tag == L"uint16")
-        parser.int_result_tag(parser_type::uint16_tag);
+        parser.int_result_type(parser_type::uint16_type);
     else if (tag == L"int32")
-        parser.int_result_tag(parser_type::int32_tag);
+        parser.int_result_type(parser_type::int32_type);
     else if (tag == L"uint32")
-        parser.int_result_tag(parser_type::uint32_tag);
+        parser.int_result_type(parser_type::uint32_type);
     else if (tag == L"int64")
-        parser.int_result_tag(parser_type::int64_tag);
+        parser.int_result_type(parser_type::int64_type);
     else if (tag == L"uint64")
-        parser.int_result_tag(parser_type::uint64_tag);
+        parser.int_result_type(parser_type::uint64_type);
     else
         assert(false); // missed one
     if (outputted_last_val)
