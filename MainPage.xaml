@@ -103,34 +103,30 @@
                             <LineBreak />
                             <Bold>2+3*4</Bold> means multiply 3 by 4 then add the result to 2
                             <LineBreak />
+                            <LineBreak /><Bold>(2+3)*4</Bold> means add 2 to 3 then multiply the result by 4
                             <LineBreak />
-                            <Bold>(2+3)*4</Bold> means add 2 to 3 then multiply the result by 4
+                            <LineBreak /><Bold>-2-3/4</Bold> means divide 3 by 4 then subtract the result from the negation of 2
                             <LineBreak />
+                            <LineBreak /><Bold>pi*5**2</Bold> means square 5 (raise 5 to power of 2) then multiply the result by pi
                             <LineBreak />
-                            <Bold>-2-3/4</Bold> means divide 3 by 4 then subtract the result from -2
-                            <LineBreak />
-                            <LineBreak />
-                            <Bold>pi*5**2</Bold> means square 5 (raise 5 to power of 2) then multiply the result by pi
-                            <LineBreak />
-                            <LineBreak />
-                            <Bold>5**2**3</Bold> is equivalent to
+                            <LineBreak /><Bold>5**2**3</Bold> is equivalent to
                             <Bold>5**(2**3)</Bold> (exponentiation is right-associative)
                             <LineBreak />
-                            <LineBreak />
-                            <Bold>8!</Bold> means the factorial of 8; factorial can be applied generally
+                            <LineBreak /><Bold>8!</Bold> means the factorial of 8; factorial can be applied generally
                             to positive real numbers; for example,
                             <Bold>8.2!</Bold> is valid
                             <LineBreak />
-                            <LineBreak />
-                            <Bold>8!!</Bold> means the double factorial of 8; double factorial can be
+                            <LineBreak /><Bold>8!!</Bold> means the double factorial of 8; double factorial can be
                             applied generally to positive real numbers; for example,
                             <Bold>8.2!!</Bold> is valid
                             <LineBreak />
+                            <LineBreak /><Bold>2*sin(1.8)</Bold> means 2 times the sine of 1.8
                             <LineBreak />
-                            <Bold>2*sin(1.8)</Bold> means 2 times the sine of 1.8
+                            <LineBreak /><Bold>avg[1,2,3,4,5,6,7,8,9]</Bold> means the average of 1,2,3,4,5,6,7,8,9
                             <LineBreak />
-                            <LineBreak />
-                            <Bold>avg[1,2,3,4,5,6,7,8,9]</Bold> means the average of 1,2,3,4,5,6,7,8,9
+                            <LineBreak /><Bold>[1,2,3,4]*2</Bold> means multiply the vector 1,2,3,4 by the scalar 2.
+                            Vector arithmetic is described in the
+                            <Hyperlink Click="help_vector_arithmetic_Click">Vector Arithmetic</Hyperlink> section.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The
@@ -157,14 +153,20 @@
                 <ScrollViewer x:Name="help_quick_start_guide_advanced" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock x:Name="help_quick_start_guide_advanced_TextBlock">
                         <Paragraph>
-                            By default, the calculator represents numbers internally as floating
-                            point and performs floating point arithmetic on them; floating point
-                            is abbreviated Flt. Pt. on the UI.
-                            This is the representation suitable for general calculations.
-                            The calculator can also represent numbers internally as integers and perform
-                            integer arithmetic and
+                            Formally, a number is either a floating point number or an integer number.
+                            By default, numbers are interpreted as floating point ones and are represented internally in floating
+                            point format; the calculator performs floating point arithmetic on them; floating point
+                            is abbreviated Flt. Pt. on the UI. This is the representation suitable for general calculations.
+                            Numbers can also be interpreted as integer ones and represented internally as integer types;
+                            the calculator performs integer arithmetic and
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
                                 bitwise logic</Hyperlink> on them; this can be useful to computer programmers.
+                            <LineBreak />
+                            <LineBreak />100, 100.5 and 1.005e+2 are examples of floating point numbers.
+                            100 is also an example of an integer number.
+                            Whether a whole number such as 100 is interpreted as a floating point number
+                            or an integer number depends on the input mode selected in the <Bold>Mode</Bold> menu.
+                            By default, it will be interpreted as a floating point one.
                             <LineBreak />
                             <LineBreak />The calculator can also accept numbers in several numeric bases
                             in addition to decimal: binary, octal and hexadecimal. The following are examples
@@ -210,16 +212,16 @@
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The
-                            <Bold>Mode</Bold> menu also allows an input mode to be selected
-                            that determines how inputted numbers are interpreted and represented (numeric base;
-                            floating point or integer); and allows an output mode to be selected that
-                            determines the numeric base in which the result of calculations are output
+                            <Bold>Mode</Bold> menu allows an input mode to be selected
+                            that determines how inputted numbers are interpreted and represented,
+                            and allows an output mode to be selected that determines the numeric base
+                            in which the result of calculations are output
                             (binary, octal, decimal or hexadecimal).
                             <LineBreak />
                             <LineBreak />The
                             <Bold><Hyperlink Click="help_numbers_Click">
                                 Numbers</Hyperlink></Bold> section provides a detailed explanation of
-                            input modes and how inputted numbers are interpreted and represented.
+                            how inputted numbers are interpreted and represented.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />
@@ -268,38 +270,43 @@
                 <ScrollViewer x:Name="help_numbers" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
                         <Paragraph>
-                            This section is rather technical and assumes you have a basic
+                            This section assumes you have a basic
                             understanding of how computers represent numbers and perform arithmetic.
-                            (If you don't, you can still use the calculator in its default mode,
-                            which is suitable for general and scientific calculations. This section
+                            This section
                             will be more useful for those who want to perform integer arithmetic and
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Bitwise_operation">
                                 bitwise logic</Hyperlink> in a variety of numeric bases, or for those
-                            who want to use hexadecimal floating point numbers.)
+                            who want to use hexadecimal floating point numbers.
                             <LineBreak />
-                            <LineBreak />A number is normally represented internally in
+                            <LineBreak />Formally, a number is either a floating point one or an integer one.
+                            By default, a number is interpreted as a floating point one and represented internally in
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Double-precision_floating-point_format">
-                                64 bit wide IEEE double precision floating point format</Hyperlink>; such numbers are
-                            referred to simply as floating point. A number may also be represented internally as an
+                                64 bit wide IEEE double precision floating point format</Hyperlink> (floating point format);
+                            the calculator performs floating point arithmetic on such numbers.
+                            A number may also be interpreted as an integer one and represented internally as an
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Integer_(computer_science)">
-                                unsigned or signed two's compliment integer type, 8, 16, 32 or 64 bit</Hyperlink>;
-                            such numbers are referred to simply as integers.
+                                unsigned or signed two's compliment integer type, 8, 16, 32 or 64 bit</Hyperlink> (integer type);
+                            the calculator performs integer arithmetic on such numbers.
+                            <LineBreak />
+                            <LineBreak />A whole number, such as 10, will be interpreted either as a floating point number or as
+                            an integer number depending on the input mode selected in the <Bold>Mode</Bold> menu; this is expounded later.
+                            By default, it will be interpreted as a floating point number and be subject to floating point arithmetic.
                             <LineBreak />
                             <LineBreak />The default integer type is signed 64 bit. Other types can be
                             selected from the
                             <Bold>Int. Type</Bold> menu. (Note: changing the integer
                             type will not affect how any integer variables are represented.)
                             <LineBreak />
-                            <LineBreak />Technically, an integer is first represented as an unsigned 64 bit
+                            <LineBreak />Technically, an integer number is first represented as an unsigned 64 bit
                             integer type and then converted to the type selected in the
                             <Bold>Int. Type</Bold> menu, which by default is signed 64 bit integer. This is
                             to allow for numbers such as 0xffffffffffffffff (decimal -9223372036854775808)
                             to be specified, but also because negative numbers cannot be directly specified,
-                            as '-' is the negation operator and not the negative sign (this has to do with
-                            the expression parser). Thus -9223372036854775808 (minimum 64 bit signed integer)
-                            is equivalent to -(9223372036854775808).
+                            as '-' is the negation operator and not the negative sign (this is a subtle technicality
+                            that has to do with how the expression evaluator is implemented).
+                            Thus -9223372036854775808 (minimum 64 bit signed integer) is equivalent to -(9223372036854775808).
                             <LineBreak />
-                            <LineBreak />The initial representation of an integer as an unsigned
+                            <LineBreak />The initial representation of an integer number as an unsigned
                             64 bit integer type is the only situation where integer range checking is
                             performed.
                             <LineBreak />
@@ -320,93 +327,78 @@
                             1.388p13 and 1.388p+13, which are all equivalent to decimal 10000 (the latter
                             two are normalized).
                             <LineBreak />
-                            <LineBreak />An unadorned number&#x2014;one without a radix prefix, without a decimal
-                            point and not specified in scientific notation, for example, 10&#x2014;can be either
-                            floating point (normally) or an integer depending on the input mode (explained below).
-                            <LineBreak />
-                            <LineBreak />
-                            <Underline>Floating Point Decimal Input</Underline>:
+                            <LineBreak /><Underline>Floating Point Decimal Input</Underline>:
                             <LineBreak />
                             <LineBreak />Context: A number is specified with no radix prefix and the input mode in
                             the
                             <Bold>Mode</Bold> menu is
                             <Bold>Floating Point Decimal Input</Bold>.
                             <LineBreak />
-                            <LineBreak />This is the default input mode. The number will be interpreted as decimal
-                            and will be represented as floating point. For example, 10, 10.1 and 1e100 will all be
-                            interpreted as decimal numbers and represented as floating point.
+                            <LineBreak />This is the default input mode. The number will be interpreted as a decimal floating point
+                            number. For example, 10, 10.1 and 1e100 will all be interpreted as decimal floating point numbers.
                             <LineBreak />
-                            <LineBreak />
-                            <Underline>Integer Binary Input</Underline>:
+                            <LineBreak /><Underline>Integer Binary Input</Underline>:
                             <LineBreak />
                             <LineBreak />Context: A number is specified with the 0b (binary) radix prefix, or is
                             specficied with no radix prefix and the input mode in the
                             <Bold>Mode</Bold> menu is
                             <Bold>Integer Binary Input</Bold>.
                             <LineBreak />
-                            <LineBreak />Integers only are valid. The number will be interpreted as binary
-                            and will be represented as an integer. A number with a
+                            <LineBreak />Whole numbers only are valid. The number will be interpreted as a binary
+                            integer number. A number with a
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
                                 radix point</Hyperlink> or that is specified in scientific notation is invalid
-                            here. Examples: 0b1010 and 1010, which are equivalent to decimal 10, will be represented
-                            as integers. 0b1010.1, 0b1010e1, 1010.1 and 1010e1 are invalid numbers here.
+                            here. Examples: 0b1010 and 1010, which are equivalent to decimal 10, will be interpreted as
+                            binary integer numbers. 0b1010.1, 0b1010e1, 1010.1 and 1010e1 are invalid numbers here.
                             <LineBreak />
-                            <LineBreak />
-                            <Underline>Integer Octal Input</Underline>:
+                            <LineBreak /><Underline>Integer Octal Input</Underline>:
                             <LineBreak />
                             <LineBreak />Context: A number is specified with the 0o (octal) radix prefix or is
                             specified with no radix prefix and the input mode in the
                             <Bold>Mode</Bold> menu is
                             <Bold>Integer Octal Input</Bold>.
                             <LineBreak />
-                            <LineBreak />Integers only are valid. The number will be interpreted as octal
-                            and will be represented as an integer. A number with a
+                            <LineBreak />Whole numbers only are valid. The number will be interpreted as an octal
+                            integer number. A number with a
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
                                 radix point</Hyperlink> or that is specified in scientific notation is invalid
-                            here. Examples: 0o12 and 12, which are equivalent to decimal 10, will be represented
-                            as integers. 0o12.1, 0o12e1, 12.1 and 12e1 are invalid numbers here.
+                            here. Examples: 0o12 and 12, which are equivalent to decimal 10, will be interpreted as
+                            octal integer numbers. 0o12.1, 0o12e1, 12.1 and 12e1 are invalid numbers here.
                             <LineBreak />
-                            <LineBreak />
-                            <Underline>Integer/Flt. Pt. Decimal Input</Underline>:
+                            <LineBreak /><Underline>Integer/Flt. Pt. Decimal Input</Underline>:
                             <LineBreak />
                             <LineBreak />Context: A number is specified with the 0d (decimal) radix prefix or is specified
                             with no radix prefix and the input mode in the
                             <Bold>Mode</Bold> menu is
                             <Bold>Integer/Flt. Pt. Decimal Input</Bold>.
                             <LineBreak />
-                            <LineBreak />The number will be interpreted as decimal and will be represented
-                            as either an integer or as floating point according to the following:
-                            <LineBreak />
                             <LineBreak />If the number has no decimal point and is not specified in scientific notation
-                            then it will be represented as an integer. For example, 0d10 and 10 will be represented
-                            as integers.
+                            then it will be interpreted as a decimal integer number. For example, 0d10 and 10 will be
+                            interpreted as decimal integer numbers.
                             <LineBreak />
                             <LineBreak />If the number has a decimal point or is specified in scientific E notation
-                            then it will be represented as floating point. For example, 0d10., 0d10.0, 0d1e100, 10.,
-                            10.0 and 1e100 will all be represented as floating point.
+                            then it will be interpreted as a decimal floating point number. For example, 0d10.,
+                            0d10.0, 0d1e100, 10., 10.0 and 1e100 will all be interpreted as floating point numbers.
                             <LineBreak />
-                            <LineBreak />
-                            <Underline>Integer/Flt. Pt. Hexecimal Input</Underline>:
+                            <LineBreak /><Underline>Integer/Flt. Pt. Hexecimal Input</Underline>:
                             <LineBreak />
                             <LineBreak />Context: A number is specified with the 0x (hexadecimal) radix prefix or is
                             specified with no radix prefix and the input mode in the
                             <Bold>Mode</Bold> menu is
                             <Bold>Integer/Flt. Pt. Hexadecimal Input</Bold>.
                             <LineBreak />
-                            <LineBreak />The number will be interpreted as hexadecimal and will be represented
-                            as either an integer or as floating point according to the following:
-                            <LineBreak />
                             <LineBreak />If the number has no
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
                                 radix point</Hyperlink> and is not specified in scientific notation then it will
-                            be represented as an integer. For example, 0xa and 0a, which are equivalent to decimal
-                            10, will be represented as integers.
+                            be interpreted as a hexadecimal integer number. For example, 0xa and 0a, which are
+                            equivalent to decimal 10, will be interpreted as hexadecimal integer numbers.
                             <LineBreak />
                             <LineBreak />If the number has a
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Radix_point">
                                 radix point</Hyperlink> or is specified in scientific P notation then it will be
-                            represented as floating point. For example, 0x2710., 0x2710.0 and 0x1.388p13,
-                            which are all equivalent to decimal 10000, will all be represented as floating point.
+                            interpreted as a hexadecimal floating point number. For example, 0x2710., 0x2710.0
+                            and 0x1.388p13, which are all equivalent to decimal 10000, will all be interpreted
+                            as floating point numbers.
                             <LineBreak />
                             <LineBreak />The hexadecimal digits corresponding to decimal numbers 10-15 are a-f
                             (or A-F) per common convention. Notes: If a hexadecimal number begins with a letter
@@ -418,14 +410,14 @@
                             hexadecimal number, it won't be recognized as the binary radix prefix in this mode;
                             thus binary numbers cannot be specified in this mode.
                             <LineBreak />
-                            <LineBreak />
-                            <Underline>Output Mode</Underline>:
+                            <LineBreak /><Underline>Output Mode</Underline>:
                             <LineBreak />
                             <LineBreak />The
                             <Bold>Mode</Bold> menu allows an output mode to be selected that
-                            determines the numeric base in which the result of calculations are output (binary,
-                            octal, decimal or hexadecimal). Floating point numbers ouput in binary, octal or
-                            hexadecimal will be done so in
+                            determines the numeric base in which the result of calculations are output. The output
+                            modes are <Bold>Binary Output</Bold>, <Bold>Octal Output</Bold>, <Bold>Decimal Output</Bold>
+                            and <Bold>Hexadecimal Output</Bold>.
+                            Floating point numbers ouput in binary, octal or hexadecimal will be done so in
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Hexadecimal#Hexadecimal_exponential_notation">
                                 normalized scientific P notation</Hyperlink>.
                         </Paragraph>
@@ -438,8 +430,9 @@
                 </ScrollViewer>
                 <ScrollViewer x:Name="help_fp_and_integer_arithmetic_operators" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
+                        <Paragraph>These operators operate on either floating point numbers or integer numbers:</Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            <Bold>+</Bold> Addition
+                            <LineBreak /><Bold>+</Bold> Addition
                             <LineBreak />
                             <LineBreak /><Bold>-</Bold> Subtraction or negation
                             <LineBreak />
@@ -448,12 +441,12 @@
                             <LineBreak /><Bold>/</Bold> Division
                         </Paragraph>
                         <Paragraph>
-                            <LineBreak />These operators accept floating point or integer values. If
-                            either value is floating point then the the other value, if an integer,
-                            will be converted to floating point, the operation will be performed using
-                            floating point arithmetic and the result will be a floating point value.
-                            If both values are integers then the operation will be performed using
-                            integer arithmetic and the result will be an integer value.
+                            <LineBreak />If either operand is a floating point number then the operation will be performed using
+                            floating point arithmetic and the result will be a floating point number;
+                            if the other operand is an integer number then it will be converted to a floating point one.
+                            <LineBreak />
+                            <LineBreak />If both operands are integer numbers then the operation will be performed using
+                            integer arithmetic and the result will be an integer number.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />
@@ -464,8 +457,9 @@
                 </ScrollViewer>
                 <ScrollViewer x:Name="help_fp_arithmetic_operators" Grid.Row="1" Visibility="Collapsed">
                     <RichTextBlock>
+                        <Paragraph>These are exclusively floating point operators:</Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            <Bold>**</Bold> Exponentiation
+                            <LineBreak /><Bold>**</Bold> Exponentiation
                             <LineBreak />
                             <LineBreak /><Bold>!</Bold>
                             <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Factorial">
@@ -476,11 +470,11 @@
                                 Double factorial (extended to real numbers)</Hyperlink>
                         </Paragraph>
                         <Paragraph>
-                            <LineBreak />Integer values will be converted to floating point, the 
+                            <LineBreak />Integer numbers will be converted to floating point ones, the 
                             operation will be performed using floating point arithmetic and the result
-                            will be a floating point value. These operators always operate in the
+                            will be a floating point number. These operators always operate in the
                             floating point domain because of how easily calculations can "blow up" and
-                            become larger than integers can support; also, factorials are implemented
+                            become larger than integer types can support; also, factorials are implemented
                             using the gamma function to support factorials of real numbers with
                             fractional components (for example, 3.4!). The factorial for real numbers is
                             given by the formula gamma(n+1), and the double factorial for real numbers
@@ -520,8 +514,8 @@
                             <LineBreak /><Bold>~</Bold> Bitwise unary not
                         </Paragraph>
                         <Paragraph>
-                            <LineBreak />These operators accept integer values only; floating point
-                            values are invalid for these.
+                            <LineBreak />These operators accept integer numbers only; floating point
+                            numbers are invalid for these.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />
@@ -534,15 +528,15 @@
                     <RichTextBlock>
                         <Paragraph>
                             The calculator provides a variety of scientific functions
-                            such as log, sin, cos, etc., which operate on floating point parameters.
+                            such as log, sin, cos, etc., which operate on floating point numbers.
                             <LineBreak />
                             <LineBreak />The syntax of each function is &lt;name&gt;(&lt;parameter&gt;)
                             where &lt;name&gt; is the name of the function and &lt;parameter&gt; is a
                             number or expression; examples: sin(2), log(3/2), sqrt(5**2).
                             <LineBreak />
-                            <LineBreak />For each function, if the parameter is an integer one then it
-                            will be converted to floating point. Also, the result of each function will
-                            be a floating point value.
+                            <LineBreak />For each function, if the parameter is an integer number then it
+                            will be converted to a floating point one. Also, the result of each function will
+                            be a floating point number.
                             <LineBreak />
                             <LineBreak />The complete set of scientific functions is available for
                             reference below and in the <Bold>Scientific</Bold> menu. The scientific
@@ -583,18 +577,17 @@
                             The calculator provides a variety of statistical functions
                             such as avg, stddev, mode, etc., which operate on lists of numbers.
                             <LineBreak />
-                            <LineBreak />The syntax of each function is &lt;name&gt;&lt;list&gt; where &lt;name&gt;
-                            is the name of the function, and &lt;list&gt; is a list of comma delimited
-                            parameters enclosed in square brackets, where each parameter is a number or
-                            expression; for example: avg[2,e,pi,3/2,sqrt(5**2)] computes the average of
-                            2, e, pi, 3/2 and sqrt(5**2).
+                            <LineBreak />The form of a statistical function is &lt;name&gt;&lt;bracketed list&gt; where &lt;name&gt;
+                            is the name of the function, and &lt;bracketed list&gt; is a list of comma delimited parameters
+                            enclosed in square brackets, where a parameter is a number or another expression;
+                            for example: avg[2,e,pi,3/2,sqrt(5**2)] computes the average of 2, e, pi, 3/2 and sqrt(5**2).
                             <LineBreak />
-                            <LineBreak />For each statistical function, any integer
-                            parameters will be converted to floating point, and the result will be
-                            a floating point value, except in the case where the mode function
-                            finds more than one mode, then the result will be another list.
+                            <LineBreak />For each statistical function, any parameters that are integer numbers
+                            will be converted to floating point numbers, and the result will be
+                            a floating point number except in the case where the mode function
+                            finds more than one mode then the result will be another list.
                             <LineBreak />
-                            <LineBreak />Lists can be stored in variables, which can be used in
+                            <LineBreak />Lists can be stored in variables, which can be used as parameters in
                             statistical functions; for example:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
@@ -604,7 +597,17 @@
                             <LineBreak />stddev[l]
                         </Paragraph>
                         <Paragraph>
-                            Note that the square brackets around the list are required.
+                            Note that the list assigned to the variable l is enclosed in square brackets.
+                            <LineBreak />
+                            <LineBreak />Lists can be combined to produce larger lists; for example, given the expressions:
+                        </Paragraph>
+                        <Paragraph Margin="20,0,0,0">
+                            i=[1,2]
+                            <LineBreak />j=[3,4]
+                            <LineBreak />k=[i,j]
+                        </Paragraph>
+                        <Paragraph>
+                            k will have the list 1,2,3,4.
                         </Paragraph>
                         <Paragraph>
                             <LineBreak />The complete set of statistical functions is available for
@@ -653,7 +656,7 @@
                         <Paragraph>
                             <LineBreak />The calculator uses
                                 <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Welford's_online_algorithm">
-                                    Welford's online algorithm</Hyperlink> to avoid the catastrophic cancellation described in
+                                    Welford's online algorithm</Hyperlink> to compute variance to avoid the catastrophic cancellation described in
                                     the <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Algorithms_for_calculating_variance">
                                     main article</Hyperlink>.
                             <LineBreak /><LineBreak />The calculator uses Method 4 described in the
@@ -669,12 +672,12 @@
                     <RichTextBlock>
                         <Paragraph>
                             The calculator can perform vector arithmetic on vectors. A vector is just
-                            another name for a list of numbers and can be specified as a list of comma
-                            delimited numbers or expressions enclosed in square brackets;
-                            for example, [1,2,pi], which resolves to the list 1, 2, 3.14159265358979.
+                            another name for a list of comma delimited parameters, where a parameter is a number or expression,
+                            and is specified by enclosing it in square brackets;
+                            for example, [1,2,pi] specifies the list 1,2,3.14159265358979.
                             <LineBreak /><LineBreak />Vectors can be assigned to variables, for example, i=[1,2,pi]
                             <LineBreak /><LineBreak />Vectors can be combined to produce larger vectors;
-                            for example, given:
+                            for example, given the expressions:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
                             i=[1,2]
@@ -682,20 +685,14 @@
                             <LineBreak />k=[i,j]
                         </Paragraph>
                         <Paragraph>
-                            k will have the contents 1, 2, 3, 4.
+                            k will have the contents 1,2,3,4.
                             <LineBreak /><LineBreak /><Underline>Scalar operations</Underline>:
-                            <LineBreak /><LineBreak />A scalar operation applies a scalar and an operation
+                            <LineBreak /><LineBreak />A scalar operation applies a scalar and an operator
                             to each element of a vector to produce a new vector; for example: 2*[1,2,pi]
-                            produces the list 2, 4, 6.28318530717959.
-                            <LineBreak /><LineBreak />Syntax: &lt;scalar&gt;&lt;operator&gt;&lt;vector&gt;
-                            or &lt;vector&gt;&lt;operator&gt;&lt;scalar&gt; where:
+                            produces the list 2,4,6.28318530717959. A scalar is a number or an expression
+                            that resolves to a number. The scalar operators are:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
-                            &lt;scalar&gt; is a number (or a parentesized expresssion that resolves to a number).
-                            <LineBreak />&lt;vector&gt; is a list as described above.
-                            <LineBreak />&lt;operator&gt; is one of the following:
-                        </Paragraph>
-                        <Paragraph Margin="40,0,0,0">
                             <Bold>+</Bold> Scalar addition
                             <LineBreak /><Bold>-</Bold> Scalar subtraction
                             <LineBreak /><Bold>*</Bold> Scalar multiplication (scalar product)
@@ -708,15 +705,16 @@
                         <Paragraph Margin="20,0,0,0">
                             x=3
                             <LineBreak />i=[1,2,3]
-                            <LineBreak />(2*x)+i
+                            <LineBreak />(2+x)+i
                         </Paragraph>
                         <Paragraph>
-                            (2*x) is a scalar and i is a vector; this set of expressions produces the list 7, 8, 9.
+                            (2+x) is a scalar and i is a vector; this set of expressions produces the list 6,7,8.
+                            The order of the operands may be reversed; for example, i+(2+x) is also valid and produces the same result.
                             <LineBreak /><LineBreak /><Underline>
                                 <Hyperlink NavigateUri="https://en.wikipedia.org/wiki/Dot_product">Dot product</Hyperlink>
                             </Underline>:                            
-                            <LineBreak /><LineBreak />The period character denotes the dot product operator between vectors.
-                            For example, [1,2,3].[4,5,6] denotes the dot product of two vectors; the result of this
+                            <LineBreak /><LineBreak />The period character is the dot product operator for vectors.
+                            For example, [1,2,3].[4,5,6] expresses the dot product of two vectors; the result of this
                             particular operation is 32. The above example can also be expressed using variables:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
@@ -729,7 +727,7 @@
                             <LineBreak /><LineBreak /><Underline>Vector memberwise operations</Underline>:
                             <LineBreak /><LineBreak />Each of the following operators, when specified for
                             two vectors, applies an operation to the corresponsing elements of the two
-                            vectors  and produces a new vector:
+                            vectors and produces a new vector:
                         </Paragraph>
                         <Paragraph Margin="20,0,0,0">
                             <Bold>+</Bold> is for memberwise addition (vector addition)
@@ -741,8 +739,8 @@
                             <LineBreak /><Bold>**</Bold> is for memberwise exponentation
                         </Paragraph>                            
                         <Paragraph>
-                            Syntax: &lt;vector&gt;&lt;operator&gt;&lt;vector&gt;; for example, [1,2,3]+[4,5,6] produces
-                            the list 5, 7, 9. The two vectors must be the same size (same number of elements).
+                            For example, [1,2,3]+[4,5,6] produces the list 5,7,9, as does i+j for the variables i and j
+                            in the example above for dot product. The two vectors must be the same size (same number of elements).
                             <LineBreak /><LineBreak />
                             <Hyperlink Click="help_statistical_functions_Click">Previous: Statistical Functions</Hyperlink><LineBreak />
                             <Hyperlink Click="help_operator_precedence_and_associativity_Click">Next: Operator Precedence and Associativity</Hyperlink>
@@ -764,7 +762,8 @@
                             <LineBreak />3: <Bold>+</Bold>, <Bold>-</Bold>, <Bold>~</Bold> unary plus, negation,
                             bitwise not (bitwise negation) (unary prefix operators)
                             <LineBreak />
-                            <LineBreak />4: <Bold>*</Bold>, <Bold>/</Bold>, <Bold>%</Bold> multiplication, division, modulo
+                            <LineBreak />4: <Bold>*</Bold>, <Bold>/</Bold>, <Bold>%</Bold>, <Bold>.</Bold>
+                            multiplication, division, modulo, dot product
                             <LineBreak />
                             <LineBreak />5: <Bold>+</Bold>, <Bold>-</Bold> addition, subtraction
                             <LineBreak />
