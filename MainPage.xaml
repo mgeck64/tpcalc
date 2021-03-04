@@ -876,6 +876,7 @@
                         <MenuFlyoutItem Tag="-" Text="-  Subtraction or Negation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="*" Text="*  Multiplication" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="/" Text="/  Division" Click="append_tag_to_input_Click" />
+                        <MenuFlyoutItem Tag="." Text=".  Dot Product" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="%" Text="%  Modulo" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="**" Text="**  Exponentiation" Click="append_tag_to_input_Click" />
                         <MenuFlyoutItem Tag="!" Text="!  Factorial" Click="append_tag_to_input_Click" />
